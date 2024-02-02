@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organizational Tree</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-vuUoOqGZpDchUKR7i8e9TYJS6fuuB4SK1rUKqicTfNJpNtJLbGziIJSKDe2npUfJkPXN9bp5XFn1xUGrQQFaEA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="shortcut icon" href="assets/img/favicon.png">
+
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      display: grid;
+      align-items: center;
+      background: #f5f5f5;
+      font-family: 'Poppins', sans-serif; /* Add your preferred font family */
+    }
+
+    .main-wrapper {
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    .tree {
+      width: 100%;
+      text-align: center;
+      overflow-x: auto; /* Enable horizontal scroll for small screens */
+    }
+
+    .tree ul {
+      padding-top: 20px;
+      position: relative;
+      transition: .5s ease;
+      list-style: none;
+    }
+
+    .tree li {
+      display: inline-table;
+      text-align: center;
+      position: relative;
+      padding: 10px;
+      transition: .5s;
+    }
+
+    .tree li:before,
+    .tree li:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 50%;
+      border-top: 1px solid #ccc;
+      width: 51%;
+      height: 10px;
+    }
+
+    .tree li:after {
+      right: auto;
+      left: 50%;
+      border-left: 1px solid #ccc;
+    }
+
+    .tree li:only-child:after,
+    .tree li:only-child:before {
+      display: none;
+    }
+
+    .tree li:only-child {
+      padding-top: 0;
+    }
+
+    .tree li:first-child:before,
+    .tree li:last-child:after {
+      border: 0 none;
+    }
+
+    .tree li:last-child:before {
+      border-right: 1px solid #ccc;
+      border-radius: 0px 5px 0px 0px;
+    }
+
+    .tree li:first-child:after {
+      border-radius: 5px 0px 0px 0px;
+    }
+
+    .tree ul ul:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      border-left: 1px solid #ccc;
+      width: 0;
+      height: 20px;
+    }
+
+    .tree a {
+      border: 1px solid #ccc;
+      padding: 10px;
+      display: inline-grid;
+      border-radius: 5px;
+      text-decoration-line: none;
+      border-radius: 5px;
+      transition: .5s;
+    }
+
+    .tree a img {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 10px !important;
+      border-radius: 100px;
+      margin: auto;
+    }
+
+    .tree a span {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      color: #666;
+      padding: 8px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 500;
+    }
+
+    .toggle-btn {
+      background-color: #2ecc71;
+      color: #fff;
+      border: none;
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .toggle-btn:hover {
+      background-color: #27ae60;
+    }
+
+    .subordinates {
+      display: none;
+      list-style: none;
+      padding-left: 20px;
+    }
+
+    .tree li:before,
+    .tree li:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 50%;
+      border-top: 1.5px solid #2ecc71;
+      width: 51%;
+      height: 10px;
+    }
+
+    .tree li:after {
+      right: auto;
+      left: 50%;
+      border-left: 1px solid #2ecc71;
+    }
+
+    @media (max-width: 768px) {
+            /* Adjustments for smaller screens */
+            .tree li {
+                display: block;
+                text-align: center;
+                padding: 10px;
+            }
+
+            .tree li:before,
+            .tree li:after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 50%;
+                border-top: 1px solid #ccc;
+                width: 51%;
+                height: 10px;
+            }
+
+            .tree li:after {
+                right: auto;
+                left: 50%;
+                border-left: 1px solid #ccc;
+            }
+
+            .tree li:only-child:after,
+            .tree li:only-child:before {
+                display: none;
+            }
+
+            .tree li:only-child {
+                padding-top: 0;
+            }
+
+            .tree li:first-child:before,
+            .tree li:last-child:after {
+                border: 0 none;
+            }
+
+            .tree li:last-child:before {
+                border-right: 1px solid #ccc;
+                border-radius: 0px 5px 0px 0px;
+            }
+
+            .tree li:first-child:after {
+                border-radius: 5px 0px 0px 0px;
+            }
+
+            .tree ul ul:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 50%;
+                border-left: 1px solid #ccc;
+                width: 0;
+                height: 20px;
+            }
+
+            .tree a {
+                border: 1px solid #ccc;
+                padding: 10px;
+                display: inline-grid;
+                border-radius: 5px;
+                text-decoration-line: none;
+                border-radius: 5px;
+                transition: .5s;
+            }
+
+            .tree a img {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 10px !important;
+                border-radius: 100px;
+                margin: auto;
+            }
+
+            .tree a span {
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                color: #666;
+                padding: 8px;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                font-weight: 500;
+            }
+
+            .toggle-btn {
+                margin-top: 10px;
+            }
+        }
+
+        /* Custom zoom in/out buttons */
+        .zoom-buttons {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            z-index: 999;
+        }
+
+        .zoom-buttons button {
+            font-size: 16px;
+            padding: 8px;
+            margin: 5px;
+            cursor: pointer;
+        }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Organizational Tree</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.php">Home</a>
+          </li>
+          <!-- Add more navbar items as needed -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+     
+  <div class="main-wrapper">
+    <div class="tree">
+      <ul>
+        <li class="has-children">
+          <a href="#">
+            <img src="assets/img/WhatsApp-Image-2023-12-07-at-4.01.02-PM-e1702031796336.jpeg" alt="">
+            <span>Manager</span>
+          </a>
+          <button class="toggle-btn" onclick="toggleSubordinates(this)">
+            <i class="fas fa-plus"></i>
+          </button>
+          <ul>
+            <li class="has-children">
+              <a href="#">
+                <img src="assets/img/professional-profile-pictures-1427-x-1920-txfewtw6mcg0y6hk.jpg" alt="">
+                <span>Sub Manager</span>
+              </a>
+              <button class="toggle-btn" onclick="toggleSubordinates(this)">
+                <i class="fas fa-plus"></i>
+              </button>
+              <ul class="subordinates">
+                <li>
+                  <a href="#">
+                    <img src="assets/img/unnamed.jpg" alt="">
+                    <span>Junior Manager</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/unnamed.jpg" alt="">
+                    <span>Junior Manager</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="has-children">
+              <a href="#">
+                <img src="assets/img/unnamed.jpg" alt="">
+                <span>Sub Manager</span>
+              </a>
+              <button class="toggle-btn" onclick="toggleSubordinates(this)">
+                <i class="fas fa-plus"></i>
+              </button>
+              <ul class="subordinates">
+                <li>
+                  <a href="#">
+                    <img src="assets/img/unnamed.jpg" alt="">
+                    <span>Junior Manager</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/WhatsApp-Image-2023-12-07-at-3.40.07-PM-2.jpeg" alt="">
+                    <span>Junior Manager</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/unnamed.jpg" alt="">
+                    <span>Junior Manager</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#">
+                <img src="assets/img/unnamed.jpg" alt="">
+                <span>Sub Manager</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function toggleSubordinates(btn) {
+      var subordinates = btn.nextElementSibling;
+      if (subordinates) {
+        subordinates.style.display = subordinates.style.display === 'none' ? 'block' : 'none';
+      }
+    }
+  </script>
+  
+</body>
+</html>
