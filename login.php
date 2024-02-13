@@ -14,6 +14,7 @@ if (isset($_POST['login'])) {
     }
 
     // Fetch user from the database based on email
+<<<<<<< HEAD
     $query = "SELECT * FROM admin_registration WHERE email = '$email'";
     $result = mysqli_query($conn, $query);
 
@@ -40,12 +41,51 @@ if (isset($_POST['login'])) {
     } else {
         $_SESSION['status'] = "Invalid email";
     }
+=======
+    $query = "SELECT * FROM employees WHERE email = '$email'";
+    $result = mysqli_query($conn, $query);
+
+    // After fetching user from the database
+if ($result && mysqli_num_rows($result) > 0) {
+    $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+    // Debugging
+    // echo "Entered Email: $email<br>";
+    // echo "Entered Password: $password<br>";
+    // echo "User ID: " . $user['id'] . "<br>";
+    // echo "Database Password: " . $user['password'] . "<br>";
+
+    // Check if the password matches (plain text)
+    if (password_verify($password,$user['password'])||$password == $user['password']) {
+        $_SESSION['emp_id'] = $user['emp_id'];
+        if ($user['user_type'] == 'admin') {
+                header('Location: index.php');
+        }   elseif ($user['user_type'] == 'user') {
+                header('Location: emp/index-employee.php');
+        }   
+            // else{
+            //     // header('###');
+            // }
+        exit();        
+            }
+        else {
+        $_SESSION['status'] = "Invalid password";
+    }
+} else {
+    $_SESSION['status'] = "Invalid email";
+}
+
+>>>>>>> c982c37 (Second update)
 
     // Close database connection
     mysqli_close($conn);
 }
 ?>
 
+<<<<<<< HEAD
+=======
+<!-- rest of your HTML code -->
+>>>>>>> c982c37 (Second update)
 
 
 
@@ -131,4 +171,8 @@ if (isset($_POST['login'])) {
     <script src="assets/js/script.js"></script>
 </body>
 
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> c982c37 (Second update)

@@ -18,6 +18,7 @@ if (!$conn) {
 session_start();
 
 // Check if the user is logged in
+<<<<<<< HEAD
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -26,6 +27,16 @@ if (!isset($_SESSION['user_id'])) {
 // Retrieve user-specific leave records from the database
 $employee_id = $_SESSION['user_id'];
 $query = "SELECT * FROM leave_history WHERE employee_id = $employee_id";
+=======
+// if (!isset($_SESSION['user_id'])) {
+//     header("Location: login.php");
+//     exit();
+// }
+
+// Retrieve user-specific leave records from the database
+$employee_id = $_SESSION['emp_id'];
+$query = "SELECT * FROM leave_history WHERE employee_id = '$employee_id'";
+>>>>>>> c982c37 (Second update)
 $result = mysqli_query($conn, $query);
 
 // Check for errors in the query result

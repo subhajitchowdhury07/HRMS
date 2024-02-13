@@ -374,6 +374,7 @@ try {
 
 </ul>
 
+<<<<<<< HEAD
 <div class="custom-menu-bar">
         <div class="custom-menu-item">
             <a href="#">Employee</a>
@@ -422,6 +423,8 @@ try {
             <a href="#">+</a>
         </div>
     </div>
+=======
+>>>>>>> c982c37 (Second update)
 
 
 
@@ -478,11 +481,74 @@ try {
         <!-- Add more leave types as needed -->
     </ul>
 </li>
+<<<<<<< HEAD
 <li>
 <li>
 	<a href="calculate_salary.php"><img src="assets/img/calculator.svg" alt="sidebar_img"> <span>Salary Calculator</span></a>
 </li>
 <!-- <li>
+=======
+
+<li>
+    <a href="#">
+        <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Employee</span>
+    </a>
+    <ul>
+        <li><a href="emp_member.html">Directory</a></li>
+        <li><a href="profile-graph.html">Organization Chart</a></li>
+        <!-- Add more leave types as needed -->
+    </ul>
+</li>
+<!-- <li>
+    <a href="leave.php">
+        <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Time off</span>
+    </a>
+    <ul>
+        <li><a href="#">My Time off</a></li>
+        <li><a href="#">Team Time off</a></li>
+        
+    </ul>
+</li> -->
+<li>
+    <a href="#">
+        <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Attendance</span>
+    </a>
+    <ul>
+        <li><a href="attendance.php">My Attendance</a></li>
+        <li><a href="View_attendance.php">Team Attendance</a></li>
+        <!-- Add more leave types as needed -->
+    </ul>
+</li>
+<!-- <li>
+    <a href="#">
+        <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Goal</span>
+    </a>
+    <ul>
+        <li><a href="#">My Goal</a></li>
+        <li><a href="#">Team Goal</a></li>
+        
+    </ul>
+</li> -->
+<li>
+    <a href="#">
+        <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Documents</span>
+    </a>
+    <ul>
+        <li><a href="#">My Documents</a></li>
+        <li><a href="#">Team Documents</a></li>
+        <!-- Add more leave types as needed -->
+    </ul>
+</li>
+
+<li>
+    <a href="calculate_salary.php"><img src="assets/img/calculator.svg" alt="sidebar_img"> <span>Salary Calculator</span></a>
+</li>
+<li>
+    <a href="#"><img src="assets/img/calculator.svg" alt="sidebar_img"> <span>Update</span></a>
+</li>
+
+<!-- <li>
+>>>>>>> c982c37 (Second update)
 <a href="review.html"><img src="assets/img/review.svg" alt="sidebar_img"><span>Review</span></a>
 </li>
 <li>
@@ -529,11 +595,17 @@ try {
 <div class="col-xl-6 col-sm-12 col-12">
 <div class="row">
 <div class="col-xl-6 col-sm-6 col-12">
+<<<<<<< HEAD
 <a class="btn-dash" href="#"> Admin Dashboard</a>
 </div>
 <div class="col-xl-6 col-sm-6 col-12">
 <a class="btn-emp" href="emp/index-employee.php">Employee Dashboard</a>
 </div>
+=======
+<a class="btn-dash ml-5" href="#"> Admin Dashboard</a>
+</div>
+
+>>>>>>> c982c37 (Second update)
 </div>
 </div>
 </div>
@@ -604,6 +676,10 @@ $conn->close();
 </div>
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c982c37 (Second update)
 </div>
 <div class="row">
 <div class="col-xl-6 d-flex mobile-h">

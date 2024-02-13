@@ -14,13 +14,21 @@
 
 <link rel="stylesheet" href="assets/css/style.css">
 
+<<<<<<< HEAD
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+=======
+<!-- <link rel="stylesheet" href="assets/css/bootstrap.min.css"> -->
+>>>>>>> c982c37 (Second update)
 <!--[if lt IE 9]>
 			<script src="assets/js/html5shiv.min.js"></script>
 			<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
 
+<<<<<<< HEAD
         <style>
+=======
+    <style>
+>>>>>>> c982c37 (Second update)
     body {
         background-color: #fff; /* White background */
         color: #20509e; /* Blue text color */
@@ -138,8 +146,14 @@
         margin: 0px;
         box-sizing: border-box;
     }
+<<<<<<< HEAD
 
     .main-section {
+=======
+    
+    .main-section {
+        text-decoration: none;
+>>>>>>> c982c37 (Second update)
         background: transparent;
         max-width: 500px;
         width: 90%;
@@ -321,7 +335,11 @@ li ul li a:hover {
 <img src="assets/img/logo2.png" alt="Logo">
 </a>
 <a href="index.php" class="logo logo-small">
+<<<<<<< HEAD
 <img src="assets/img/logo-small.png" alt="Logo" width="30" height="30">
+=======
+<img src="assets/img/sedulous-small-icon.png" alt="Logo" width="30" height="30">
+>>>>>>> c982c37 (Second update)
 </a>
 <a href="javascript:void(0);" id="toggle_btn">
 <span class="bar-icon">
@@ -351,13 +369,18 @@ li ul li a:hover {
 </a>
 <div class="dropdown-menu">
 <a class="dropdown-item" href="profile.php"><i data-feather="user" class="mr-1"></i> Profile</a>
+<<<<<<< HEAD
 <a class="dropdown-item" href="settings.php"><i data-feather="settings" class="mr-1"></i> Settings</a>
+=======
+<a class="dropdown-item" href="profile-setting.php"><i data-feather="settings" class="mr-1"></i> Settings</a>
+>>>>>>> c982c37 (Second update)
 <a class="dropdown-item" href="login.php"><i data-feather="log-out" class="mr-1"></i> Logout</a>
 </div>
 </li>
 
 </ul>
 
+<<<<<<< HEAD
 <div class="custom-menu-bar">
         <div class="custom-menu-item">
             <a href="#">Employee</a>
@@ -406,6 +429,13 @@ li ul li a:hover {
             <a href="#">+</a>
         </div>
     </div>
+=======
+<!-- <div>
+        <div class="rounded-plus-icon">
+            <a href="#">+</a>
+        </div>
+    </div> -->
+>>>>>>> c982c37 (Second update)
 
 
 
@@ -414,7 +444,11 @@ li ul li a:hover {
 <div class="dropdown-menu dropdown-menu-right ">
 <a class="dropdown-item" href="profile.php">My Profile</a>
 <a class="dropdown-item" href="settings.php">Settings</a>
+<<<<<<< HEAD
 <a class="dropdown-item" href="login.php">Logout</a>
+=======
+<a class="dropdown-item" href="logout.php">Logout</a>
+>>>>>>> c982c37 (Second update)
 </div>
 </div>
 
@@ -462,8 +496,68 @@ li ul li a:hover {
         <!-- Add more leave types as needed -->
     </ul>
 </li>
+<<<<<<< HEAD
 <li>
 	<a href="calculate_salary.php"><img src="assets/img/calculator.svg" alt="sidebar_img"> <span>Salary Calculator</span></a>
+=======
+
+<li>
+    <a href="#">
+        <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Employee</span>
+    </a>
+    <ul>
+        <li><a href="emp_member.html">Directory</a></li>
+        <li><a href="profile-graph.html">Organization Chart</a></li>
+        <!-- Add more leave types as needed -->
+    </ul>
+</li>
+<!-- <li>
+    <a href="leave.php">
+        <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Time off</span>
+    </a>
+    <ul>
+        <li><a href="#">My Time off</a></li>
+        <li><a href="#">Team Time off</a></li>
+       
+    </ul>
+</li> -->
+<li>
+    <a href="#">
+        <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Attendance</span>
+    </a>
+    <ul>
+        <li><a href="attendance.php">My Attendance</a></li>
+        <li><a href="View_attendance.php">Team Attendance</a></li>
+        <!-- Add more leave types as needed -->
+    </ul>
+</li>
+<!-- <li>
+    <a href="#">
+        <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Goal</span>
+    </a>
+    <ul>
+        <li><a href="#">My Goal</a></li>
+        <li><a href="#">Team Goal</a></li>
+        
+    </ul>
+</li> -->
+<li>
+    <a href="#">
+        <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Documents</span>
+    </a>
+    <ul>
+        <li><a href="uploadDocuments.php">Upload Documents</a></li>
+        <li><a href="view_docs.php">View Documents</a></li>
+        <!-- Add more leave types as needed -->
+    </ul>
+</li>
+
+<li>
+    <a href="calculate_salary.php"><img src="assets/img/calculator.svg" alt="sidebar_img"> <span>Salary Calculator</span></a>
+</li>
+<li>
+    <a href="#"><img src="assets/img/calculator.svg" alt="sidebar_img"> <span>Update</span></a>
+>>>>>>> c982c37 (Second update)
 </li>
 <!-- <li>
 <a href="review.html"><img src="assets/img/review.svg" alt="sidebar_img"><span>Review</span></a>

@@ -20,10 +20,17 @@
 </div>
 <div class="col-xl-12 col-sm-12 col-12 mb-4">
 <div class="head-link-set">
+<<<<<<< HEAD
 <ul>
 <li><a class="active" href="#">General</a></li>
 <li><a href="settings-timeoff.html">Time Off</a></li>
 </ul>
+=======
+<!-- <ul>
+<li><a class="active" href="#">General</a></li>
+<li><a href="settings-timeoff.html">Time Off</a></li>
+</ul> -->
+>>>>>>> c982c37 (Second update)
 </div>
 </div>
 <div class="col-xl-12 col-sm-12 col-12 ">

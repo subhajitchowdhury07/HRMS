@@ -1,3 +1,50 @@
+<<<<<<< HEAD
+=======
+<?php
+// Start the session at the beginning of the file
+session_start();
+
+// Your PHP code goes here
+$servername = "localhost";
+$dbname = "hrms";
+$username = "root"; // replace with your database username
+$password = ""; // replace with your database password
+
+try {
+    // Attempt to establish a connection to the database
+    $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    // Handle connection errors
+    echo "Connection failed: " . $e->getMessage();
+    // Exit or handle the error as appropriate
+    exit();
+}
+
+// Fetch employee data if the session variable is set
+if (isset($_SESSION['emp_id'])) {
+    try {
+        // Prepare and execute a query to fetch employee data
+        $stmt = $dbh->prepare("SELECT first_name, last_name FROM employees WHERE emp_id = :emp_id");
+        $stmt->bindParam(':emp_id', $_SESSION['emp_id']);
+        $stmt->execute();
+        $employee = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Extract first name from the fetched data
+        $employee_first_name = $employee['first_name'];
+        $employee_last_name = $employee['last_name'];
+    } catch (PDOException $e) {
+        // Handle query errors
+        echo "Error fetching employee data: " . $e->getMessage();
+        // Exit or handle the error as appropriate
+        exit();
+    }
+}
+
+// Now you can output your HTML content
+?>
+
+>>>>>>> c982c37 (Second update)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +54,7 @@
 
 <link rel="shortcut icon" href="../assets/img/favicon.png">
 
+<<<<<<< HEAD
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
 <link rel="stylesheet" href="../assets/plugins/fontawesome/css/fontawesome.min.css">
@@ -17,12 +65,26 @@
 <link rel="stylesheet" href="../assets/plugins/fullcalendar/fullcalendar.min.css">
 
 <link rel="stylesheet" href="../assets/css/style.css">
+=======
+<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="../assets/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="../assets/plugins/fontawesome/css/fontawesome.min.css">
+<link rel="stylesheet" href="../assets/plugins/fontawesome/css/all.min.css">
+
+<link rel="stylesheet" href="../assets/css/style.css">
+
+<!-- <link rel="stylesheet" href="../assets/css/bootstrap.min.css"> -->
+>>>>>>> c982c37 (Second update)
 <!--[if lt IE 9]>
 			<script src="assets/js/html5shiv.min.js"></script>
 			<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
 
+<<<<<<< HEAD
         <style>
+=======
+    <style>
+>>>>>>> c982c37 (Second update)
     body {
         background-color: #fff; /* White background */
         color: #20509e; /* Blue text color */
@@ -314,6 +376,11 @@ li ul li a:hover {
 
 </head>
 <body>
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> c982c37 (Second update)
   <div class="main-wrapper">
 
 <div class="header">
@@ -323,7 +390,11 @@ li ul li a:hover {
 <img src="../assets/img/logo2.png" alt="Logo">
 </a>
 <a href="index.php" class="logo logo-small">
+<<<<<<< HEAD
 <img src="../assets/img/logo-small.png" alt="Logo" width="30" height="30">
+=======
+<img src="../assets/img/sedulous-small-icon.png" alt="Logo" width="30" height="30">
+>>>>>>> c982c37 (Second update)
 </a>
 <a href="javascript:void(0);" id="toggle_btn">
 <span class="bar-icon">
@@ -349,17 +420,27 @@ li ul li a:hover {
 <img src="../assets/img/profile2.jpg" alt="">
 <span class="status online"></span>
 </span>
+<<<<<<< HEAD
 <span>subhajit chowdhury</span>
 </a>
 <div class="dropdown-menu">
 <a class="dropdown-item" href="profile.php"><i data-feather="user" class="mr-1"></i> Profile</a>
 <a class="dropdown-item" href="settings.php"><i data-feather="settings" class="mr-1"></i> Settings</a>
 <a class="dropdown-item" href="login.php"><i data-feather="log-out" class="mr-1"></i> Logout</a>
+=======
+<span><?php echo $employee_first_name; ?> <?php echo $employee_last_name; ?></span>
+</a>
+<div class="dropdown-menu">
+<a class="dropdown-item" href="profile.php"><i data-feather="user" class="mr-1"></i> Profile</a>
+<a class="dropdown-item" href="profile-setting.php"><i data-feather="settings" class="mr-1"></i> Settings</a>
+<a class="dropdown-item" href="../login.php"><i data-feather="log-out" class="mr-1"></i> Logout</a>
+>>>>>>> c982c37 (Second update)
 </div>
 </li>
 
 </ul>
 
+<<<<<<< HEAD
 <div class="custom-menu-bar">
         <div class="custom-menu-item">
             <a href="#">Employee</a>
@@ -408,6 +489,13 @@ li ul li a:hover {
             <a href="#">+</a>
         </div>
     </div>
+=======
+<!-- <div>
+        <div class="rounded-plus-icon">
+            <a href="#">+</a>
+        </div>
+    </div> -->
+>>>>>>> c982c37 (Second update)
 
 
 
@@ -416,7 +504,11 @@ li ul li a:hover {
 <div class="dropdown-menu dropdown-menu-right ">
 <a class="dropdown-item" href="../profile.php">My Profile</a>
 <a class="dropdown-item" href="../settings.php">Settings</a>
+<<<<<<< HEAD
 <a class="dropdown-item" href="../login.php">Logout</a>
+=======
+<a class="dropdown-item" href="../logout.php">Logout</a>
+>>>>>>> c982c37 (Second update)
 </div>
 </div>
 
@@ -443,11 +535,19 @@ li ul li a:hover {
  </div>
 <ul>
 <li >
+<<<<<<< HEAD
 <a href="index.php"><img src="../assets/img/home.svg" alt="sidebar_img"> <span>Dashboard</span></a>
 </li>
 <li>
 <a href="employee.php"><img src="../assets/img/employee.svg" alt="sidebar_img"><span> Employees</span></a>
 </li>
+=======
+<a href="index-employee.php"><img src="../assets/img/home.svg" alt="sidebar_img"> <span>Dashboard</span></a>
+</li>
+<!-- <li>
+<a href="employee.php"><img src="../assets/img/employee.svg" alt="sidebar_img"><span> Employees</span></a>
+</li> -->
+>>>>>>> c982c37 (Second update)
 <!-- <li>
 <a href="company.html"><img src="assets/img/company.svg" alt="sidebar_img"> <span> Company</span></a>
 </li> -->
@@ -459,6 +559,7 @@ li ul li a:hover {
         <img src="../assets/img/leave.svg" alt="sidebar_img"> <span>Leave</span>
     </a>
     <ul>
+<<<<<<< HEAD
         <li><a href="leave_management_system.php">Leave Management</a></li>
         <li><a href="setLeaves.php">Manage Leave Type</a></li>
         <!-- Add more leave types as needed -->
@@ -468,6 +569,64 @@ li ul li a:hover {
 	<a href="calculate_salary.php"><img src="../assets/img/calculator.svg" alt="sidebar_img"> <span>Salary Calculator</span></a>
 </li>
 <!-- <li>
+=======
+        <li><a href="leave_application_form.php">Apply Leave</a></li>
+        <li><a href="leave_history.php">Leave History</a></li>
+        <!-- Add more leave types as needed -->
+    </ul>
+</li>
+
+<li>
+    <a href="#">
+        <img src="../assets/img/leave.svg" alt="sidebar_img"> <span>Employee</span>
+    </a>
+    <ul>
+        <li><a href="emp_member.html">Directory</a></li>
+        <li><a href="profile-graph.html">Organization Chart</a></li>
+        <!-- Add more leave types as needed -->
+    </ul>
+</li>
+<!-- <li>
+    <a href="leave.php">
+        <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Time off</span>
+    </a>
+    <ul>
+        <li><a href="#">My Time off</a></li>
+        <li><a href="#">Team Time off</a></li>
+       
+    </ul>
+</li> -->
+<li>
+    <a href="#">
+        <img src="../assets/img/leave.svg" alt="sidebar_img"> <span>Attendance</span>
+    </a>
+    <ul>
+        <li><a href="../attendance.php">My Attendance</a></li>
+        <li><a href="View_attendance.php">Team Attendance</a></li>
+        <li><a href="attendance_history.php">Attendance History</a></li>
+        <!-- Add more leave types as needed -->
+    </ul>
+</li>
+<!-- <li>
+    <a href="#">
+        <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Goal</span>
+    </a>
+    <ul>
+        <li><a href="#">My Goal</a></li>
+        <li><a href="#">Team Goal</a></li>
+        
+    </ul>
+</li> -->
+
+
+<!-- <li>
+    <a href="calculate_salary.php"><img src="../assets/img/calculator.svg" alt="sidebar_img"> <span>Salary Calculator</span></a>
+</li> -->
+<!-- <li>
+    <a href="#"><img src="../assets/img/calculator.svg" alt="sidebar_img"> <span>Update</span></a>
+</li> -->
+<!-- <li>
+>>>>>>> c982c37 (Second update)
 <a href="review.html"><img src="assets/img/review.svg" alt="sidebar_img"><span>Review</span></a>
 </li>
 <li>
@@ -514,19 +673,31 @@ li ul li a:hover {
         });
     </script>
 
+<<<<<<< HEAD
 
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
+=======
+<!-- <script src="../assets/js/jquery-3.6.0.min.js"></script>
+>>>>>>> c982c37 (Second update)
 
 <script src="../assets/js/popper.min.js"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
 
 <script src="../assets/js/feather.min.js"></script>
 
+<<<<<<< HEAD
 <script src="../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+=======
+<script src="../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script> -->
+>>>>>>> c982c37 (Second update)
 
 <script src="../assets/plugins/apexchart/apexcharts.min.js"></script>
 <script src="../assets/plugins/apexchart/chart-data.js"></script>
 
+<<<<<<< HEAD
 <script src="../assets/js/script.js"></script>
+=======
+<!-- <script src="../assets/js/script.js"></script> -->
+>>>>>>> c982c37 (Second update)
 </body>
 </html>
