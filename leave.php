@@ -41,103 +41,20 @@
 <div class="head-link-set">
 <ul>
 <li><a class="active" href="#">Upcoming</a></li>
-<<<<<<< HEAD
-<li><a href="#">History</a></li>
-=======
 <!-- <li><a href="#">History</a></li> -->
->>>>>>> c982c37 (Second update)
 </ul>
 </div>
 </div>
 <div class="col-xl-4 col-sm-12 col-12 p-0 select-path">
-<<<<<<< HEAD
-<select class="select">
-<option value="inactive">In Progress</option>
-<option value="active">Completed</option>
-</select>
-=======
 <!-- <select class="select">
 <option value="inactive">In Progress</option>
 <option value="active">Completed</option>
 </select> -->
->>>>>>> c982c37 (Second update)
 </div>
 </div>
 </div>
 <div class="table table-responsive custimze-table">
 <table>
-<<<<<<< HEAD
-<thead>
-<tr>
-<th>#</th>
-<th>Date</th>
-<th>Leave Reason</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>Mon, 26 Aug 2024</td>
-<td>Bank Holiday</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Wed, 25 Dec 2024</td>
-<td> Christmas Day</td>
-</tr>
-<tr>
-<td>3</td>
-<td>Thu, 26 Dec 2024</td>
-<td>Bank Holiday</td>
-</tr>
-<tr>
-<td>4</td>
-<td>Wed, 1 Jan 2024</td>
-<td>Bank Holiday</td>
-</tr>
-<tr>
-<td>5</td>
-<td>Mon, 1 Jan 2024</td>
-<td> Epiphany</td>
-</tr>
-<tr>
-<td>6</td>
-<td>Fri, 17 Jan 2024 </td>
-<td> Presidents' Day</td>
-</tr>
-<tr>
-<td>7</td>
-<td>Mon, 9 Mar 2024</td>
-<td>Holi</td>
-</tr>
-<tr>
-<td>8</td>
-<td>Wed, 1 Mar 2024</td>
-<td>Independence Day</td>
-</tr>
-<tr>
-<td>9</td>
-<td>Sat, 4 Jul 2024</td>
-<td>Bank Holiday</td>
-</tr>
-<tr>
-<td>10</td>
-<td>Mon, 11 Nov 2024 </td>
-<td> Veterans Day</td>
-</tr>
-<tr>
-<td>11</td>
-<td>Fri, 25 Dec 2024</td>
-<td> Christmas Day</td>
-</tr>
-<tr>
-<td>12</td>
-<td>Mon, 1 Jan 2024</td>
-<td> Epiphany</td>
-</tr>
-</tbody>
-</table>
-=======
     <thead>
         <tr>
             <th>#</th>
@@ -240,7 +157,6 @@
     </tbody>
 </table>
 
->>>>>>> c982c37 (Second update)
 </div>
 </div>
 </div>
@@ -249,11 +165,7 @@
 
 
 
-<<<<<<< HEAD
-<script src="assets/js/jquery-3.6.0.min.js"></script>
-=======
 <!-- <script src="assets/js/jquery-3.6.0.min.js"></script>
->>>>>>> c982c37 (Second update)
 
 <script src="assets/js/popper.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
@@ -264,10 +176,6 @@
 
 <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-<<<<<<< HEAD
-<script src="assets/js/script.js"></script>
-=======
 <script src="assets/js/script.js"></script> -->
->>>>>>> c982c37 (Second update)
 </body>
 </html>

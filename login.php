@@ -14,34 +14,6 @@ if (isset($_POST['login'])) {
     }
 
     // Fetch user from the database based on email
-<<<<<<< HEAD
-    $query = "SELECT * FROM admin_registration WHERE email = '$email'";
-    $result = mysqli_query($conn, $query);
-
-    if ($result && mysqli_num_rows($result) > 0) {
-        $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
-
-        // Check if the password matches (hashed or plain text)
-        if (password_verify($password, $user['password']) || $password === $user['password']) {
-            // Valid user, set session and redirect based on user_type
-            $_SESSION['user_id'] = $user['id'];
-            if ($user['user_type'] == 'admin') {
-                header('Location: index.php');
-            } elseif ($user['user_type'] == 'user') {
-                header('Location: index-employee.php');
-            } else {
-                // Handle other user types as needed
-                echo "Unknown user type. Redirecting to default page...";
-                // header('Location: default-page.html');
-            }
-            exit();
-        } else {
-            $_SESSION['status'] = "Invalid password";
-        }
-    } else {
-        $_SESSION['status'] = "Invalid email";
-    }
-=======
     $query = "SELECT * FROM employees WHERE email = '$email'";
     $result = mysqli_query($conn, $query);
 
@@ -75,17 +47,13 @@ if ($result && mysqli_num_rows($result) > 0) {
     $_SESSION['status'] = "Invalid email";
 }
 
->>>>>>> c982c37 (Second update)
 
     // Close database connection
     mysqli_close($conn);
 }
 ?>
 
-<<<<<<< HEAD
-=======
 <!-- rest of your HTML code -->
->>>>>>> c982c37 (Second update)
 
 
 
@@ -171,8 +139,4 @@ if ($result && mysqli_num_rows($result) > 0) {
     <script src="assets/js/script.js"></script>
 </body>
 
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> c982c37 (Second update)

@@ -22,10 +22,6 @@
 <div class="head-link-set">
 <ul>
 <li><a class="active" href="#">General</a></li>
-<<<<<<< HEAD
-<li><a href="settings-timeoff.html">Time Off</a></li>
-=======
->>>>>>> c982c37 (Second update)
 </ul>
 </div>
 </div>

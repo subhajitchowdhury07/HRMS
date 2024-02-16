@@ -1,6 +1,4 @@
 <?php
-<<<<<<< HEAD
-=======
 session_start();
 
 // Check if employee ID is set in session
@@ -9,7 +7,6 @@ if (!isset($_SESSION['emp_id'])) {
     header("Location: login.php");
     exit();
 }
->>>>>>> c982c37 (Second update)
 
 $servername = "localhost";
 $username = "root";
@@ -113,53 +110,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     </style>
 </head>
-<<<<<<< HEAD
-<?php include('sidebar.php');?>
-<br>
-=======
 <?php include('sidebar.php'); ?>
->>>>>>> c982c37 (Second update)
 <body>
     
     <h2>Leave Application Form</h2>
     
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-<<<<<<< HEAD
-        <!-- Add form fields for leave application -->
-        <!-- Fetch and display leave types in a dropdown -->
-        <label for="emp_id">Employee ID:</label>
-        <input type="text" name="emp_id" required>
-        
-    <?php
-    if ($leaveTypesResult->num_rows > 0) {
-        echo "Leave Type: <select name='leave_type' required>";
-        while ($row = $leaveTypesResult->fetch_assoc()) {
-            echo "<option value='" . $row['LeaveType'] . "'>" . $row['LeaveType'] . "</option>";
-        }
-        echo "</select><br>";
-    } else {
-        echo "No leave types available";
-    }
-    ?>
-    <label for="from_date">From Date:</label>
-    <input type="date" name="from_date" required>
-
-    <label for="to_date">To Date:</label>
-    <input type="date" name="to_date" required>
-
-    <label for="description">Description:</label>
-    <textarea rows="8" cols="20" name="description" required></textarea>
-    <input type="submit" value="Submit">
-</form>
-
-    
-<script>
-    // Example JavaScript
-    document.addEventListener("DOMContentLoaded", function () {
-        console.log("Form loaded!");
-    });
-</script>
-=======
         <!-- Display the employee ID -->
         <label for="emp_id">Employee ID:</label>
         <input type="text" name="emp_id" value="<?php echo isset($_SESSION['emp_id']) ? $_SESSION['emp_id'] : ''; ?>" readonly>
@@ -197,6 +153,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
     </script>
     <!-- Your JavaScript code -->
->>>>>>> c982c37 (Second update)
 </body>
 </html>
