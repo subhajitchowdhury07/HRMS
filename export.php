@@ -1,17 +1,6 @@
 <?php
 // Include your database connection code here
-$host = "localhost";  // Replace with your database host
-$user = "root";  // Replace with your database username
-$password = "";  // Replace with your database password
-$database = "hrms";  // Replace with your database name
-
-// Create a database connection
-$conn = new mysqli($host, $user, $password, $database);
-
-// Check the connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include("db_conn.php");
 
 // Get filter parameters
 $startDate = $_POST['startDate'] ?? null;
@@ -29,8 +18,9 @@ if ($employeeID) {
     $query .= " AND employee_id = '$employeeID'";
 }
 
-// Fetch data from database
-$result = $conn->query($query);
+// Prepare and execute the query
+$stmt = $conn->prepare($query);
+$stmt->execute();
 
 // Check if export to CSV button is clicked
 if (isset($_POST['exportCSV'])) {
@@ -42,7 +32,7 @@ if (isset($_POST['exportCSV'])) {
     $output = fopen('php://output', 'w');
     fputcsv($output, array('ID','Employee ID', 'Clock In', 'Clock Out', 'Total Worked Hour'));
 
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         fputcsv($output, $row);
     }
 
@@ -68,7 +58,7 @@ if (isset($_POST['exportPDF'])) {
     $pdf->Ln();
 
     // Add table data
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $pdf->Cell(48, 10, $row['employee_id'], 1);
         $pdf->Cell(48, 10, $row['clock_in'], 1);
         $pdf->Cell(48, 10, $row['clock_out'], 1);
@@ -81,6 +71,5 @@ if (isset($_POST['exportPDF'])) {
     exit; // Terminate further script execution
 }
 
-$conn->close();
+$conn = null; // Close the PDO connection
 ?>
-

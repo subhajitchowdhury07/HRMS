@@ -1,36 +1,27 @@
 <?php
 // Include necessary files (e.g., database connection)
-
-$host = "localhost"; // Replace with your database host (usually "localhost")
-$user = "root"; // Replace with your database username
-$password = ""; // Replace with your database password
-$database = "hrms"; // Replace with your database name
-
-// Create a database connection
-$conn = mysqli_connect($host, $user, $password, $database);
-
-// Check the connection
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+include("../db_conn.php");
 
 // Start or resume session
 session_start();
 
 // Check if the user is logged in
 if (!isset($_SESSION['emp_id'])) {
-    header("Location: ../login.php");
+    header("Location: login.php");
     exit();
 }
 
 // Retrieve user-specific leave records from the database
 $employee_id = $_SESSION['emp_id'];
-$query = "SELECT * FROM leave_history WHERE employee_id = '$employee_id'";
-$result = mysqli_query($conn, $query);
+$query = "SELECT * FROM leaves WHERE emp_id = :employee_id";
+$stmt = $conn->prepare($query);
+$stmt->bindParam(':employee_id', $employee_id);
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Check for errors in the query result
-if (!$result) {
-    die("Query failed: " . mysqli_error($conn));
+if ($result === false) {
+    die("Query failed: " . $stmt->errorInfo()[2]); // Print error message if query fails
 }
 
 // Display leave history
@@ -57,7 +48,7 @@ if (!$result) {
                 <div class="col-12">
                     <h2>Leave History</h2>
                     <?php
-                    if (mysqli_num_rows($result) > 0) {
+                    if ($result) {
                         echo '<table class="table">
                                 <thead>
                                     <tr>
@@ -69,11 +60,11 @@ if (!$result) {
                                 </thead>
                                 <tbody>';
 
-                        while ($row = mysqli_fetch_assoc($result)) {
+                        foreach ($result as $row) {
                             echo "<tr>";
                             echo "<td>" . $row['leave_type'] . "</td>";
-                            echo "<td>" . $row['start_date'] . "</td>";
-                            echo "<td>" . $row['end_date'] . "</td>";
+                            echo "<td>" . $row['from_date'] . "</td>";
+                            echo "<td>" . $row['to_date'] . "</td>";
                             echo "<td>" . $row['status'] . "</td>";
                             echo "</tr>";
                         }

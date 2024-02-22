@@ -1,3 +1,4 @@
+<?php include("sidebar.php") ?>
 <?php
 session_start();
 
@@ -8,16 +9,8 @@ if (!isset($_SESSION['emp_id'])) {
     exit();
 }
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "hrms";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Include database connection
+include('db_conn.php');
 
 // Fetch leave types from the tableleaves table
 $leaveTypesQuery = "SELECT * FROM tableleaves";
@@ -35,10 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO leaves (emp_id, leave_type, from_date, to_date, description) 
             VALUES ('$emp_id', '$leave_type', '$from_date', '$to_date', '$description')";
 
-    if ($conn->query($sql) === TRUE) {
+    if ($conn->exec($sql)) {
         echo "Leave application submitted successfully";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $sql . "<br>" . $conn->errorInfo();
     }
 }
 
@@ -93,7 +86,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         textarea {
             resize: none;
-            /* padding: 45px; */
         }
 
         input[type="submit"] {
@@ -110,7 +102,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     </style>
 </head>
-<?php include('sidebar.php'); ?>
 <body>
     
     <h2>Leave Application Form</h2>
@@ -122,10 +113,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         <!-- Fetch and display leave types in a dropdown -->
         <?php
-        if ($leaveTypesResult->num_rows > 0) {
+        $leaveTypesResult->execute();
+        $leaveTypes = $leaveTypesResult->fetchAll(PDO::FETCH_ASSOC);
+        
+        if (count($leaveTypes) > 0) {
             echo "<label for='leave_type'>Leave Type:</label>";
             echo "<select name='leave_type' required>";
-            while ($row = $leaveTypesResult->fetch_assoc()) {
+            foreach ($leaveTypes as $row) {
                 echo "<option value='" . $row['LeaveType'] . "'>" . $row['LeaveType'] . "</option>";
             }
             echo "</select><br>";
@@ -152,6 +146,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             console.log("Form loaded!");
         });
     </script>
-    <!-- Your JavaScript code -->
 </body>
 </html>

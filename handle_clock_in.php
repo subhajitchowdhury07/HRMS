@@ -5,34 +5,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id']) && isset($
     $user_id = $_POST['user_id'];
     $action_type = $_POST['action_type'];
 
-    // Establish database connection
-    $conn = mysqli_connect("localhost", "root", "", "hrms");
-
-    // Check for database connection error
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+    // Include your database connection code here
+    include("db_conn.php");
 
     // Fetch existing clock-in time and total worked hours from the database if available
-    $query = "SELECT clock_in, total_worked_hr FROM attendance WHERE employee_id = '$user_id' AND clock_out IS NULL";
-    $result = mysqli_query($conn, $query);
+    $query = "SELECT clock_in, total_worked_hr FROM attendance WHERE employee_id = :user_id AND clock_out IS NULL";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
 
     // Initialize clock-in, clock-out times, and total worked hours
     $clockInTime = null;
     $clockOutTime = null;
     $totalWorkedHours = null;
 
-    if ($result && mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        $clockInTime = $row['clock_in'];
-        $totalWorkedHours = $row['total_worked_hr'];
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($result) {
+        $clockInTime = $result['clock_in'];
+        $totalWorkedHours = $result['total_worked_hr'];
     }
 
     // If clock-in time is not set and the user clicked Clock In
     if ($action_type == 'clock_in' && !$clockInTime) {
         $clockInTime = date('Y-m-d H:i:s');
-        $insert_query = "INSERT INTO attendance (employee_id, clock_in) VALUES ('$user_id', '$clockInTime')";
-        $conn->query($insert_query);
+        $insert_query = "INSERT INTO attendance (employee_id, clock_in) VALUES (:user_id, :clockInTime)";
+        $stmt = $conn->prepare($insert_query);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':clockInTime', $clockInTime);
+        $stmt->execute();
 
         // Return the clock in time and total worked hours as a response
         echo json_encode(['clock_time' => $clockInTime, 'total_worked_hours' => $totalWorkedHours]);
@@ -47,8 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id']) && isset($
         $totalWorkedHours = calculateTotalWorkedHours($clockInTime, $clockOutTime);
 
         // Update the database with clock-out time and total worked hours
-        $update_query = "UPDATE attendance SET clock_out = '$clockOutTime', total_worked_hr = '$totalWorkedHours' WHERE employee_id = '$user_id' AND clock_out IS NULL";
-        $conn->query($update_query);
+        $update_query = "UPDATE attendance SET clock_out = :clockOutTime, total_worked_hr = :totalWorkedHours WHERE employee_id = :user_id AND clock_out IS NULL";
+        $stmt = $conn->prepare($update_query);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':clockOutTime', $clockOutTime);
+        $stmt->bindParam(':totalWorkedHours', $totalWorkedHours);
+        $stmt->execute();
 
         // Return the clock out time and total worked hours as a response
         echo json_encode(['clock_time' => $clockOutTime, 'total_worked_hours' => $totalWorkedHours]);
@@ -56,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id']) && isset($
     }
 
     // Close database connection
-    mysqli_close($conn);
+    $conn = null;
 }
 
 // Function to calculate total worked hours

@@ -1,32 +1,46 @@
 <?php
 session_start();
 
-// Include PHPMailer library
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require '../PHPMailer-master/src/Exception.php';
-require '../PHPMailer-master/src/PHPMailer.php';
-require '../PHPMailer-master/src/SMTP.php';
+// Include your database connection code
+include '../db_conn.php';
 
 // Check if the user is not logged in, redirect them to the login page
 if (!isset($_SESSION['emp_id'])) {
-    header("Location: ../login.php");
+    header("Location: login.php");
     exit;
 }
 
-// Include your database connection code here
-$host = "localhost";  // Replace with your database host
-$user = "root";       // Replace with your database username
-$password = "";       // Replace with your database password
-$database = "hrms";   // Replace with your database name
+// Check if form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Check if old password, new password, and confirm password are set
+    if (isset($_POST['old_password'], $_POST['new_password'], $_POST['confirm_password'])) {
+        $old_password = $_POST['old_password'];
+        $new_password = $_POST['new_password'];
+        $confirm_password = $_POST['confirm_password'];
 
-// Create a database connection
-$conn = new mysqli($host, $user, $password, $database);
+        // Fetch the user's plaintext password from the database
+        $emp_id = $_SESSION['emp_id'];
+        $sql = "SELECT password FROM employees WHERE emp_id = :emp_id";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['emp_id' => $emp_id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Check the connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+        if (!$row) {
+            $error = "User not found.";
+        } else {
+            $plaintext_password = $row['password'];
+            // Verify the old password
+            if ($old_password === $plaintext_password) {
+                // Update the password with the new one
+                $update_sql = "UPDATE employees SET password = :new_password WHERE emp_id = :emp_id";
+                $update_stmt = $conn->prepare($update_sql);
+                $update_stmt->execute(['new_password' => $new_password, 'emp_id' => $emp_id]);
+                $success = "Password changed successfully.";
+            } else {
+                $error = "Old password is incorrect.";
+            }
+        }
+    }
 }
 
 // Function to generate OTP
@@ -41,24 +55,25 @@ function generateOTP($length = 6) {
 
 // Function to send OTP via email
 function sendOTP($to, $otp) {
-    // Create a new PHPMailer instance
-    $mail = new PHPMailer();
+    // Include PHPMailer library
+    include ('PHPMailer/src/PHPMailer.php');
+    include ('PHPMailer/src/SMTP.php');
+    include ('PHPMailer/src/Exception.php');
 
-    // SMTP configuration for Google Workspace
+    // Create a new PHPMailer instance
+    $mail = new PHPMailer\PHPMailer\PHPMailer();
+
+    // SMTP configuration
     $mail->isSMTP();
-    $mail->Host = 'smtp.gmail.com';  // Google Workspace SMTP server
+    $mail->Host = '411860258759-laorpbvmaalth6srs9m53vhsp2pcpgpn.apps.googleusercontent.com';  // SMTP host
     $mail->SMTPAuth = true;
+    $mail->Username = 'your@example.com';  // SMTP username
+    $mail->Password = 'your_password';  // SMTP password
     $mail->SMTPSecure = 'tls';
     $mail->Port = 587;
 
-    // OAuth 2.0 authentication (using client ID and client secret)
-    $mail->OAuth = true;
-    $mail->OAuthClientId = 'http://411860258759-laorpbvmaalth6srs9m53vhsp2pcpgpn.apps.googleusercontent.com';  // Replace with your client ID
-    $mail->OAuthClientSecret = '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';  // Replace with your client secret
-    $mail->OAuthRefreshToken = '1//06abcdeFGHIJKLMN0123-abCDefGhIjklmNO_PQrSTuVWxYzABcDEfGhiJKlmnoP-QRsTUvwxYz&git';  // Replace with your refresh token
-
     // Email content
-    $mail->setFrom('jchakraborty@seduloustechnologies.com', 'Sedulous Tech Solutions');  // Replace with sender email and name
+    $mail->setFrom('jchakraborty@seduloustechnologies.com', 'Sedulous Tech Solutions');
     $mail->addAddress($to);
     $mail->Subject = 'Password Reset OTP';
     $mail->Body = "Your OTP for password reset is: $otp";
@@ -94,7 +109,7 @@ if (isset($_POST['verify_otp'])) {
         if ($otp_entered === $_SESSION['otp']) {
             // OTP verified successfully
             // Redirect to password reset form
-            header("Location: ../reset_password.php");
+            header("Location: reset_password.php");
             exit;
         } else {
             $otp_verify_error = "OTP entered is incorrect. Please try again.";
@@ -209,7 +224,7 @@ if (isset($_POST['verify_otp'])) {
                 <div class="col-xl-12 col-sm-12 col-12 ">
                     <div class="breadcrumb-path mb-4">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index-employee.php"><img src="../assets/img/dash.png" class="mr-2" alt="breadcrumb">Home</a></li>
+                            <li class="breadcrumb-item"><a href="index.php"><img src="assets/img/dash.png" class="mr-2" alt="breadcrumb">Home</a></li>
                             <li class="breadcrumb-item active">Profile</li>
                         </ul>
                         <h3>Profile</h3>
@@ -219,7 +234,7 @@ if (isset($_POST['verify_otp'])) {
                     <div class="head-link-set">
                         <ul>
                             <li><a href="profile.php">Detail</a></li>
-                            <!-- <li><a href="profile-document.php">Document</a></li> -->
+                            <li><a href="profile-document.php">Document</a></li>
                             <li><a href="profile-payroll.php">Payroll</a></li>
                             <li><a class="active" href="#">Settings</a></li>
                         </ul>

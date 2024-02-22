@@ -1,24 +1,29 @@
 <?php
 // Start the session at the beginning of the file
 session_start();
-
-// Your PHP code goes here
-$servername = "localhost";
-$dbname = "hrms";
-$username = "root"; // replace with your database username
-$password = ""; // replace with your database password
-
-try {
-    // Attempt to establish a connection to the database
-    $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    // Handle connection errors
-    echo "Connection failed: " . $e->getMessage();
-    // Exit or handle the error as appropriate
+// Check if the user is logged in
+if (!isset($_SESSION['emp_id'])) {
+    header("Location: login.php");
     exit();
 }
 
+// // Your PHP code goes here
+// $servername = "localhost";
+// $dbname = "hrms";
+// $username = "root"; // replace with your database username
+// $password = ""; // replace with your database password
+
+// try {
+//     // Attempt to establish a connection to the database
+//     $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+//     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// } catch (PDOException $e) {
+//     // Handle connection errors
+//     echo "Connection failed: " . $e->getMessage();
+//     // Exit or handle the error as appropriate
+//     exit();
+// }
+include ('db_conn.php');
 // Fetch employee data if the session variable is set
 if (isset($_SESSION['emp_id'])) {
     try {
@@ -435,6 +440,10 @@ li ul li a:hover {
 <a href="javascript:void(0)" class="d-block menu-style text-white">
 <div class="user-avatar d-inline-block mr-3">
 <img src="assets/img/profiles/avatar-18.jpg" alt="user avatar" class="rounded-circle" width="50">
+<br>
+<br>
+<span><b><?php echo $employee_first_name; ?> <?php echo $employee_last_name; ?></b></span>
+
 </div>
 </a>
 </div>
@@ -469,7 +478,7 @@ li ul li a:hover {
         <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Employee</span>
     </a>
     <ul>
-        <li><a href="emp_member.html">Directory</a></li>
+        <li><a href="emp/emp_member.html">Directory</a></li>
         <li><a href="profile-graph.html">Organization Chart</a></li>
         <!-- Add more leave types as needed -->
     </ul>

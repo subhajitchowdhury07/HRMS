@@ -3,21 +3,7 @@
 session_start();
 
 // Your PHP code goes here
-$servername = "localhost";
-$dbname = "hrms";
-$username = "root"; // replace with your database username
-$password = ""; // replace with your database password
-
-try {
-    // Attempt to establish a connection to the database
-    $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    // Handle connection errors
-    echo "Connection failed: " . $e->getMessage();
-    // Exit or handle the error as appropriate
-    exit();
-}
+include('../db_conn.php');
 
 // Fetch employee data if the session variable is set
 if (isset($_SESSION['emp_id'])) {
@@ -363,10 +349,10 @@ li ul li a:hover {
 <div class="header">
 
 <div class="header-left">
-<a href="index.php" class="logo">
+<a href="index-employee.php" class="logo">
 <img src="../assets/img/logo2.png" alt="Logo">
 </a>
-<a href="index.php" class="logo logo-small">
+<a href="index-employee.php" class="logo logo-small">
 <img src="../assets/img/sedulous-small-icon.png" alt="Logo" width="30" height="30">
 </a>
 <a href="javascript:void(0);" id="toggle_btn">
@@ -436,7 +422,11 @@ li ul li a:hover {
 <span class="lnr lnr-cross  text-white" id="mobile_btn_close">X</span>
 <a href="javascript:void(0)" class="d-block menu-style text-white">
 <div class="user-avatar d-inline-block mr-3">
-<img src="../assets/img/profiles/avatar-18.jpg" alt="user avatar" class="rounded-circle" width="50">
+<img src="../assets/img/dashboard-profile.jpg" alt="user avatar" class="rounded-circle" width="50">
+<br>
+<br>
+<span><b><?php echo $employee_first_name; ?> <?php echo $employee_last_name; ?></b></span>
+
 </div>
 </a>
 </div>
@@ -564,12 +554,12 @@ li ul li a:hover {
 
 <!-- <script src="../assets/js/jquery-3.6.0.min.js"></script>
 
-<script src="../assets/js/popper.min.js"></script>
-<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/popper.min.js"></script> -->
+<!-- <script src="../assets/js/bootstrap.min.js"></script> -->
 
 <script src="../assets/js/feather.min.js"></script>
 
-<script src="../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script> -->
+<script src="../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
 <script src="../assets/plugins/apexchart/apexcharts.min.js"></script>
 <script src="../assets/plugins/apexchart/chart-data.js"></script>

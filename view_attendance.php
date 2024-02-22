@@ -2,9 +2,9 @@
 // Include your database connection code here
 // Include your database connection code here
 $host = "localhost";  // Replace with your database host
-$user = "root";  // Replace with your database username
-$password = "";  // Replace with your database password
-$database = "hrms";  // Replace with your database name
+$user = "u431054670_root";  // Replace with your database username
+$password = "Sedulous@123";  // Replace with your database password
+$database = "u431054670_hrms";  // Replace with your database name
 
 // Create a database connection
 $conn = new mysqli($host, $user, $password, $database);
@@ -224,7 +224,7 @@ $result = mysqli_query($conn, $query);
                 $result = mysqli_query($conn, $filter_query);
 
                 // Fetch and display filtered records
-                while ($row = mysqli_fetch_assoc($result)) {
+                while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>" . $row['employee_id'] . "</td>";
                     echo "<td>" . $row['clock_in'] . "</td>";

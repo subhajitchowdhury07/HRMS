@@ -1,3 +1,4 @@
+<?php include("sidebar.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +10,6 @@
 
 <style>
     .page-wrapper {
-        margin-left: 250px;
         padding: 20px;
     }
     .content {
@@ -42,22 +42,10 @@
 
 <?php
 // Include necessary files (e.g., database connection)
-
-$host = "localhost"; // Replace with your database host (usually "localhost")
-$user = "root"; // Replace with your database username
-$password = ""; // Replace with your database password
-$database = "hrms"; // Replace with your database name
-
-// Create a database connection
-$conn = mysqli_connect($host, $user, $password, $database);
-
-// Check the connection
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+include('../db_conn.php');
 
 // Start or resume session
-session_start();
+// session_start();
 
 // Check if the user is logged in
 if (!isset($_SESSION['emp_id'])) {
@@ -67,47 +55,47 @@ if (!isset($_SESSION['emp_id'])) {
 
 // Retrieve user-specific attendance records from the database
 $employee_id = $_SESSION['emp_id'];
-$query = "SELECT * FROM attendance WHERE employee_id = '$employee_id'";
-$result = mysqli_query($conn, $query);
+$query = "SELECT * FROM attendance WHERE employee_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->execute([$employee_id]);
 
 // Check for errors in the query result
-if (!$result) {
-    die("Query failed: " . mysqli_error($conn));
+if (!$stmt) {
+    die("Query failed: " . $conn->errorInfo()[2]);
 }
 ?>
-
-<?php include("sidebar.php"); ?>
 
 <div class="page-wrapper">
     <div class="content container-fluid">
         <div class="row">
-            <div class="col-12">
+            <div class="col-lg-12">
                 <h2>Attendance History</h2>
                 <?php
-                if (mysqli_num_rows($result) > 0) {
-                    echo '<table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Clock In</th>
-                                    <th>Clock Out</th>
-                                    <th>Total Worked Hours</th>
-                                </tr>
-                            </thead>
-                            <tbody>';
+                if ($stmt->rowCount() > 0) {
+                    echo '<div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Clock In</th>
+                                        <th>Clock Out</th>
+                                        <th>Total Worked Hours</th>
+                                    </tr>
+                                </thead>
+                                <tbody>';
 
-                    while ($row = mysqli_fetch_assoc($result)) {
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         echo "<tr>";
                         echo "<td>" . date("d-m-y") . "</td>";
                         echo "<td>" . date("H:i:s", strtotime($row['clock_in'])) . "</td>";
-                         echo "<td>" . ($row['clock_out'] ? date("H:i:s", strtotime($row['clock_out'])) : "N/A") . "</td>";
-
+                        echo "<td>" . ($row['clock_out'] ? date("H:i:s", strtotime($row['clock_out'])) : "N/A") . "</td>";
                         echo "<td>" . $row['total_worked_hr'] . "</td>";
                         echo "</tr>";
                     }
 
                     echo '</tbody>
-                        </table>';
+                        </table>
+                        </div>';
                 } else {
                     echo '<p>No attendance history available.</p>';
                 }

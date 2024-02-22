@@ -4,36 +4,22 @@ session_start();
 
 // Check if the user is not logged in, redirect them to the login page
 if (!isset($_SESSION['emp_id'])) {
-    header("Location: ../login.php");
+    header("Location: login.php");
     exit;
 }
 
-// Include your database connection code here
-$host = "localhost";  // Replace with your database host
-$user = "root";       // Replace with your database username
-$password = "";       // Replace with your database password
-$database = "hrms";   // Replace with your database name
-
-// Create a database connection
-$conn = new mysqli($host, $user, $password, $database);
-
-// Check the connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Include your database connection code
+include '../db_conn.php';
 
 // Fetch user data from the database
 $emp_id = $_SESSION['emp_id'];
-$sql = "SELECT * FROM employees WHERE emp_id = '$emp_id'";
-$result = $conn->query($sql);
+$sql = "SELECT * FROM employees WHERE emp_id = :emp_id";
+$stmt = $conn->prepare($sql);
+$stmt->execute(['emp_id' => $emp_id]);
 
-if (!$result) {
-    die("Query failed: " . $conn->error);
-}
-
-if ($result->num_rows > 0) {
+if ($stmt->rowCount() > 0) {
     // Fetch user data and store it in $user variable
-    $user = $result->fetch_assoc();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 } else {
     echo "User not found";
     exit;
@@ -48,57 +34,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['new_first_name'])) {
         $newFirstName = $_POST['new_first_name'];
         // Update the first name in the database
-        $sql = "UPDATE employees SET first_name = '$newFirstName' WHERE emp_id = '$emp_id'";
-        if ($conn->query($sql) === TRUE) {
+        $sql = "UPDATE employees SET first_name = :first_name WHERE emp_id = :emp_id";
+        $stmt = $conn->prepare($sql);
+        if ($stmt->execute(['first_name' => $newFirstName, 'emp_id' => $emp_id])) {
             $updateMessage = "First Name updated successfully";
             // Update the $user variable to reflect the change
             $user['first_name'] = $newFirstName;
         } else {
-            $updateMessage = "Error updating record: " . $conn->error;
+            $updateMessage = "Error updating record";
         }
     } elseif (isset($_POST['new_last_name'])) {
         $newLastName = $_POST['new_last_name'];
         // Update the last name in the database
-        $sql = "UPDATE employees SET last_name = '$newLastName' WHERE emp_id = '$emp_id'";
-        if ($conn->query($sql) === TRUE) {
+        $sql = "UPDATE employees SET last_name = :last_name WHERE emp_id = :emp_id";
+        $stmt = $conn->prepare($sql);
+        if ($stmt->execute(['last_name' => $newLastName, 'emp_id' => $emp_id])) {
             $updateMessage = "Last Name updated successfully";
             // Update the $user variable to reflect the change
             $user['last_name'] = $newLastName;
         } else {
-            $updateMessage = "Error updating record: " . $conn->error;
+            $updateMessage = "Error updating record";
         }
     } elseif (isset($_POST['new_email'])) {
         $newEmail = $_POST['new_email'];
         // Update the email in the database
-        $sql = "UPDATE employees SET email = '$newEmail' WHERE emp_id = '$emp_id'";
-        if ($conn->query($sql) === TRUE) {
+        $sql = "UPDATE employees SET email = :email WHERE emp_id = :emp_id";
+        $stmt = $conn->prepare($sql);
+        if ($stmt->execute(['email' => $newEmail, 'emp_id' => $emp_id])) {
             $updateMessage = "Email updated successfully";
             // Update the $user variable to reflect the change
             $user['email'] = $newEmail;
         } else {
-            $updateMessage = "Error updating record: " . $conn->error;
+            $updateMessage = "Error updating record";
         }
     } elseif (isset($_POST['new_phone_number'])) {
         $newPhoneNumber = $_POST['new_phone_number'];
         // Update the phone number in the database
-        $sql = "UPDATE employees SET phone_number = '$newPhoneNumber' WHERE emp_id = '$emp_id'";
-        if ($conn->query($sql) === TRUE) {
+        $sql = "UPDATE employees SET phone_number = :phone_number WHERE emp_id = :emp_id";
+        $stmt = $conn->prepare($sql);
+        if ($stmt->execute(['phone_number' => $newPhoneNumber, 'emp_id' => $emp_id])) {
             $updateMessage = "Phone Number updated successfully";
             // Update the $user variable to reflect the change
             $user['phone_number'] = $newPhoneNumber;
         } else {
-            $updateMessage = "Error updating record: " . $conn->error;
+            $updateMessage = "Error updating record";
         }
     } elseif (isset($_POST['new_address'])) {
         $newAddress = $_POST['new_address'];
         // Update the address in the database
-        $sql = "UPDATE employees SET address = '$newAddress' WHERE emp_id = '$emp_id'";
-        if ($conn->query($sql) === TRUE) {
+        $sql = "UPDATE employees SET address = :address WHERE emp_id = :emp_id";
+        $stmt = $conn->prepare($sql);
+        if ($stmt->execute(['address' => $newAddress, 'emp_id' => $emp_id])) {
             $updateMessage = "Address updated successfully";
             // Update the $user variable to reflect the change
             $user['address'] = $newAddress;
         } else {
-            $updateMessage = "Error updating record: " . $conn->error;
+            $updateMessage = "Error updating record";
         }
     }
 }
@@ -138,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </style>
 </head>
 <body>
-        <?php include('sidebar.php'); ?>
+    <?php include('sidebar.php'); ?>
     <!-- Display user profile information and update buttons -->
     <div class="page-wrapper">
     <div class="content container-fluid">
@@ -146,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="col-xl-12 col-sm-12 col-12 ">
                 <div class="breadcrumb-path mb-4">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index-employee.php"><img src="../assets/img/dash.png" class="mr-2" alt="breadcrumb">Home</a></li>
+                        <li class="breadcrumb-item"><a href="index.php"><img src="assets/img/dash.png" class="mr-2" alt="breadcrumb">Home</a></li>
                         <li class="breadcrumb-item active">Profile</li>
                     </ul>
                     <h3>Profile</h3>
@@ -157,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <ul>
                         <!-- <li><a href="profile.php">Employment</a></li> -->
                         <li><a class="active" href="#">Detail</a></li>
-                        <!-- <li><a href="profile-document.php">Document</a></li> -->
+                        <li><a href="profile-document.php">Document</a></li>
                         <li><a href="profile-payroll.php">Payroll</a></li>
                         <!-- <li><a href="profile-timeoff.html">Timeoff</a></li> -->
                         <!-- <li><a href="profile-review.html">Reviews</a></li> -->

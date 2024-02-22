@@ -8,9 +8,9 @@ session_start();
 // }
 
 $servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "hrms";
+$username = "u431054670_root";
+$password = "Sedulous@123";
+$dbname = "u431054670_hrms";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

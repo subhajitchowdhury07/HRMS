@@ -1,25 +1,14 @@
-<?php
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "hrms";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+<?php 
+include('sidebar.php'); 
+include('db_conn.php');
 
 // Fetch list of employees
 $sql = "SELECT id, first_name FROM employees";
 $result = $conn->query($sql);
 
 $employees = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
+if ($result->rowCount() > 0) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $employees[] = $row;
     }
 }
@@ -45,35 +34,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Check if the employee ID exists
-    $employeeExists = false;
-    foreach ($employees as $employee) {
-        if ($employee['id'] == $employeeID) {
-            $employeeExists = true;
-            break;
-        }
-    }
+    $stmt = $conn->prepare("SELECT id FROM employees WHERE id = :employeeID");
+    $stmt->bindParam(':employeeID', $employeeID);
+    $stmt->execute();
+    $employeeExists = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($employeeExists) {
         // Insert document file paths into database
         $stmt = $conn->prepare("INSERT INTO emp_docs (employee_ID, AdharDoc, PANCardDoc, EduDoc, RelievingDoc, PaySlipDoc) VALUES (?, ?, ?, ?, ?, ?)");
         if ($stmt) {
-            $stmt->bind_param("isssss", $employeeID, $documentPaths['adharDoc'], $documentPaths['panCardDoc'], $documentPaths['eduDoc'], $documentPaths['relievingDoc'], $documentPaths['paySlipDoc']);
-            if ($stmt->execute()) {
-                echo "Documents uploaded successfully!";
-            } else {
-                echo "Error executing SQL statement: " . $stmt->error;
-            }
-            $stmt->close();
+            $stmt->execute([$employeeID, $documentPaths['adharDoc'], $documentPaths['panCardDoc'], $documentPaths['eduDoc'], $documentPaths['relievingDoc'], $documentPaths['paySlipDoc']]);
+            echo "Documents uploaded successfully!";
         } else {
-            echo "Error preparing SQL statement: " . $conn->error;
+            echo "Error preparing SQL statement: " . $conn->errorInfo()[2];
         }
     } else {
         echo "Employee with ID $employeeID does not exist.";
     }
 }
-
-// Close connection
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -177,7 +155,7 @@ input[type="submit"]:hover {
 </style>
 </head>
 <body>
-    <?php include('sidebar.php'); ?>
+    
     <h2 class="h2_class">Admin Document Upload</h2>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
         <label for="employeeID">Select Employee:</label>

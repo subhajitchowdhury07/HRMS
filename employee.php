@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>Employee section</title>
+		<link rel="shortcut icon" href="assets/img/sedulous-small-icon.png">
 		<style>/* Add this to your existing style or in a separate style section */
 li ul {
     display: none;

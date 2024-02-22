@@ -1,15 +1,23 @@
 <?php 
 
-$sName = "localhost";
-$uName = "root";
-$pass = "";
-$db_name = "hrms";
+$serverName = "localhost";
+$userName = "u431054670_root";
+$password = "Sedulous@123";
+$dbname = "u431054670_hrms";
 
+// $conn = new mysqli("localhost", "root", "", "hrms");
 try {
-    $conn = new PDO("mysql:host=$sName;dbname=$db_name", 
-                    $uName, $pass);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-}catch(PDOException $e){
-  echo "Connection failed : ". $e->getMessage();
+  $conn = new PDO("mysql:host=$serverName;dbname=$dbname", $userName, $password);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  // echo "Connected successfully";
+} catch(PDOException $e) {
+  echo "Connection failed: " . $e->getMessage();
+}
+try {
+  $dbh = new PDO("mysql:host=$serverName;dbname=$dbname", $userName, $password);
+  $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  // echo "Connected successfully"; 
+} catch (PDOException $e) {
+  echo "Connection failed: " . $e->getMessage();
 }
 ?>

@@ -1,24 +1,13 @@
 <?php
 session_start();
 
+// Include your database connection code
+include 'db_conn.php';
+
 // Check if the user is not logged in, redirect them to the login page
 if (!isset($_SESSION['emp_id'])) {
     header("Location: login.php");
     exit;
-}
-
-// Include your database connection code here
-$host = "localhost";  // Replace with your database host
-$user = "root";       // Replace with your database username
-$password = "";       // Replace with your database password
-$database = "hrms";   // Replace with your database name
-
-// Create a database connection
-$conn = new mysqli($host, $user, $password, $database);
-
-// Check the connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
 }
 
 // Check if form is submitted
@@ -31,27 +20,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Fetch the user's plaintext password from the database
         $emp_id = $_SESSION['emp_id'];
-        $sql = "SELECT password FROM employees WHERE emp_id = '$emp_id'";
-        $result = $conn->query($sql);
-        if (!$result) {
-            $error = "Query execution failed: " . $conn->error;
-        } elseif ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
+        $sql = "SELECT password FROM employees WHERE emp_id = :emp_id";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['emp_id' => $emp_id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) {
+            $error = "User not found.";
+        } else {
             $plaintext_password = $row['password'];
             // Verify the old password
             if ($old_password === $plaintext_password) {
                 // Update the password with the new one
-                $update_sql = "UPDATE employees SET password = '$new_password' WHERE emp_id = '$emp_id'";
-                if ($conn->query($update_sql) === TRUE) {
-                    $success = "Password changed successfully.";
-                } else {
-                    $error = "Error updating password: " . $conn->error;
-                }
+                $update_sql = "UPDATE employees SET password = :new_password WHERE emp_id = :emp_id";
+                $update_stmt = $conn->prepare($update_sql);
+                $update_stmt->execute(['new_password' => $new_password, 'emp_id' => $emp_id]);
+                $success = "Password changed successfully.";
             } else {
                 $error = "Old password is incorrect.";
             }
-        } else {
-            $error = "User not found.";
         }
     }
 }
@@ -69,9 +56,9 @@ function generateOTP($length = 6) {
 // Function to send OTP via email
 function sendOTP($to, $otp) {
     // Include PHPMailer library
-    include ('PHPMailer-master/src/PHPMailer.php');
-    include ('PHPMailer-master/src/SMTP.php');
-    include ('PHPMailer-master/src/Exception.php');
+    include ('PHPMailer/src/PHPMailer.php');
+    include ('PHPMailer/src/SMTP.php');
+    include ('PHPMailer/src/Exception.php');
 
     // Create a new PHPMailer instance
     $mail = new PHPMailer\PHPMailer\PHPMailer();
