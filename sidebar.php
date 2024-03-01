@@ -439,7 +439,7 @@ li ul li a:hover {
 <span class="lnr lnr-cross  text-white" id="mobile_btn_close">X</span>
 <a href="javascript:void(0)" class="d-block menu-style text-white">
 <div class="user-avatar d-inline-block mr-3">
-<img src="assets/img/profiles/avatar-18.jpg" alt="user avatar" class="rounded-circle" width="50">
+<img src="assets/img/dashboard-profile.jpg" alt="user avatar" class="rounded-circle" width="50">
 <br>
 <br>
 <span><b><?php echo $employee_first_name; ?> <?php echo $employee_last_name; ?></b></span>
@@ -463,13 +463,20 @@ li ul li a:hover {
 <a href="calendar.php"><img src="assets/img/calendar.svg" alt="sidebar_img"> <span>Calendar</span></a>
 </li>
 <li>
+<a href="add_task.php"><img src="assets/img/calendar.svg" alt="sidebar_img"> <span>Add task</span></a>
+</li>
+<li>
     <a href="leave.php">
         <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Leave</span>
     </a>
     <ul>
-        <li><a href="leave_management_system.php">Leave Management</a></li>
-        <li><a href="setLeaves.php">Manage Leave Type</a></li>
-        <!-- Add more leave types as needed -->
+        <?php if(isset($_SESSION['user_type']) && $_SESSION['user_type']=='director'): ?>
+        <li><a href="leave_management_for_director.php">Leave management</a></li>
+        <?php else: ?>
+        <li><a href="leave_management_system.php">Leave management</a>
+        <?php endif; ?>
+        <li><a href="setLeaves.php">Set leave Type</a></li>
+        </li>
     </ul>
 </li>
 

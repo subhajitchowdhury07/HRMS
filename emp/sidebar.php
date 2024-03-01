@@ -401,9 +401,9 @@ li ul li a:hover {
 <div class="dropdown mobile-user-menu show">
 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
 <div class="dropdown-menu dropdown-menu-right ">
-<a class="dropdown-item" href="../profile.php">My Profile</a>
-<a class="dropdown-item" href="../settings.php">Settings</a>
-<a class="dropdown-item" href="../logout.php">Logout</a>
+<a class="dropdown-item" href="profile.php">My Profile</a>
+<a class="dropdown-item" href="settings.php">Settings</a>
+<a class="dropdown-item" href="logout.php">Logout</a>
 </div>
 </div>
 
@@ -435,6 +435,9 @@ li ul li a:hover {
 <ul>
 <li >
 <a href="index-employee.php"><img src="../assets/img/home.svg" alt="sidebar_img"> <span>Dashboard</span></a>
+</li>
+<li >
+<a href="view_tasks.php"><img src="../assets/img/home.svg" alt="sidebar_img"> <span>Tasks</span></a>
 </li>
 <!-- <li>
 <a href="employee.php"><img src="../assets/img/employee.svg" alt="sidebar_img"><span> Employees</span></a>
@@ -514,9 +517,9 @@ li ul li a:hover {
 <li>
 <a href="manage.html"><img src="assets/img/manage.svg" alt="sidebar_img"> <span>Manage</span></a>
 </li> -->
-<li>
+<!-- <li>
 <a href="settings.php"><img src="../assets/img/settings.svg" alt="sidebar_img"><span>Settings</span></a>
-</li>
+</li> -->
 <li>
 <a href="profile.php"><img src="../assets/img/profile.svg" alt="sidebar_img"> <span>Profile</span></a>
 </li>

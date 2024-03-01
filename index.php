@@ -459,7 +459,7 @@ $totalWorkedHours = null;
 <div class="page-wrapper">
 <div class="content container-fluid">
 <div class="page-name mb-4">
-    <h4 class="m-0"><img src="assets/img/dashboard-profile.jpg" class="mr-1" alt="profile" /> Welcome <?php echo $employee_first_name; ?> (Admin)</h4>
+    <h4 class="m-0"><img src="assets/img/dashboard-profile.jpg" class="mr-1" alt="profile" /> Welcome <?php echo $employee_first_name; ?> (<?php echo $user_type = $_SESSION['user_type']; ?>)</h4>
     <label><?php echo date('D, d M Y'); ?></label> <!-- Change here to display the current date -->
 </div>
 <div class="row mb-4">
@@ -653,7 +653,11 @@ if ($resultPendingLeaves !== false) {
 // $conn->close();
 ?>
 <!-- Your HTML structure with the calculated pending leaves count -->
-<a href="leave_management_system.php" style="text-decoration: none; color: inherit;">
+<?php if(isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'director'): ?>
+    <a href="leave_management_for_director.php" style="text-decoration: none; color: inherit;">
+<?php else: ?>
+    <a href="leave_management_system.php" style="text-decoration: none; color: inherit;">
+<?php endif; ?>
 
 <div class="col-xl-3 col-sm-6 col-12">
     <div class="card board1 fill3">

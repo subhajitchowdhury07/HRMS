@@ -224,7 +224,7 @@ if (isset($_POST['verify_otp'])) {
                 <div class="col-xl-12 col-sm-12 col-12 ">
                     <div class="breadcrumb-path mb-4">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.php"><img src="assets/img/dash.png" class="mr-2" alt="breadcrumb">Home</a></li>
+                            <li class="breadcrumb-item"><a href="index.php"><img src="../assets/img/dash.png" class="mr-2" alt="breadcrumb">Home</a></li>
                             <li class="breadcrumb-item active">Profile</li>
                         </ul>
                         <h3>Profile</h3>

@@ -1,33 +1,42 @@
 <?php
-error_reporting(0);
+// Include the database connection file
+include('db_conn.php');
+
+// Start the session
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id']) && isset($_POST['type'])) {
-    $user_id = $_POST['user_id'];
+// Check if the user is logged in
+if (!isset($_SESSION['emp_id'])) {
+    // Redirect to the login page if not logged in
+    header('Location: login.php');
+    exit();
+}
+
+// Initialize variables
+$clockInTime = null;
+$clockOutTime = null;
+$totalWorkedHours = null;
+$successMessage = '';
+
+// Fetch user ID from session
+$user_id = $_SESSION['emp_id'];
+
+// Fetch existing clock-in time and total worked hours from the database if available
+$query = "SELECT clock_in, total_worked_hr FROM attendance WHERE employee_id = :user_id AND clock_out IS NULL";
+$stmt = $conn->prepare($query);
+$stmt->bindParam(':user_id', $user_id);
+$stmt->execute();
+
+// Check if there is a row returned
+if ($stmt->rowCount() > 0) {
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $clockInTime = $row['clock_in'];
+    $totalWorkedHours = $row['total_worked_hr'];
+}
+
+// Handle POST request
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
     $type = $_POST['type'];
-
-    // Establish database connection using db_conn.php
-    include("db_conn.php");
-
-    // Set the default time zone to Indian Standard Time
-    date_default_timezone_set('Asia/Kolkata');
-    
-    // Fetch existing clock-in time and total worked hours from the database if available
-    $query = "SELECT clock_in, total_worked_hr FROM attendance WHERE employee_id = :user_id AND clock_out IS NULL";
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':user_id', $user_id);
-    $stmt->execute();
-
-    // Initialize clock-in, clock-out times, and total worked hours
-    $clockInTime = null;
-    $clockOutTime = null;
-    $totalWorkedHours = null;
-
-    if ($stmt->rowCount() > 0) {
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $clockInTime = $row['clock_in'];
-        $totalWorkedHours = $row['total_worked_hr'];
-    }
 
     // If clock-in time is not set and the user clicked Clock In
     if ($type == 'clock_in' && !$clockInTime) {
@@ -53,6 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id']) && isset($
         $stmt->bindParam(':totalWorkedHours', $totalWorkedHours);
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
+
+        // Set success message
+        $successMessage = 'You have successfully clocked out.';
     }
 }
 
@@ -68,6 +80,24 @@ function calculateTotalWorkedHours($startTime, $endTime) {
 
     return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
 }
+
+// Fetch the first name from the database based on the emp_id
+$query = "SELECT first_name FROM employees WHERE emp_id = :emp_id";
+$stmt = $conn->prepare($query);
+$stmt->bindParam(':emp_id', $_SESSION['emp_id']);
+$stmt->execute();
+
+// Check if the query executed successfully and if a row is returned
+if ($stmt->rowCount() > 0) {
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $first_name = $user['first_name'];
+} else {
+    // Handle the case where the first name is not found
+    $first_name = "Employee";
+}
+
+// Close the database connection
+$conn = null;
 ?>
 
 
@@ -134,53 +164,22 @@ function calculateTotalWorkedHours($startTime, $endTime) {
 </head>
 
 <body>
-    <?php 
-    // include("sidebar.php");
-    // Check if the user is logged in
-    if (!isset($_SESSION['emp_id'])) {
-        // Redirect to the login page if not logged in
-        header('Location: login.php');
-        exit();
-    }
-
-    // Establish a database connection
-    $conn = mysqli_connect("localhost", "root", "", "hrms");
-
-    // Check for a database connection error
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Fetch the user details based on the stored user_id in the session
-    $user_id = $_SESSION['emp_id'];
-
-    // Fetch the first name from the database
-    $query = "SELECT first_name FROM employees WHERE id = '$user_id'";
-    $result = mysqli_query($conn, $query);
-
-    if ($result && mysqli_num_rows($result) > 0) {
-        $user = mysqli_fetch_assoc($result);
-        $first_name = $user['first_name'];
-    } else {
-        $first_name = "Employee";
-    }
-
-    // Close the database connection
-    mysqli_close($conn);
-    ?>
-
     <h2>Attendance System</h2>
     <p>Welcome, <?php echo $first_name; ?>!</p>
+
     <?php
-    // Check if the user is already clocked in
-    if ($clockInTime) {
-        echo "<p>Now you are already clocked in.</p>";
-    }
-    else if($clockOutTime) {
-        echo "<p>Now you are successfully clocked out</p>";
+    // Display success message if set
+    if ($successMessage) {
+        echo "<p>$successMessage</p>";
+    } else {
+        // Check if the user is already clocked in
+        if ($clockInTime) {
+            echo "<p>Now you are already clocked in.</p>";
+        } else if ($clockOutTime) {
+            echo "<p>Now you are successfully clocked out</p>";
+        }
     }
     ?>
-    
 
     <form id="clockForm" method="POST">
         <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
@@ -190,107 +189,6 @@ function calculateTotalWorkedHours($startTime, $endTime) {
     </form>
 
     <div id="workedHours">Worked Hours: <span id="hoursWorked"><?php echo $totalWorkedHours ?? '--:--:--'; ?></span></div>
-
-    <!-- Your Custom JS -->
-    <!-- <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Handle form submission
-            document.getElementById('clockForm').addEventListener('submit', function (event) {
-                event.preventDefault();
-
-                var type = event.submitter.value;
-
-                if (type === 'clock_in') {
-                    // Clock In
-                    sendClockDataToServer('clock_in');
-                    event.submitter.disabled = true; // Disable the clock-in button
-                } else if (type === 'clock_out') {
-                    // Clock Out
-                    sendClockDataToServer('clock_out');
-                }
-            });
-
-            // Function to send clock-in/clock-out data to the server
-            function sendClockDataToServer(type) {
-                // Replace '/your/server/endpoint' with the actual URL endpoint on your server
-                fetch('storeTime.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        user_id: <?php echo $user_id; ?>,
-                        type: type,
-                    }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Handle the server response if needed
-                    console.log('Data sent to server:', data);
-
-                    // Update worked hours on the page if it's available in the response
-                    if (data.worked_hours) {
-                        document.getElementById('hoursWorked').textContent = data.worked_hours;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error sending data to server:', error);
-                });
-            }
-        });
-    </script> -->
-    <!-- <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Handle form submission
-            document.getElementById('clockForm').addEventListener('submit', function (event) {
-                event.preventDefault();
-
-                var type = event.submitter.value;
-
-                if (type === 'clock_in') {
-                    // Clock In
-                    sendClockDataToServer('clock_in');
-                    event.submitter.disabled = true; // Disable the clock-in button
-                } else if (type === 'clock_out') {
-                    // Clock Out
-                    sendClockDataToServer('clock_out');
-                }
-            });
-
-            // Function to send clock-in/clock-out data to the server
-            function sendClockDataToServer(type) {
-                // Replace '/your/server/endpoint' with the actual URL endpoint on your server
-                fetch('process_attendance.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        user_id: <?php echo $user_id; ?>,
-                        type: type,
-                    }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Handle the server response if needed
-                    console.log('Data sent to server:', data);
-
-                    // Update worked hours on the page if it's available in the response
-                    if (data.worked_hours) {
-                        document.getElementById('hoursWorked').textContent = data.worked_hours;
-                    }
-
-                    // Show server response message if available
-                    if (data.message) {
-                        alert(data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error sending data to server:', error);
-                });
-            }
-        });
-    </script> -->
 </body>
 
 </html>

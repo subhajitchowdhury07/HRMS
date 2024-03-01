@@ -1,23 +1,9 @@
-<?php include('sidebar.php'); ?>
 <?php
 include('db_conn.php');
 
-// session_start();
- 
-// Check if user is logged in
-if (!isset($_SESSION['emp_id']) || !isset($_SESSION['user_type'])) {
-    // Redirect to login page if not logged in
-    header("Location: login.php");
-    exit();
-}
-
-// Fetch the manager ID from the session
-$manager_id = $_SESSION['manager_id'];
-
-// Fetch leave requests where manager_id matches the specific value (e.g., 20)
-$sql = "SELECT * FROM leaves WHERE manager_id = :manager_id";
+// Fetch leave requests from the leaves table
+$sql = "SELECT * FROM leaves";
 $stmt = $conn->prepare($sql);
-$stmt->bindParam(':manager_id', $manager_id);
 $stmt->execute();
 $leaveRequests = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -108,6 +94,8 @@ $updateStartingBalanceStmt->execute();
 }
 ?>
 
+
+<?php include('sidebar.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 
