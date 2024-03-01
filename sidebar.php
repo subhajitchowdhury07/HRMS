@@ -71,7 +71,7 @@ if (isset($_SESSION['emp_id'])) {
     <style>
     body {
         background-color: #fff; /* White background */
-        color: #20509e; /* Blue text color */
+        color: #6b6659; /* Blue text color */
         font-family: 'Poppins', sans-serif; /* Poppins font */
     }
 
@@ -89,49 +89,45 @@ if (isset($_SESSION['emp_id'])) {
     }
     
     .custom-menu-item a {
-        color: #20509e; /* Blue text color for menu items */
+        color: #6b6659; /* Blue text color for menu items */
         text-decoration: none;
         font-weight: bold; /* Bold text */
     }
     
     .custom-dropdown {
-        /* align-items: center; */
-        display: none;
-        position: absolute;
-        border-radius: 10px;
-        top: 100%;
-        left: 0;
-        background-color: #fff; /* White color for dropdown */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        width: 160px; /* Set the width of the dropdown */
-        /* border-radius: 4px; Optional: Add some border-radius */
-        transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Add transition for smooth effect */
-    }
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 100%; /* Position the dropdown to the right of the parent li */
+            background-color: #fff; /* Set your desired background color */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            width: auto; /* Set the width to adjust based on content */
+            transition: all 0.3s ease; /* Add transition for smooth effect */
+        }
 
     .custom-menu-item:hover .custom-dropdown {
-        display: block;
-    }
+            display: block;
+            top: 0; /* Keep the dropdown at the top of the parent li */
+            left: 100%; /* Position the dropdown to the right of the parent li */
+        }
 
-    .custom-dropdown a {
-        display: block;
-        padding: 10px;
-        color: #20509e; /* Blue text color for dropdown items */
-        text-decoration: none;
-        font-weight: normal; /* Normal text weight for dropdown items */
-        transition: background-color 0.3s ease; /* Add transition for smooth effect */
-    }
-
+        /* Adjust the styles for dropdown items */
+        .custom-dropdown a {
+            display: block;
+            padding: 10px;
+            color: #333; /* Set your desired text color */
+            text-decoration: none;
+            transition: background-color 0.3s ease; /* Add transition for smooth effect */
+        }
     .custom-dropdown:hover {
         background-color: #f9f9f9; /* Light gray background on hover */
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Slightly darker box-shadow on hover */
     }
     
     .custom-dropdown a:hover {
-        border-radius: 0 0 10px;
-        background-color: #e3e3e3; /* Lighter gray background on sub-menu hover */
-    }
-
+            background-color: #f4f4f4; /* Set your desired hover background color */
+        }
     .rounded-plus-icon {
         margin-left: auto;
         font-weight: bold;
@@ -465,11 +461,14 @@ li ul li a:hover {
 <li>
 <a href="add_task.php"><img src="assets/img/calendar.svg" alt="sidebar_img"> <span>Add task</span></a>
 </li>
+
 <li>
     <a href="leave.php">
         <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Leave</span>
     </a>
     <ul>
+        <li><a href="set_leave_type.php">Set Leave Type</a></li>
+        <li><a href="allotted_leave.php">Allocatte Leave</a></li>
         <?php if(isset($_SESSION['user_type']) && $_SESSION['user_type']=='director'): ?>
         <li><a href="leave_management_for_director.php">Leave management</a></li>
         <?php else: ?>
