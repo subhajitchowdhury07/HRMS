@@ -474,7 +474,7 @@ li ul li a:hover {
         <?php else: ?>
         <li><a href="leave_management_system.php">Leave management</a>
         <?php endif; ?>
-        <li><a href="setLeaves.php">Set leave Type</a></li>
+        <!-- <li><a href="setLeaves.php">Set leave Type</a></li> -->
         </li>
     </ul>
 </li>

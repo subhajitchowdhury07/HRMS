@@ -10,10 +10,10 @@ if (!isset($_SESSION['emp_id']) || !isset($_SESSION['user_type'])) {
 }
 
 // Check if user is admin or director
-if ($_SESSION['user_type'] !== 'admin') {
-    header("Location: unauthorized.php");
-    exit();
-}
+// if ($_SESSION['user_type'] !== 'admin') {
+//     header("Location: unauthorized.php");
+//     exit();
+// }
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
