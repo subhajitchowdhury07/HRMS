@@ -1,4 +1,5 @@
 <?php
+// Include database connection
 include('db_conn.php');
 
 // Fetch leave requests from the leaves table
@@ -13,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && isset($_P
     $leaveId = $_POST['id'];
 
     // Check if the leave request is not already locked
-    $checkStatusSql = "SELECT status FROM leaves WHERE id=:leaveId";
+    $checkStatusSql = "SELECT status FROM leaves WHERE id=:leaveId FOR UPDATE";
     $checkStatusStmt = $conn->prepare($checkStatusSql);
     $checkStatusStmt->bindParam(':leaveId', $leaveId);
     $checkStatusStmt->execute();
@@ -26,17 +27,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && isset($_P
         // Get admin_remark from the form
         $adminRemark = isset($_POST['admin_remark']) ? $_POST['admin_remark'] : '';
 
-        // Begin transaction
-        $conn->beginTransaction();
+        try {
+            // Begin transaction
+            $conn->beginTransaction();
 
-        // Update the leave request with status and admin_remark
-        $updateSql = "UPDATE leaves SET status=:status, admin_remark=:adminRemark WHERE id=:leaveId";
-        $updateStmt = $conn->prepare($updateSql);
-        $updateStmt->bindParam(':status', $status);
-        $updateStmt->bindParam(':adminRemark', $adminRemark);
-        $updateStmt->bindParam(':leaveId', $leaveId);
+            // Update the leave request with status and admin_remark
+            $updateSql = "UPDATE leaves SET status=:status, admin_remark=:adminRemark WHERE id=:leaveId";
+            $updateStmt = $conn->prepare($updateSql);
+            $updateStmt->bindParam(':status', $status);
+            $updateStmt->bindParam(':adminRemark', $adminRemark);
+            $updateStmt->bindParam(':leaveId', $leaveId);
+            $updateStmt->execute();
 
-        if ($updateStmt->execute()) {
             // If the leave is approved, deduct the appropriate amount from available_balance in leaves
             if ($status === 'Approved') {
                 // Fetch leave information
@@ -67,14 +69,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && isset($_P
                 $deductBalanceStmt->execute();
 
                 // Update starting_balance in allotted_leave table
-              // Update the starting_balance in the allotted_leave table based on leave_id
-$updateStartingBalanceSql = "UPDATE allotted_leave 
-SET starting_balance = starting_balance - :days 
-WHERE leave_type_id = (SELECT leave_id FROM leaves WHERE id = :leaveId)";
-$updateStartingBalanceStmt = $conn->prepare($updateStartingBalanceSql);
-$updateStartingBalanceStmt->bindParam(':days', $days);
-$updateStartingBalanceStmt->bindParam(':leaveId', $leaveId);
-$updateStartingBalanceStmt->execute();
+                $updateStartingBalanceSql = "UPDATE allotted_leave 
+                                            SET starting_balance = starting_balance - :days 
+                                            WHERE leave_type_id = (SELECT leave_id FROM leaves WHERE id = :leaveId)
+                                            AND employeeID = (SELECT emp_id FROM leaves WHERE id = :leaveId)";
+                $updateStartingBalanceStmt = $conn->prepare($updateStartingBalanceSql);
+                $updateStartingBalanceStmt->bindParam(':days', $days);
+                $updateStartingBalanceStmt->bindParam(':leaveId', $leaveId);
+                $updateStartingBalanceStmt->execute();
             }
 
             // Commit transaction
@@ -83,10 +85,10 @@ $updateStartingBalanceStmt->execute();
             // Reload the page to reflect the updated status
             header("Location: {$_SERVER['PHP_SELF']}");
             exit();
-        } else {
+        } catch (PDOException $e) {
             // Rollback transaction on failure
             $conn->rollBack();
-            echo "Error updating record: " . $updateStmt->errorInfo()[2];
+            echo "Error updating record: " . $e->getMessage();
         }
     } else {
         echo "Leave request is already locked.";
@@ -94,64 +96,54 @@ $updateStartingBalanceStmt->execute();
 }
 ?>
 
-
 <?php include('sidebar.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leave Management System</title>
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-    }
-
-    .container-fluid {
-        padding: 20px;
-    }
-
-    .status-approved {
-        background-color: #4CAF50;
-        color: white;
-    }
-
-    .status-rejected {
-        background-color: #f44336;
-        color: white;
-    }
-
-    @media (max-width: 768px) {
-        .table-responsive {
-            overflow-x: auto;
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
-    }
-    </style>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</head>
 
+        .container-fluid {
+            padding: 20px;
+        }
+
+        .status-approved {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .status-rejected {
+            background-color: #f44336;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .table-responsive {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Leave Management System</a>
     </nav>
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <div
-            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h2>Leave Requests</h2>
-        </div>
-        <div class="table-responsive mt-3">
+    <main role="main" class="container-fluid mt-3">
+        <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <!-- <th>ID</th> -->
                         <th>Employee ID</th>
                         <th>Leave Type</th>
                         <th>From Date</th>
@@ -166,7 +158,6 @@ $updateStartingBalanceStmt->execute();
                 <tbody>
                     <?php foreach ($leaveRequests as $request): ?>
                     <tr>
-                        <!-- <td><?= $request['id'] ?></td> -->
                         <td><?= $request['emp_id'] ?></td>
                         <td><?= $request['leave_type'] ?></td>
                         <td><?= $request['from_date'] ?></td>
@@ -211,7 +202,7 @@ $updateStartingBalanceStmt->execute();
                     <?php endforeach; ?>
                     <?php if (empty($leaveRequests)): ?>
                     <tr>
-                        <td colspan="10">No leave requests</td>
+                        <td colspan="9">No leave requests</td>
                     </tr>
                     <?php endif; ?>
                 </tbody>
@@ -219,5 +210,4 @@ $updateStartingBalanceStmt->execute();
         </div>
     </main>
 </body>
-
 </html>

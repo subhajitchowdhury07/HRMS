@@ -55,6 +55,7 @@ if ($result === false) {
                                         <th>Leave Type</th>
                                         <th>Start Date</th>
                                         <th>End Date</th>
+                                        <th>Duration</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -65,6 +66,7 @@ if ($result === false) {
                             echo "<td>" . $row['leave_type'] . "</td>";
                             echo "<td>" . $row['from_date'] . "</td>";
                             echo "<td>" . $row['to_date'] . "</td>";
+                            echo "<td>" . $row['allowed_day'] . "</td>";
                             echo "<td>" . $row['status'] . "</td>";
                             echo "</tr>";
                         }

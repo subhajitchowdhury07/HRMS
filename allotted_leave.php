@@ -1,48 +1,44 @@
 <?php
 include('sidebar.php');
 
-// session_start();
+session_start();
 
 if (!isset($_SESSION['emp_id']) || !isset($_SESSION['user_type'])) {
     header("Location: login.php");
     exit();
 }
 
-// Check if user is admin or director
-// if ($_SESSION['user_type'] !== 'admin') {
-//     header("Location: unauthorized.php");
-//     exit();
-// }
 $id=$_SESSION['emp_id'];
 require_once "db_conn.php";
 
 $message = '';
 
-// Fetch permanent employees for dropdown
 $stmt = $conn->prepare("SELECT id, First_name FROM employees WHERE employment_type = 'permanent'");
 $stmt->execute();
 $employees = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $employee_id = $_POST["employee_id"];
     $allowed_day = $_POST["allowed_day"];
     
-    // Get selected leave types and starting balances
     $selected_leave_types = $_POST["leave_type_id"];
     $starting_balances = $_POST["starting_balance"];
 
     try {
-        // Iterate over selected leave types and starting balances
         foreach ($selected_leave_types as $index => $leave_type_id) {
-            // Insert each combination into the database
-            $stmt = $conn->prepare("INSERT INTO allotted_leave (employee_id, First_name, starting_balance, allowed_day, leave_type_id) VALUES (?, (SELECT First_name FROM employees WHERE id = ?), ?, ?, ?)");
-            $stmt->execute([$employee_id, $employee_id, $starting_balances[$index], $allowed_day, $leave_type_id]);
+            // Fetch the emp_id for the selected employee
+            $emp_id_stmt = $conn->prepare("SELECT emp_id FROM employees WHERE id = ?");
+            $emp_id_stmt->execute([$employee_id]);
+            $emp_id_row = $emp_id_stmt->fetch(PDO::FETCH_ASSOC);
+            $emp_id = $emp_id_row['emp_id'];
+
+            // Insert into allotted_leave table with emp_id
+            $stmt = $conn->prepare("INSERT INTO allotted_leave (employee_id, First_name, starting_balance, allowed_day, leave_type_id, employeeID) VALUES (?, (SELECT First_name FROM employees WHERE id = ?), ?, ?, ?, ?)");
+            $stmt->execute([$employee_id, $employee_id, $starting_balances[$index], $allowed_day, $leave_type_id, $emp_id]);
         }
 
         $message = "Leave allotted successfully.";
     } catch (PDOException $e) {
-        // Show an error message
         $message = "Oops! Something went wrong. Please try again later. Error: " . $e->getMessage();
     }
 }
@@ -56,67 +52,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Allot Leave</title>
     <style>
         body {
-    font-family: Arial, sans-serif;
-    background-image: url('assets/img/back.png');
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
+            font-family: Arial, sans-serif;
+            background-image: url('assets/img/back.png');
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
 
-.page-wrapper {
-    max-width: 500px;
-    margin: 20px auto;
-    background-color: rgba(255, 255, 255, 0.8); /* Adjust the alpha value (fourth parameter) to change opacity */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+        .page-wrapper {
+            max-width: 500px;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-h2 {
-    text-align: center;
-    margin-top: 20px;
-}
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
 
-form {
-    margin-top: 20px;
-}
+        form {
+            margin-top: 20px;
+        }
 
-label {
-    display: block;
-    margin-bottom: 8px;
-    color: #333;
-}
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
 
-select,
-input[type="number"] {
-    width: calc(100% - 20px);
-    padding: 8px;
-    margin-bottom: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
+        select,
+        input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
 
-input[type="submit"] {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+        input[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
-input[type="submit"]:hover {
-    background-color: #45a049;
-}
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
 
-.message {
-    text-align: center;
-    margin-top: 20px;
-}
-
+        .message {
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -138,17 +133,13 @@ input[type="submit"]:hover {
             <div>
                 <label for="leave_type_id">Select Leave Types:</label><br>
                 <?php
-    // Fetch leave types
-    $stmt = $conn->query("SELECT id, leave_type FROM setleave");
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        // Render checkbox for each leave type
-        echo "<input type='checkbox' name='leave_type_id[]' value='{$row['id']}'> {$row['leave_type']}<br>";
-        // Input field for starting balance corresponding to each leave type
-        echo "<label for='starting_balance_{$row['id']}'>Starting Balance:</label>";
-        echo "<input type='number' name='starting_balance[]' id='starting_balance_{$row['id']}' step='0.01'><br>";
-    }
-?>
-
+                    $stmt = $conn->query("SELECT id, leave_type FROM setleave");
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        echo "<input type='checkbox' name='leave_type_id[]' value='{$row['id']}'> {$row['leave_type']}<br>";
+                        echo "<label for='starting_balance_{$row['id']}'>Starting Balance:</label>";
+                        echo "<input type='number' name='starting_balance[]' id='starting_balance_{$row['id']}' step='0.01'><br>";
+                    }
+                ?>
             </div>
             <div>
                 <label for="allowed_day">Allowed Day:</label>
@@ -163,5 +154,4 @@ input[type="submit"]:hover {
         </form>
     </div>
 </body>
-
 </html>

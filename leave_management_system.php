@@ -1,9 +1,8 @@
-<?php include('sidebar.php'); ?>
 <?php
 include('db_conn.php');
 
-// session_start();
- 
+session_start();
+
 // Check if user is logged in
 if (!isset($_SESSION['emp_id']) || !isset($_SESSION['user_type'])) {
     // Redirect to login page if not logged in
@@ -20,6 +19,7 @@ $stmt = $conn->prepare($sql);
 $stmt->bindParam(':manager_id', $manager_id);
 $stmt->execute();
 $leaveRequests = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 // Handle admin actions on leave requests
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && isset($_POST['id'])) {
@@ -81,14 +81,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && isset($_P
                 $deductBalanceStmt->execute();
 
                 // Update starting_balance in allotted_leave table
-              // Update the starting_balance in the allotted_leave table based on leave_id
-$updateStartingBalanceSql = "UPDATE allotted_leave 
-SET starting_balance = starting_balance - :days 
-WHERE leave_type_id = (SELECT leave_id FROM leaves WHERE id = :leaveId)";
-$updateStartingBalanceStmt = $conn->prepare($updateStartingBalanceSql);
-$updateStartingBalanceStmt->bindParam(':days', $days);
-$updateStartingBalanceStmt->bindParam(':leaveId', $leaveId);
-$updateStartingBalanceStmt->execute();
+                $updateStartingBalanceSql = "UPDATE allotted_leave 
+                                            SET starting_balance = starting_balance - :days 
+                                            WHERE leave_type_id = (SELECT leave_id FROM leaves WHERE id = :leaveId)
+                                            AND employeeID = (SELECT emp_id FROM leaves WHERE id = :leaveId)";
+                $updateStartingBalanceStmt = $conn->prepare($updateStartingBalanceSql);
+                $updateStartingBalanceStmt->bindParam(':days', $days);
+                $updateStartingBalanceStmt->bindParam(':leaveId', $leaveId);
+                $updateStartingBalanceStmt->execute();
             }
 
             // Commit transaction
@@ -108,6 +108,8 @@ $updateStartingBalanceStmt->execute();
 }
 ?>
 
+
+<?php include('sidebar.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -118,41 +120,55 @@ $updateStartingBalanceStmt->execute();
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-    }
-
-    .container-fluid {
-        padding: 20px;
-    }
-
-    .status-approved {
-        background-color: #4CAF50;
-        color: white;
-    }
-
-    .status-rejected {
-        background-color: #f44336;
-        color: white;
-    }
-
-    @media (max-width: 768px) {
-        .table-responsive {
-            overflow-x: auto;
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
-    }
+
+        .container-fluid {
+            padding: 20px;
+        }
+
+        .status-approved {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .status-rejected {
+            background-color: #f44336;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .table-responsive {
+                overflow-x: auto;
+            }
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#allowed_day').change(function () {
+                var allowedDay = $(this).val();
+                if (allowedDay === 'half') {
+                    $('.date-fields').hide();
+                    $('.single-date-field').show();
+                } else {
+                    $('.date-fields').show();
+                    $('.single-date-field').hide();
+                }
+            });
+        });
+    </script>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Leave Management System</a>
+        <!-- <a class="navbar-brand" href="#">Leave Management System</a> -->
     </nav>
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
         <div

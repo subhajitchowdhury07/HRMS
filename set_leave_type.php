@@ -1,6 +1,6 @@
 <?php
 include('sidebar.php');
-// session_start();
+include('db_conn.php');
 
 $message = '';
 
@@ -9,45 +9,34 @@ if (!isset($_SESSION['emp_id']) || !isset($_SESSION['user_type'])) {
     exit();
 }
 
-// Check if user is admin or director
-// if ($_SESSION['user_type'] !== 'admin') {
-//     header("Location: unauthorized.php");
-//     exit();
-// }
+if ($_SESSION['user_type'] !== 'admin') {
+    header("Location: unauthorized.php");
+    exit();
+}
 
-// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    require_once "db_conn.php";
-
-    // Validate and sanitize input
     $leave_type = $_POST["leave_type"];
     $allowed_day = $_POST["allowed_day"];
     $type = $_POST["type"];
     $leave_description = $_POST["leave_description"];
 
     try {
-        // Prepare SQL statement
         $stmt = $conn->prepare("INSERT INTO setleave (leave_type, allowed_day, type, leave_description) VALUES (:leave_type, :allowed_day, :type, :leave_description)");
-
-        // Bind parameters
         $stmt->bindParam(':leave_type', $leave_type);
         $stmt->bindParam(':allowed_day', $allowed_day);
         $stmt->bindParam(':type', $type);
         $stmt->bindParam(':leave_description', $leave_description);
 
-        // Attempt to execute the prepared statement
         if ($stmt->execute()) {
             $message = "Leave type set successfully.";
         } else {
             $message = "Oops! Something went wrong. Please try again later.";
         }
     } catch (PDOException $e) {
-        // Handle database error
         $message = "Error: " . $e->getMessage();
     }
 }
 
-// Fetch leave types
 $sql = "SELECT leave_type, type, leave_description FROM setleave";
 $stmt = $conn->query($sql);
 ?>
@@ -171,7 +160,7 @@ $stmt = $conn->query($sql);
 </head>
 
 <body>
-    <div class="page-wrapper">
+<div class="page-wrapper">
         <div class="form-wrapper">
             <h2>Set Leave</h2>
             <?php if (!empty($message)): ?>
