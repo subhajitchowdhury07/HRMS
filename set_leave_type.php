@@ -9,10 +9,10 @@ if (!isset($_SESSION['emp_id']) || !isset($_SESSION['user_type'])) {
     exit();
 }
 
-if ($_SESSION['user_type'] !== 'admin') {
-    header("Location: unauthorized.php");
-    exit();
-}
+// if ($_SESSION['user_type'] !== 'admin') {
+//     header("Location: unauthorized.php");
+//     exit();
+// }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $leave_type = $_POST["leave_type"];
