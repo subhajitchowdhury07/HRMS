@@ -1,7 +1,7 @@
 <?php
 include('sidebar.php');
 
-session_start();
+// session_start();
 
 if (!isset($_SESSION['emp_id']) || !isset($_SESSION['user_type'])) {
     header("Location: login.php");
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         .page-wrapper {
             max-width: 500px;
-            margin: 20px auto;
+            margin: 50px auto;
             background-color: rgba(255, 255, 255, 0.8);
             padding: 20px;
             border-radius: 8px;

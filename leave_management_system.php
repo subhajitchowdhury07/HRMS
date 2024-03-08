@@ -1,7 +1,8 @@
+<?php include('sidebar.php'); ?>
 <?php
 include('db_conn.php');
 
-session_start();
+// session_start();
 
 // Check if user is logged in
 if (!isset($_SESSION['emp_id']) || !isset($_SESSION['user_type'])) {
@@ -109,7 +110,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && isset($_P
 ?>
 
 
-<?php include('sidebar.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -123,9 +123,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && isset($_P
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
-            margin: 0;
+            margin-top: 20px;
             padding: 0;
         }
+        h2 {
+    color: #51ad26;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    }
 
         .container-fluid {
             padding: 20px;
@@ -173,9 +179,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && isset($_P
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
         <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h2>Leave Requests</h2>
         </div>
         <div class="table-responsive mt-3">
+            <h2>Leave Requests</h2>
             <table class="table table-bordered">
                 <thead>
                     <tr>

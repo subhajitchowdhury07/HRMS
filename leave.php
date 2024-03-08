@@ -1,3 +1,4 @@
+<?php include("sidebar.php") ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +8,6 @@
 
 <body>
     
-<?php include("sidebar.php") ?>
 
 <div class="page-wrapper">
 <div class="content container-fluid">

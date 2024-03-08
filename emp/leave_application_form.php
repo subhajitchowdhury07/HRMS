@@ -1,3 +1,4 @@
+<?php include('sidebar.php') ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,8 +101,8 @@
 <body>
 
 <?php
-include('sidebar.php');
-session_start();
+
+// session_start();
 
 // Check if employee ID is set in session
 if (!isset($_SESSION['emp_id'])) {
@@ -221,7 +222,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
         
         <!-- Select half or full day -->
-        <label for="allowed_day">Allowed Day:</label>
+        <label for="allowed_day">Duration :</label>
         <select name="allowed_day" id="allowed_day" onclick="toggleField(this)">
             <option value="full">Full Day</option>
             <option value="half">Half Day</option>

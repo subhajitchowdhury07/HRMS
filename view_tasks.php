@@ -41,24 +41,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mark_completed'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Tasks</title>
     <!-- Bootstrap CSS -->
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
-    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- <style>
+        /* Sidebar */
+        .sidebar {
+            background-color: #f2f2f2;
+            padding: 20px;
+            width: 200px;
+            flex-shrink: 0;
+        }
+    </style> -->
     <style>
-    .page-wrapper {
-        padding: 20px;
-    }
-    .content {
-        background-color: #f3f3f3;
-        padding: 20px;
-    }
-    h2 {
-        margin-bottom: 20px;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-    }
     button[type="submit"] {
         padding: 0.6em 2em;
         border: none;
@@ -82,72 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mark_completed'])) {
     button[type="submit"]:hover {
         background: #00bd68;
     }
-    /* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
-
-.container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.left-side {
-    margin-top: 20px;
-}
-
-h2 {
-    color: #51ad26;
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-th, td {
-    padding: 8px;
-    border: 1px solid #ccc;
-}
-
-th {
-    background-color: #51ad26;
-    color: #fff;
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-    h2 {
-        font-size: 24px;
-    }
-
-    table {
-        font-size: 14px;
-    }
-
-    th, td {
-        padding: 6px;
-    }
-
-    button[type="submit"] {
-        padding: 6px 12px;
-        font-size: 14px;
-    }
-}
-
     </style>
 </head>
 

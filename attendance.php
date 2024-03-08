@@ -4,6 +4,52 @@ include('db_conn.php');
 
 // Start the session
 session_start();
+date_default_timezone_set('Asia/Kolkata');
+
+// Function to get the user's IP address
+function getUserIP() {
+    // Check for shared internet/ISP IP
+    if (!empty($_SERVER['HTTP_CLIENT_IP']) && validateIP($_SERVER['HTTP_CLIENT_IP'])) {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    }
+
+    // Check for IP addresses from proxies
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        // Extract the IPs
+        $ipList = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        // Reverse the array to get the real IP
+        $ipList = array_reverse($ipList);
+        // Check each IP if it's a valid one
+        foreach ($ipList as $ip) {
+            if (validateIP($ip)) {
+                return $ip;
+            }
+        }
+    }
+
+    // Use REMOTE_ADDR as fallback
+    return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
+}
+
+// Function to validate an IP address
+function validateIP($ip) {
+    return filter_var($ip, FILTER_VALIDATE_IP) !== false;
+}
+
+// Define array of office IP addresses
+$officeIPs = array('117.214.38.7', '117.223.219.151', '192.168.1.55');
+
+// Get the user's IP address
+    $userIP = getUserIP();
+
+ echo "$userIP";
+
+
+// Function to check if the user's IP is within the office network
+function isInOfficeNetwork($userIP, $officeIPs) {
+    // Check if the user's IP matches any of the office IP addresses
+    return in_array($userIP, $officeIPs);
+}
 
 // Check if the user is logged in
 if (!isset($_SESSION['emp_id'])) {
@@ -17,6 +63,7 @@ $clockInTime = null;
 $clockOutTime = null;
 $totalWorkedHours = null;
 $successMessage = '';
+$alertMessage = '';
 
 // Fetch user ID from session
 $user_id = $_SESSION['emp_id'];
@@ -40,12 +87,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
 
     // If clock-in time is not set and the user clicked Clock In
     if ($type == 'clock_in' && !$clockInTime) {
-        $clockInTime = date('Y-m-d H:i:s');
-        $insert_query = "INSERT INTO attendance (employee_id, clock_in) VALUES (:user_id, :clockInTime)";
-        $stmt = $conn->prepare($insert_query);
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->bindParam(':clockInTime', $clockInTime);
-        $stmt->execute();
+        // Check if the user is in the office network
+        $userIP = getUserIP();
+        if (!isInOfficeNetwork($userIP, $officeIPs)) {
+            $alertMessage = 'You are not in the office premises.';
+        } else {
+            $clockInTime = date('Y-m-d H:i:s');
+            $insert_query = "INSERT INTO attendance (employee_id, clock_in) VALUES (:user_id, :clockInTime)";
+            $stmt = $conn->prepare($insert_query);
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->bindParam(':clockInTime', $clockInTime);
+            $stmt->execute();
+        }
     }
 
     // If clock-out time is set and the user clicked Clock Out
@@ -160,6 +213,32 @@ $conn = null;
             background-color: #dc3545;
             color: #fff;
         }
+
+        /* Alert Box CSS */
+        .alert {
+            padding: 20px;
+            background-color: #f44336; /* Red */
+            color: white;
+            margin-bottom: 15px;
+            display: none; /* Hide by default */
+        }
+
+        /* The close button */
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* When moving the mouse over the close button */
+        .closebtn:hover {
+            color: black;
+        }
     </style>
 </head>
 
@@ -189,6 +268,32 @@ $conn = null;
     </form>
 
     <div id="workedHours">Worked Hours: <span id="hoursWorked"><?php echo $totalWorkedHours ?? '--:--:--'; ?></span></div>
+
+    <!-- Alert Box -->
+    <div id="alertBox" class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        <?php echo $alertMessage; ?>
+    </div>
+
+    <!-- JavaScript for alert -->
+    <script>
+        // Show the alert if the user is not in the office premises
+        <?php if ($alertMessage): ?>
+            document.getElementById("alertBox").style.display = "block";
+        <?php endif; ?>
+
+        // Close the alert box when clicking on the close button
+        var close = document.getElementsByClassName("closebtn");
+        var i;
+
+        for (i = 0; i < close.length; i++) {
+            close[i].onclick = function(){
+                var div = this.parentElement;
+                div.style.opacity = "0";
+                setTimeout(function(){ div.style.display = "none"; }, 600);
+            }
+        }
+    </script>
 </body>
 
 </html>

@@ -1,9 +1,10 @@
 <?php
 // Include necessary files (e.g., database connection)
+include("sidebar.php");
 include("../db_conn.php");
 
 // Start or resume session
-session_start();
+// session_start();
 
 // Check if the user is logged in
 if (!isset($_SESSION['emp_id'])) {
@@ -39,9 +40,6 @@ if ($result === false) {
 </head>
 
 <body>
-
-    <?php include("sidebar.php"); ?>
-
     <div class="page-wrapper">
         <div class="content container-fluid">
             <div class="row">

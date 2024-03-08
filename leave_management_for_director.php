@@ -104,8 +104,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && isset($_P
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leave Management System</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"> -->
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -113,9 +113,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && isset($_P
             margin: 0;
             padding: 0;
         }
+        h2 {
+    color: #51ad26;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    }
 
         .container-fluid {
-            padding: 20px;
+            /* padding: 20px; */
         }
 
         .status-approved {
@@ -136,11 +142,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && isset($_P
     </style>
 </head>
 <body>
+<div class="page-wrapper">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Leave Management System</a>
-    </nav>
-    <main role="main" class="container-fluid mt-3">
-        <div class="table-responsive">
+        </nav>
+        <main role="main" class="container-fluid">
+            <div class="table-responsive">
+                <h2>Leave Requests</h2>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -209,5 +216,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && isset($_P
             </table>
         </div>
     </main>
+                    </div>
 </body>
 </html>

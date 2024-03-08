@@ -485,7 +485,7 @@ li ul li a:hover {
     </a>
     <ul>
         <li><a href="../attendance.php">My Attendance</a></li>
-        <li><a href="View_attendance.php">Team Attendance</a></li>
+        <!-- <li><a href="View_attendance.php">Team Attendance</a></li> -->
         <li><a href="attendance_history.php">Attendance History</a></li>
         <!-- Add more leave types as needed -->
     </ul>
@@ -555,10 +555,10 @@ li ul li a:hover {
         });
     </script>
 
-<!-- <script src="../assets/js/jquery-3.6.0.min.js"></script>
+<script src="../assets/js/jquery-3.6.0.min.js"></script>
 
-<script src="../assets/js/popper.min.js"></script> -->
-<!-- <script src="../assets/js/bootstrap.min.js"></script> -->
+<script src="../assets/js/popper.min.js"></script> 
+ <script src="../assets/js/bootstrap.min.js"></script> 
 
 <script src="../assets/js/feather.min.js"></script>
 

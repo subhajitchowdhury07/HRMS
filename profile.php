@@ -1,6 +1,7 @@
 <?php
 // Start the session
-session_start();
+include('sidebar.php');
+// session_start();
 
 // Check if the user is not logged in, redirect them to the login page
 if (!isset($_SESSION['emp_id'])) {
@@ -129,7 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </style>
 </head>
 <body>
-    <?php include('sidebar.php'); ?>
+    
     <!-- Display user profile information and update buttons -->
     <div class="page-wrapper">
     <div class="content container-fluid">

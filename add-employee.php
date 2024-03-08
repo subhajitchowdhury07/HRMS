@@ -1,3 +1,4 @@
+<?php include("sidebar.php") ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,10 +38,6 @@
 </head>
 
 <body>
-
-    <?php include("sidebar.php") ?>
-    
-
     <div class="page-wrapper">
         <div class="content container-fluid">
             <div class="row">
@@ -67,7 +64,7 @@
                                 <div class="row">
                                     <div class="col-xl-6 col-sm-12 col-12">
                                         <div class="form-group">
-                                            <input type="text" name="id" placeholder="EmployeeID">
+                                            <input type="text" name="emp_id" placeholder="EmployeeID">
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-sm-12 col-12">
@@ -102,6 +99,8 @@
                                                 <option value="#">Department</option>
                                                 <option value="HR">HR</option>
                                                 <option value="IT">IT</option>
+                                                <option value="Accounts & Admin">Accounts & Admin</option>
+                                                <option value="Recruiter and Management">Recruiter and Management</option>
                                                 <!-- Add other options as needed -->
                                             </select>
                                         </div>
@@ -148,8 +147,7 @@
                                                 <input type="text" class="form-control datepicker"
                                                     placeholder="Birth Date" name="birth_date">
                                                 <div class="input-group-append">
-                                                    <span class="input-group-text"><i
-                                                            class="fas fa-calendar-alt"></i></span>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -186,8 +184,7 @@
                                                 <input type="text" class="form-control datepicker"
                                                     placeholder="Date of exit" name="date_of_exit">
                                                 <div class="input-group-append">
-                                                    <span class="input-group-text"><i
-                                                            class="fas fa-calendar-alt"></i></span>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -228,8 +225,7 @@
                                                             <input type="text" class="form-control datepicker"
                                                                 placeholder="Start Date" name="start_date">
                                                             <div class="input-group-append">
-                                                                <span class="input-group-text"><i
-                                                                        class="fas fa-calendar-alt"></i></span>
+                                                                
                                                             </div>
                                                         </div>
                                                     </div>
@@ -341,8 +337,8 @@
             </script>
 
 
-            <script src="assets/js/jquery-3.6.0.min.js"></script>
-
+            <!-- <script src="assets/js/jquery-3.6.0.min.js"></script> -->
+<!-- 
             <script src="assets/js/popper.min.js"></script>
             <script src="assets/js/bootstrap.min.js"></script>
 
@@ -352,7 +348,7 @@
 
             <script src="assets/plugins/select2/js/select2.min.js"></script>
 
-            <script src="assets/js/script.js"></script>
+            <script src="assets/js/script.js"></script> -->
             <!-- Add the Bootstrap Datepicker script -->
             <script src="assets/bootstrap-datepicker.js"></script>
             <link rel="stylesheet" href="assets/bootstrap-datepicker.min.css">

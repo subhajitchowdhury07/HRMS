@@ -14,7 +14,7 @@ function clean_input($data) {
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["add_team_member"])) {
     try {
         // Clean and validate input data
-        $emp_id = clean_input($_POST["id"]);
+        $emp_id = clean_input($_POST["emp_id"]);
         $first_name = clean_input($_POST["first_name"]);
         $last_name = clean_input($_POST["last_name"]);
         $email = clean_input($_POST["email"]);
@@ -26,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["add_team_member"])) {
         $salary_frequency = clean_input($_POST["salary_frequency"]);
         $salary_start_date = clean_input($_POST["salary_start_date"]);
         $phone_number = clean_input($_POST["phone_number"]);
+        $department = clean_input($_POST["department"]);
         $reporting_to = clean_input($_POST["reporting_to"]);
         $source_of_hire = clean_input($_POST["source_of_hire"]);
         $seating_location = clean_input($_POST["seating_location"]);
@@ -42,8 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["add_team_member"])) {
         $gross_salary = clean_input($_POST["gross_salary"]);
 
         // Prepare the SQL statement for insertion
-        $sql = "INSERT INTO employees (id, first_name, last_name, email, country_of_employment, start_date, job_title, employment_type, currency, salary_frequency, salary_start_date, phone_number, reporting_to, source_of_hire, seating_location, title, employee_status, other_email, birth_date, marital_status, address, tags, job_description, date_of_exit, gender, gross_salary)
-                VALUES (:emp_id, :first_name, :last_name, :email, :country_of_employment, :start_date, :job_title, :employment_type, :currency, :salary_frequency, :salary_start_date, :phone_number, :reporting_to, :source_of_hire, :seating_location, :title, :employee_status, :other_email, :birth_date, :marital_status, :address, :tags, :job_description, :date_of_exit, :gender, :gross_salary)";
+        $sql = "INSERT INTO employees (emp_id, first_name, last_name, email, country_of_employment, start_date, job_title, employment_type, currency, salary_frequency, salary_start_date, phone_number, department, reporting_to, source_of_hire, seating_location, title, employee_status, other_email, birth_date, marital_status, address, tags, job_description, date_of_exit, gender, gross_salary)
+                VALUES (:emp_id, :first_name, :last_name, :email, :country_of_employment, :start_date, :job_title, :employment_type, :currency, :salary_frequency, :salary_start_date, :phone_number,:department , :reporting_to, :source_of_hire, :seating_location, :title, :employee_status, :other_email, :birth_date, :marital_status, :address, :tags, :job_description, :date_of_exit, :gender, :gross_salary)";
 
         // Prepare and execute the statement
         $stmt = $conn->prepare($sql);
@@ -59,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["add_team_member"])) {
         $stmt->bindParam(':salary_frequency', $salary_frequency);
         $stmt->bindParam(':salary_start_date', $salary_start_date);
         $stmt->bindParam(':phone_number', $phone_number);
+        $stmt->bindParam(':department', $department);
         $stmt->bindParam(':reporting_to', $reporting_to);
         $stmt->bindParam(':source_of_hire', $source_of_hire);
         $stmt->bindParam(':seating_location', $seating_location);

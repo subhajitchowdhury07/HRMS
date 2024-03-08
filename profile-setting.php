@@ -1,5 +1,6 @@
 <?php
-session_start();
+include('sidebar.php');
+// session_start();
 
 // Include your database connection code
 include 'db_conn.php';
@@ -217,7 +218,7 @@ if (isset($_POST['verify_otp'])) {
     </style>
 </head>
 <body>
-    <?php include('sidebar.php') ?>
+    
     <div class="page-wrapper">
         <div class="content container-fluid">
             <div class="row">

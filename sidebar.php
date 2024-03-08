@@ -52,8 +52,8 @@ if (isset($_SESSION['emp_id'])) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 <title>Sedulous technology .pvt .ltd</title>
-
-<link rel="shortcut icon" href="assets/img/favicon.png">
+<link rel="shortcut icon" href="assets/img/sedulous-small-icon.png">
+<!-- <link rel="shortcut icon" href="assets/img/favicon.png"> -->
 
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
@@ -533,9 +533,9 @@ li ul li a:hover {
 <li>
     <a href="calculate_salary.php"><img src="assets/img/calculator.svg" alt="sidebar_img"> <span>Salary Calculator</span></a>
 </li>
-<li>
+<!-- <li>
     <a href="#"><img src="assets/img/calculator.svg" alt="sidebar_img"> <span>Update</span></a>
-</li>
+</li> -->
 <!-- <li>
 <a href="review.html"><img src="assets/img/review.svg" alt="sidebar_img"><span>Review</span></a>
 </li>
@@ -545,9 +545,9 @@ li ul li a:hover {
 <li>
 <a href="manage.html"><img src="assets/img/manage.svg" alt="sidebar_img"> <span>Manage</span></a>
 </li> -->
-<li>
+<!-- <li>
 <a href="settings.php"><img src="assets/img/settings.svg" alt="sidebar_img"><span>Settings</span></a>
-</li>
+</li> -->
 <li>
 <a href="profile.php"><img src="assets/img/profile.svg" alt="sidebar_img"> <span>Profile</span></a>
 </li>
