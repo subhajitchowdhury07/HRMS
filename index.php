@@ -1,14 +1,15 @@
-
-<?php include("sidebar.php") ?><!DOCTYPE html>
+<?php include("sidebar.php") ?>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-<title>Sedulous technology .pvt .ltd</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Sedulous technology .pvt .ltd</title>
 
-<link rel="shortcut icon" href="assets/img/sedulous-small-icon.png">
+    <link rel="shortcut icon" href="assets/img/sedulous-small-icon.png">
 
-<!-- <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
 <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
 <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
@@ -16,44 +17,52 @@
 <link rel="stylesheet" href="assets/css/style.css">
 
 <link rel="stylesheet" href="assets/css/bootstrap.min.css"> -->
-<!--[if lt IE 9]>
+    <!--[if lt IE 9]>
 			<script src="assets/js/html5shiv.min.js"></script>
 			<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
 
-        <style>
+    <style>
     body {
-        background-color: #fff; /* White background */
-        color: #555; /* Blue text color */
+        background-color: #fff;
+        /* White background */
+        color: #555;
+        /* Blue text color */
         font-weight: bold;
-        font-family: 'Poppins', sans-serif; /* Poppins font */
+        font-family: 'Poppins', sans-serif;
+        /* Poppins font */
     }
+
     h2 {
-    color: #51ad26;
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 20px;
+        color: #51ad26;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 20px;
     }
 
     .custom-menu-bar {
         display: flex;
         align-items: center;
         padding: 10px 20px;
-        background-color: #fff; /* White color for the menu bar */
-        color: #20509e; /* Blue text color for menu items */
+        background-color: #fff;
+        /* White color for the menu bar */
+        color: #20509e;
+        /* Blue text color for menu items */
     }
-    
+
     .custom-menu-item {
         margin-right: 20px;
         position: relative;
     }
-    
+
     .custom-menu-item a {
-        color: #20509e; /* Blue text color for menu items */
+        color: #20509e;
+        /* Blue text color for menu items */
         text-decoration: none;
-        font-weight: bold; /* Bold text */
+        font-weight: bold;
+        /* Bold text */
     }
-    
+
     .custom-dropdown {
         /* align-items: center; */
         display: none;
@@ -61,12 +70,15 @@
         border-radius: 10px;
         top: 100%;
         left: 0;
-        background-color: #fff; /* White color for dropdown */
+        background-color: #fff;
+        /* White color for dropdown */
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         z-index: 1000;
-        width: 160px; /* Set the width of the dropdown */
+        width: 160px;
+        /* Set the width of the dropdown */
         /* border-radius: 4px; Optional: Add some border-radius */
-        transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Add transition for smooth effect */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        /* Add transition for smooth effect */
     }
 
     .custom-menu-item:hover .custom-dropdown {
@@ -76,20 +88,26 @@
     .custom-dropdown a {
         display: block;
         padding: 10px;
-        color: #20509e; /* Blue text color for dropdown items */
+        color: #20509e;
+        /* Blue text color for dropdown items */
         text-decoration: none;
-        font-weight: normal; /* Normal text weight for dropdown items */
-        transition: background-color 0.3s ease; /* Add transition for smooth effect */
+        font-weight: normal;
+        /* Normal text weight for dropdown items */
+        transition: background-color 0.3s ease;
+        /* Add transition for smooth effect */
     }
 
     .custom-dropdown:hover {
-        background-color: #f9f9f9; /* Light gray background on hover */
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Slightly darker box-shadow on hover */
+        background-color: #f9f9f9;
+        /* Light gray background on hover */
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        /* Slightly darker box-shadow on hover */
     }
-    
+
     .custom-dropdown a:hover {
         border-radius: 0 0 10px;
-        background-color: #e3e3e3; /* Lighter gray background on sub-menu hover */
+        background-color: #e3e3e3;
+        /* Lighter gray background on sub-menu hover */
     }
 
     .rounded-plus-icon {
@@ -98,14 +116,15 @@
         align-items: center;
         text-align: center;
     }
-    
+
     .rounded-plus-icon a {
         color: #fff;
         height: 40px;
         width: 40px;
         display: block;
         padding: 10px;
-        background-color: #74b330; /* Green color for the plus icon */
+        background-color: #74b330;
+        /* Green color for the plus icon */
         border-radius: 50%;
         text-align: center;
         text-decoration: none;
@@ -133,10 +152,10 @@
             margin-left: 0;
             margin-top: 10px;
         }
-        
+
     }
-</style>
-<style>
+    </style>
+    <style>
     /* body {
         background: #cff5b5;
     } */
@@ -189,14 +208,14 @@
         border-radius: 5px;
         cursor: pointer;
     }
-    
+
 
     .add-section button:hover {
         box-shadow: 0 2px 2px 0 #ccc, 0 2px 3px 0 #ccc;
         opacity: 0.7;
     }
 
-    
+
 
     #errorMes {
         display: block;
@@ -277,209 +296,222 @@
         text-align: center;
         color: #cccc;
     }
+
     .show-todo-section {
         width: 100%;
-        max-height: 400px; /* Set a maximum height for the to-do section */
-        overflow-y: auto; /* Add a vertical scrollbar when content exceeds the maximum height */
+        max-height: 400px;
+        /* Set a maximum height for the to-do section */
+        overflow-y: auto;
+        /* Add a vertical scrollbar when content exceeds the maximum height */
         background: #fff;
         margin: 30px auto;
         padding: 10px;
         border-radius: 5px;
     }
-</style>
-<style>/* Add this to your existing style or in a separate style section */
-li ul {
-    display: none;
-    position: absolute;
-    background-color: #fff; /* Set your desired background color */
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    z-index: 1;
-}
-
-li:hover ul {
-    display: block;
-}
-
-li ul li {
-    display: block;
-    padding: 10px;
-}
-
-li ul li a {
-    text-decoration: none;
-    color: #333; /* Set your desired text color */
-    display: block;
-}
-
-li ul li a:hover {
-    background-color: #f4f4f4; /* Set your desired hover background color */
-}
-</style>
-
-<style>
-/* Custom CSS for upcoming birthday section */
-.birthday-item {
-    border-bottom: 1px solid #ddd;
-    padding: 10px 0;
-    color:green;
-}
-.birthday-card {
-    min-height: 200px; /* Adjust height as needed */
-    padding: 15px;
-}
-
-
-.birthday-item img {
-    width: 50px; /* Adjust image size as needed */
-    height: 50px;
-    border-radius: 50%; /* Make the image round */
-    margin-right: 10px;
-    object-fit: cover;
-}
-
-.birthday-info {
-    display: inline-block;
-    vertical-align: top;
-    text-align: center;
-}
-.text-muted {
-    font-size: 16px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.birthday-date {
-    font-weight: bold;
-}
-
-/* Custom CSS for attendance system */
-.attendance-container {
-    margin-top: 20px;
-    margin-bottom:38px;
-}
-
-.attendance-section {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.attendance-header {
-    /*margin-left:68px;*/
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.clock-btn {
-    /* padding: 20px; */
-    padding: 10px 20px;
-    font-size: 20px;
-    margin-right: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.clock-in-btn {
-    background-color: #51ad26;
-    color: #fff;
-    border: none;
-}
-
-.clock-out-btn {
-    background-color: #dc3545;
-    color: #fff;
-    border: none;
-}
-
-.clocked-status {
-    font-size: 18px;
-    margin-top: 10px;
-}
-
-/* Alert Box CSS */
-.alert {
-    padding: 20px;
-    background-color: #f44336; /* Red */
-    color: white;
-    margin-bottom: 15px;
-    
-}
-
-/* The close button */
-.closebtn {
-    margin-left: 15px;
-    color: white;
-    font-weight: bold;
-    float: right;
-    font-size: 22px;
-    line-height: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-/* When moving the mouse over the close button */
-.closebtn:hover {
-    color: black;
-}
-
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .attendance-section {
-        padding: 15px;
+    </style>
+    <style>
+    /* Add this to your existing style or in a separate style section */
+    li ul {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        /* Set your desired background color */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        z-index: 1;
     }
 
-    .attendance-header {
-        font-size: 20px;
+    li:hover ul {
+        display: block;
     }
 
-    .clock-btn {
-        padding: 8px 16px;
-        font-size: 16px;
-    }
-
-    .clocked-status {
-        font-size: 16px;
-    }
-}
-
-@media (max-width: 576px) {
-    .birthday-item img {
-        width: 40px;
-        height: 40px;
-    }
-
-    .birthday-date {
-        font-size: 14px;
-    }
-
-    .attendance-section {
+    li ul li {
+        display: block;
         padding: 10px;
     }
 
+    li ul li a {
+        text-decoration: none;
+        color: #333;
+        /* Set your desired text color */
+        display: block;
+    }
+
+    li ul li a:hover {
+        background-color: #f4f4f4;
+        /* Set your desired hover background color */
+    }
+    </style>
+
+    <style>
+    /* Custom CSS for upcoming birthday section */
+    .birthday-item {
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+        color: green;
+    }
+
+    .birthday-card {
+        min-height: 200px;
+        /* Adjust height as needed */
+        padding: 15px;
+    }
+
+
+    .birthday-item img {
+        width: 50px;
+        /* Adjust image size as needed */
+        height: 50px;
+        border-radius: 50%;
+        /* Make the image round */
+        margin-right: 10px;
+        object-fit: cover;
+    }
+
+    .birthday-info {
+        display: inline-block;
+        vertical-align: top;
+        text-align: center;
+    }
+
+    .text-muted {
+        font-size: 16px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .birthday-date {
+        font-weight: bold;
+    }
+
+    /* Custom CSS for attendance system */
+    .attendance-container {
+        margin-top: 20px;
+        margin-bottom: 38px;
+    }
+
+    .attendance-section {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
     .attendance-header {
-        font-size: 18px;
+        /*margin-left:68px;*/
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
     }
 
     .clock-btn {
-        padding: 6px 12px;
-        font-size: 14px;
+        /* padding: 20px; */
+        padding: 10px 20px;
+        font-size: 20px;
+        margin-right: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .clock-in-btn {
+        background-color: #51ad26;
+        color: #fff;
+        border: none;
+    }
+
+    .clock-out-btn {
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
     }
 
     .clocked-status {
-        font-size: 14px;
+        font-size: 18px;
+        margin-top: 10px;
     }
-}
 
-</style>
+    /* Alert Box CSS */
+    .alert {
+        padding: 20px;
+        background-color: #f44336;
+        /* Red */
+        color: white;
+        margin-bottom: 15px;
+
+    }
+
+    /* The close button */
+    .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    /* When moving the mouse over the close button */
+    .closebtn:hover {
+        color: black;
+    }
+
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .attendance-section {
+            padding: 15px;
+        }
+
+        .attendance-header {
+            font-size: 20px;
+        }
+
+        .clock-btn {
+            padding: 8px 16px;
+            font-size: 16px;
+        }
+
+        .clocked-status {
+            font-size: 16px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .birthday-item img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .birthday-date {
+            font-size: 14px;
+        }
+
+        .attendance-section {
+            padding: 10px;
+        }
+
+        .attendance-header {
+            font-size: 18px;
+        }
+
+        .clock-btn {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+
+        .clocked-status {
+            font-size: 14px;
+        }
+    }
+    </style>
 </head>
+
 <body>
-    
-    
+
+
     <?php
     
 // $servername = "localhost";
@@ -503,34 +535,41 @@ $totalWorkedHours = null;
 ?>
 
 
-<div class="page-wrapper">
-<div class="content container-fluid">
-<div class="page-name mb-4">
-    <h4 class="m-0"><img src="assets/img/dashboard-profile.jpg" class="mr-1" alt="profile" /> Welcome <?php echo $employee_first_name; ?> (<?php echo $user_type = $_SESSION['user_type']; ?>)</h4>
-    <label><?php echo date('D, d M Y'); ?></label> <!-- Change here to display the current date -->
-</div>
-<div class="row mb-4">
-<div class="col-xl-6 col-sm-12 col-12">
-<div class="breadcrumb-path ">
-<ul class="breadcrumb">
-<li class="breadcrumb-item"><a href="index.php"><img src="assets/img/dash.png" class="mr-3" alt="breadcrumb" />Home</a>
-</li>
-<li class="breadcrumb-item active">Dashboard</li>
-</ul>
-<h3>Admin Dashboard</h3>
-</div>
-</div>
-<div class="col-xl-6 col-sm-12 col-12">
-<div class="row">
-<div class="col-xl-6 col-sm-6 col-12">
-<a class="btn-dash" href="#"> Admin Dashboard</a>
-</div>
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="page-name mb-4">
+                <h4 class="m-0">
+                    <span class="user-img">
+                        <img src="<?php echo fetchProfilePic($conn, $_SESSION['emp_id']); ?>" alt="">
+                        <span class="status online"></span>
+                    </span> Welcome <?php echo $employee_first_name; ?>
+                    (<?php echo $user_type = $_SESSION['user_type']; ?>)
+                </h4>
+                <label><?php echo date('D, d M Y'); ?></label> <!-- Change here to display the current date -->
+            </div>
+            <div class="row mb-4">
+                <div class="col-xl-6 col-sm-12 col-12">
+                    <div class="breadcrumb-path ">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.php"><img src="assets/img/dash.png" class="mr-3"
+                                        alt="breadcrumb" />Home</a>
+                            </li>
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ul>
+                        <h3>Admin Dashboard</h3>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-sm-12 col-12">
+                    <div class="row">
+                        <div class="col-xl-6 col-sm-6 col-12">
+                            <a class="btn-dash" href="#"> Admin Dashboard</a>
+                        </div>
 
-</div>
-</div>
-</div>
+                    </div>
+                </div>
+            </div>
 
-<?php
+            <?php
 date_default_timezone_set('Asia/Kolkata');
 // Function to get the user's IP address
 function getUserIP() {
@@ -675,11 +714,14 @@ if ($stmt->rowCount() > 0) {
 
 // Close the database connection
 $conn = null;
-?>
-<h2>Attendance System</h2>
-    <p>Welcome, <?php echo $first_name; ?>!</p>
 
-    <?php
+// Function to fetch profile picture URL based on emp_id
+
+?>
+            <h2>Attendance System</h2>
+            <p>Welcome, <?php echo $first_name; ?>!</p>
+
+            <?php
     // Display success message if set
     if ($successMessage) {
         echo "<p>$successMessage</p>";
@@ -693,24 +735,25 @@ $conn = null;
     }
     ?>
 
-   <form id="clockForm" method="POST" class="attendance-container">
-    <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
-    <button type="submit" name="type" value="clock_in" class="clock-btn clock-in-btn">Clock In</button>
-    <button type="submit" name="type" value="clock_out" class="clock-btn clock-out-btn">Clock Out</button>
-</form>
+            <form id="clockForm" method="POST" class="attendance-container">
+                <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+                <button type="submit" name="type" value="clock_in" class="clock-btn clock-in-btn">Clock In</button>
+                <button type="submit" name="type" value="clock_out" class="clock-btn clock-out-btn">Clock Out</button>
+            </form>
 
-    <div id="workedHours">Worked Hours: <span id="hoursWorked"><?php echo $totalWorkedHours ?? '--:--:--'; ?></span></div>
+            <div id="workedHours">Worked Hours: <span
+                    id="hoursWorked"><?php echo $totalWorkedHours ?? '--:--:--'; ?></span></div>
 
-    <!-- Alert Box -->
-    <?php if ($alertMessage): ?>
-        <div class="alert">
-            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-            <?php echo $alertMessage; ?>
-        </div>
-    <?php endif; ?>
+            <!-- Alert Box -->
+            <?php if ($alertMessage): ?>
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <?php echo $alertMessage; ?>
+            </div>
+            <?php endif; ?>
 
 
-<?php
+            <?php
 // Assuming you have a PDO connection named $dbh
 
 $sql = "SELECT id from employees"; // Modify the query to select the desired employee information
@@ -720,24 +763,24 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
 $empcount = $query->rowCount();
 ?>
 
-<div class="row mb-4">
-<div class="col-xl-3 col-sm-6 col-12">
-<div class="card board1 fill1 ">
-<div class="card-body">
-<div class="card_widget_header">
-<label>Employees</label>
-<h4><?php echo $empcount; ?></h4>
-</div>
-<div class="card_widget_img">
-<img src="assets/img/dash1.png" alt="card-img" />
-</div>
-</div>
-</div>
-</div>
+            <div class="row mb-4">
+                <div class="col-xl-3 col-sm-6 col-12">
+                    <div class="card board1 fill1 ">
+                        <div class="card-body">
+                            <div class="card_widget_header">
+                                <label>Employees</label>
+                                <h4><?php echo $empcount; ?></h4>
+                            </div>
+                            <div class="card_widget_img">
+                                <img src="assets/img/dash1.png" alt="card-img" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-<!--counting pending leaves -->
+                <!--counting pending leaves -->
 
-<?php
+                <?php
 // $conn = new mysqli("localhost", "root", "", "hrms");
 
 // if ($conn->connect_error) {
@@ -760,133 +803,128 @@ if ($resultPendingLeaves !== false) {
 
 // $conn->close();
 ?>
-<!-- Your HTML structure with the calculated pending leaves count -->
-<?php if(isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'director'): ?>
-    <a href="leave_management_for_director.php" style="text-decoration: none; color: inherit;">
-<?php else: ?>
-    <a href="leave_management_system.php" style="text-decoration: none; color: inherit;">
-<?php endif; ?>
+                <!-- Your HTML structure with the calculated pending leaves count -->
+                <?php if(isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'director'): ?>
+                <a href="leave_management_for_director.php" style="text-decoration: none; color: inherit;">
+                    <?php else: ?>
+                    <a href="leave_management_system.php" style="text-decoration: none; color: inherit;">
+                        <?php endif; ?>
 
-<div class="col-xl-3 col-sm-6 col-12">
-    <div class="card board1 fill3">
-        <div class="card-body">
-            <div class="card_widget_header">
-                <label>Pending Leaves</label>
-                <h4><?php echo $pendingCount; ?></h4>
+                        <div class="col-xl-3 col-sm-6 col-12">
+                            <div class="card board1 fill3">
+                                <div class="card-body">
+                                    <div class="card_widget_header">
+                                        <label>Pending Leaves</label>
+                                        <h4><?php echo $pendingCount; ?></h4>
+                                    </div>
+                                    <div class="card_widget_img">
+                                        <img src="assets/img/dash3.png" alt="card-img" />
+                                    </div>
+                                </div>
+                            </div>
+                    </a>
             </div>
-            <div class="card_widget_img">
-                <img src="assets/img/dash3.png" alt="card-img" />
-            </div>
+
+
         </div>
-    </div>
-</a>
-</div>
-
-
-</div>
-<div class="row">
-<div class="col-xl-6 d-flex mobile-h">
-<div class="card flex-fill">
-<div class="card-header">
-<div class="d-flex justify-content-between align-items-center">
-<h5 class="card-title">Total Employees</h5>
-</div>
-</div>
-<div class="card-body">
-<div id="invoice_chart"></div>
-<div class="text-center text-muted">
-<div class="row">
-<div class="col-4">
-<div class="mt-4">
-<p class="mb-2 text-truncate"><i class="fas fa-circle text-primary mr-1"></i> Business</p>
-</div>
-</div>
-<div class="col-4">
-<div class="mt-4">
-<p class="mb-2 text-truncate"><i class="fas fa-circle text-success mr-1"></i> Testing</p>
-</div>
-</div>
-<div class="col-4">
-<div class="mt-4">
-<p class="mb-2 text-truncate"><i class="fas fa-circle text-danger mr-1"></i> Development</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<div class="col-xl-6 d-flex">
-    <div class="card flex-fill">
-        <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title">To-Do List</h5>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="main-section">
-                <div class="add-section">
-                    <form action="app/add.php" method="POST" autocomplete="off">
-                        <?php if(isset($_GET['mess']) && $_GET['mess'] == 'error'){ ?>
-                            <input type="text" 
-                                name="title" 
-                                style="border-color: #ff6666"
-                                placeholder="This field is required" />
-                            <button type="submit">Add &nbsp; <span>&#43;</span></button>
-                        <?php }else{ ?>
-                            <input type="text" 
-                                name="title" 
-                                placeholder="What do you need to do?" />
-                            <button type="submit"><b>Add</b><span></span></button>
-                        <?php } ?>
-                    </form>
-                </div>
-                <?php 
-                    $todos = $dbh->query("SELECT * FROM todos ORDER BY id DESC");
-                ?>
-                <div class="show-todo-section">
-                    <?php if($todos->rowCount() <= 0){ ?>
-                        <div class="todo-item">
-                            <div class="empty">
-                                <img src="img/f.png" width="100%" />
-                                <img src="img/Ellipsis.gif" width="80px">
+        <div class="row">
+            <div class="col-xl-6 d-flex mobile-h">
+                <div class="card flex-fill">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Total Employees</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="invoice_chart"></div>
+                        <div class="text-center text-muted">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="mt-4">
+                                        <p class="mb-2 text-truncate"><i class="fas fa-circle text-primary mr-1"></i>
+                                            Business</p>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mt-4">
+                                        <p class="mb-2 text-truncate"><i class="fas fa-circle text-success mr-1"></i>
+                                            Testing</p>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mt-4">
+                                        <p class="mb-2 text-truncate"><i class="fas fa-circle text-danger mr-1"></i>
+                                            Development</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    <?php } ?>
-                    <?php while($todo = $todos->fetch(PDO::FETCH_ASSOC)) { ?>
-                        <div class="todo-item">
-                            <span id="<?php echo $todo['id']; ?>"
-                                class="remove-to-do">x</span>
-                            <?php if($todo['checked']){ ?> 
-                                <input type="checkbox"
-                                    class="check-box"
-                                    data-todo-id ="<?php echo $todo['id']; ?>"
-                                    checked />
-                                <h2 class="checked"><?php echo $todo['title'] ?></h2>
-                            <?php }else { ?>
-                                <input type="checkbox"
-                                    data-todo-id ="<?php echo $todo['id']; ?>"
-                                    class="check-box" />
-                                <h2><?php echo $todo['title'] ?></h2>
-                            <?php } ?>
-                            <br>
-                            <small>created: <?php echo $todo['date_time'] ?></small> 
-                        </div>
-                    <?php } ?>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
-<div class="col-xl-6 d-flex">
-    <div class="card flex-fill birthday-card">
-        <div class="card-header">
-            <h5 class="card-title">Upcoming Birthdays</h5>
-        </div>
-        <div class="card-body">
-            <?php
+            <div class="col-xl-6 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">To-Do List</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-section">
+                            <div class="add-section">
+                                <form action="app/add.php" method="POST" autocomplete="off">
+                                    <?php if(isset($_GET['mess']) && $_GET['mess'] == 'error'){ ?>
+                                    <input type="text" name="title" style="border-color: #ff6666"
+                                        placeholder="This field is required" />
+                                    <button type="submit">Add &nbsp; <span>&#43;</span></button>
+                                    <?php }else{ ?>
+                                    <input type="text" name="title" placeholder="What do you need to do?" />
+                                    <button type="submit"><b>Add</b><span></span></button>
+                                    <?php } ?>
+                                </form>
+                            </div>
+                            <?php 
+                    $todos = $dbh->query("SELECT * FROM todos ORDER BY id DESC");
+                ?>
+                            <div class="show-todo-section">
+                                <?php if($todos->rowCount() <= 0){ ?>
+                                <div class="todo-item">
+                                    <div class="empty">
+                                        <img src="img/f.png" width="100%" />
+                                        <img src="img/Ellipsis.gif" width="80px">
+                                    </div>
+                                </div>
+                                <?php } ?>
+                                <?php while($todo = $todos->fetch(PDO::FETCH_ASSOC)) { ?>
+                                <div class="todo-item">
+                                    <span id="<?php echo $todo['id']; ?>" class="remove-to-do">x</span>
+                                    <?php if($todo['checked']){ ?>
+                                    <input type="checkbox" class="check-box" data-todo-id="<?php echo $todo['id']; ?>"
+                                        checked />
+                                    <h2 class="checked"><?php echo $todo['title'] ?></h2>
+                                    <?php }else { ?>
+                                    <input type="checkbox" data-todo-id="<?php echo $todo['id']; ?>"
+                                        class="check-box" />
+                                    <h2><?php echo $todo['title'] ?></h2>
+                                    <?php } ?>
+                                    <br>
+                                    <small>created: <?php echo $todo['date_time'] ?></small>
+                                </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 d-flex">
+                <div class="card flex-fill birthday-card">
+                    <div class="card-header">
+                        <h5 class="card-title">Upcoming Birthdays</h5>
+                    </div>
+                    <div class="card-body">
+                        <?php
             $currentDate = date('Y-m-d');
             $nextWeek = date('Y-m-d', strtotime('+7 days', strtotime($currentDate)));
             $query = $dbh->prepare("SELECT * FROM employees WHERE MONTH(birth_date) = MONTH(DATE_ADD(:currentDate, INTERVAL 7 DAY))");
@@ -913,18 +951,18 @@ if ($resultPendingLeaves !== false) {
                 echo '</div>';
             }
             ?>
-        </div>
-    </div>
-</div>
+                    </div>
+                </div>
+            </div>
 
 
-<div class="col-xl-6 d-flex">
-    <div class="card flex-fill birthday-card">
-        <div class="card-header">
-            <h5 class="card-title">New Hires</h5>
-        </div>
-        <div class="card-body">
-            <?php
+            <div class="col-xl-6 d-flex">
+                <div class="card flex-fill birthday-card">
+                    <div class="card-header">
+                        <h5 class="card-title">New Hires</h5>
+                    </div>
+                    <div class="card-body">
+                        <?php
             // Get the current date
             $currentDate = date('Y-m-d');
 
@@ -961,53 +999,52 @@ if ($resultPendingLeaves !== false) {
                 echo '</div>';
             }
             ?>
-        </div>
-    </div>
-</div>
+                    </div>
+                </div>
+            </div>
 
 
 
 
-<script src="js/jquery-3.2.1.min.js"></script>
+            <script src="js/jquery-3.2.1.min.js"></script>
 
-    <script>
-        $(document).ready(function(){
-            $('.remove-to-do').click(function(){
-                const id = $(this).attr('id');
-                
-                $.post("app/remove.php", 
-                      {
-                          id: id
-                      },
-                      (data)  => {
-                         if(data){
-                             $(this).parent().hide(600);
-                         }
-                      }
-                );
+            <script>
+            $(document).ready(function() {
+                $('.remove-to-do').click(function() {
+                    const id = $(this).attr('id');
+
+                    $.post("app/remove.php", {
+                            id: id
+                        },
+                        (data) => {
+                            if (data) {
+                                $(this).parent().hide(600);
+                            }
+                        }
+                    );
+                });
+
+                $(".check-box").click(function(e) {
+                    const id = $(this).attr('data-todo-id');
+
+                    $.post('app/check.php', {
+                            id: id
+                        },
+                        (data) => {
+                            if (data != 'error') {
+                                const h2 = $(this).next();
+                                if (data === '1') {
+                                    h2.removeClass('checked');
+                                } else {
+                                    h2.addClass('checked');
+                                }
+                            }
+                        }
+                    );
+                });
             });
-
-            $(".check-box").click(function(e){
-                const id = $(this).attr('data-todo-id');
-                
-                $.post('app/check.php', 
-                      {
-                          id: id
-                      },
-                      (data) => {
-                          if(data != 'error'){
-                              const h2 = $(this).next();
-                              if(data === '1'){
-                                  h2.removeClass('checked');
-                              }else {
-                                  h2.addClass('checked');
-                              }
-                          }
-                      }
-                );
-            });
-        });
-    </script>
+            </script>
 
 </body>
+
 </html>

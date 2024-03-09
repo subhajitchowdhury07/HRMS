@@ -218,7 +218,10 @@ $totalWorkedHours = null;
 <div class="page-wrapper">
     <div class="content container-fluid">
     <div class="page-name mb-4">
-    <h4 class="m-0"><img src="../assets/img/dashboard-profile.jpg" class="mr-1" alt="profile" /> Welcome <?php echo $employee_first_name; ?> (<?php echo $user_type = $_SESSION['user_type']; ?>)</h4>
+    <h4 class="m-0"><span class="user-img">
+                        <img src="<?php echo fetchProfilePic($conn, $_SESSION['emp_id']); ?>" alt="">
+                        <span class="status online"></span>
+                    </span> Welcome <?php echo $employee_first_name; ?> (<?php echo $user_type = $_SESSION['user_type']; ?>)</h4>
     <label><?php echo date('D, d M Y'); ?></label> <!-- Change here to display the current date -->
 </div>
 <div class="row mb-4">

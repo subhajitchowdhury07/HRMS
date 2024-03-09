@@ -7,33 +7,19 @@ if (!isset($_SESSION['emp_id'])) {
     exit();
 }
 
-// // Your PHP code goes here
-// $servername = "localhost";
-// $dbname = "hrms";
-// $username = "root"; // replace with your database username
-// $password = ""; // replace with your database password
-
-// try {
-//     // Attempt to establish a connection to the database
-//     $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-//     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-// } catch (PDOException $e) {
-//     // Handle connection errors
-//     echo "Connection failed: " . $e->getMessage();
-//     // Exit or handle the error as appropriate
-//     exit();
-// }
+// Include the database connection file
 include ('db_conn.php');
+
 // Fetch employee data if the session variable is set
 if (isset($_SESSION['emp_id'])) {
     try {
         // Prepare and execute a query to fetch employee data
-        $stmt = $dbh->prepare("SELECT first_name, last_name FROM employees WHERE emp_id = :emp_id");
+        $stmt = $conn->prepare("SELECT first_name, last_name FROM employees WHERE emp_id = :emp_id");
         $stmt->bindParam(':emp_id', $_SESSION['emp_id']);
         $stmt->execute();
         $employee = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Extract first name from the fetched data
+        // Extract first name and last name from the fetched data
         $employee_first_name = $employee['first_name'];
         $employee_last_name = $employee['last_name'];
     } catch (PDOException $e) {
@@ -44,8 +30,29 @@ if (isset($_SESSION['emp_id'])) {
     }
 }
 
+// Function to fetch profile picture URL based on emp_id
+function fetchProfilePic($conn, $emp_id) {
+    // Query to fetch profile picture URL
+    $query = "SELECT profile_pic FROM employees WHERE emp_id = :emp_id";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':emp_id', $emp_id);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Check if profile picture URL exists
+    if ($row && isset($row['profile_pic'])) {
+        return $row['profile_pic'];
+    } else {
+        // Default profile picture URL if not found
+        return "assets/img/dashboard-profile.jpg";
+    }
+    
+}
+
 // Now you can output your HTML content
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,6 +80,13 @@ if (isset($_SESSION['emp_id'])) {
         background-color: #fff; /* White background */
         color: #6b6659; /* Blue text color */
         font-family: 'Poppins', sans-serif; /* Poppins font */
+    }
+    .user-img img{
+        width: 50px; /* Adjust image size as needed */
+    height: 50px;
+    border-radius: 50%; /* Make the image round */
+    margin-right: 10px;
+    object-fit: cover;
     }
 
     .custom-menu-bar {
@@ -388,10 +402,12 @@ li ul li a:hover {
 <ul class="nav user-menu">
 <li class="nav-item dropdown has-arrow main-drop">
 <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+<!-- HTML code with dynamic profile picture -->
 <span class="user-img">
-<img src="assets/img/profile2.jpg" alt="">
-<span class="status online"></span>
+    <img src="<?php echo fetchProfilePic($conn, $_SESSION['emp_id']); ?>" alt="">
+    <span class="status online"></span>
 </span>
+
 <span><?php echo $employee_first_name; ?> <?php echo $employee_last_name; ?></span>
 </a>
 <div class="dropdown-menu">
@@ -424,7 +440,11 @@ li ul li a:hover {
 
 
 
-
+width: 50px; /* Adjust image size as needed */
+    height: 50px;
+    border-radius: 50%; /* Make the image round */
+    margin-right: 10px;
+    object-fit: cover;
 <div class="sidebar" id="sidebar">
 <div class="sidebar-inner slimscroll">
 <div class="sidebar-contents">
@@ -435,7 +455,7 @@ li ul li a:hover {
 <span class="lnr lnr-cross  text-white" id="mobile_btn_close">X</span>
 <a href="javascript:void(0)" class="d-block menu-style text-white">
 <div class="user-avatar d-inline-block mr-3">
-<img src="assets/img/dashboard-profile.jpg" alt="user avatar" class="rounded-circle" width="50">
+<img style="width: 100px; height: 100px; border:4px solid white ;border-radius: 50%; object-fit: cover;" src="<?php echo fetchProfilePic($conn, $_SESSION['emp_id']); ?>" alt="user avatar" class="rounded-circle" width="50" >
 <br>
 <br>
 <span><b><?php echo $employee_first_name; ?> <?php echo $employee_last_name; ?></b></span>
