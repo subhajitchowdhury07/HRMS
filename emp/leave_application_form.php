@@ -227,7 +227,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <option value="full">Full Day</option>
             <option value="half">Half Day</option>
         </select>
-
+        <br>
+        <span style="color:#cf937e">If you select half day then choose 1 day from calander otherwise balance should be varry..!</span>
+        <br><br>
         <!-- Other form fields -->
         <label for="from_date">From Date:</label>
         <input type="date" name="from_date" required>

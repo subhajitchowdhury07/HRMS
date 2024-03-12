@@ -59,38 +59,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $target_file = $target_dir . basename($_FILES["profile_pic"]["name"]);
             $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-            // Check file size and file type
-            if ($_FILES["profile_pic"]["size"] > 500000) {
-                $updateMessage = "Sorry, your file is too large.";
-            } elseif ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-                $updateMessage = "Sorry, only JPG, JPEG, PNG files are allowed.";
-            } else {
-                // Upload file
-                if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file)) {
-                    // Store the file path in the database (without '../')
-                    $stored_file_path = 'uploads/' . basename($_FILES["profile_pic"]["name"]);
-                    // Update profile pic in database
-                    $update_query = "UPDATE employees SET profile_pic = :profile_pic WHERE emp_id = :emp_id";
-                    $stmt = $conn->prepare($update_query);
-                    $stmt->bindParam(':profile_pic', $stored_file_path);
-                    $stmt->bindParam(':emp_id', $emp_id);
-                    if ($stmt->execute()) {
-                        // Reload the page
-                        header("Location: {$_SERVER['PHP_SELF']}");
-                        exit;
-                    } else {
-                        $updateMessage = "Error uploading profile picture.";
-                    }
+            // Upload file without checking size and type
+            if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file)) {
+                // Store the file path in the database (without '../')
+                $stored_file_path = 'uploads/' . basename($_FILES["profile_pic"]["name"]);
+                // Update profile pic in database
+                $update_query = "UPDATE employees SET profile_pic = :profile_pic WHERE emp_id = :emp_id";
+                $stmt = $conn->prepare($update_query);
+                $stmt->bindParam(':profile_pic', $stored_file_path);
+                $stmt->bindParam(':emp_id', $emp_id);
+                if ($stmt->execute()) {
+                    // Reload the page
+                    header("Location: {$_SERVER['PHP_SELF']}");
+                    exit;
                 } else {
-                    $updateMessage = "Sorry, there was an error uploading your file.";
+                    echo "Error uploading profile picture.";
                 }
+            } else {
+                echo "Sorry, there was an error uploading your file.";
             }
         } else {
-            $updateMessage = "No file uploaded.";
+            echo "No file uploaded.";
         }
     }
 }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -101,75 +96,101 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>User Profile</title>
     <!-- Add your CSS links and other meta tags here -->
     <style>
-        /* Common styles for buttons */
-        
-        .update-btn {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
+    /* Common styles for buttons */
+    h2 {
+        color: #51ad26;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
 
-        /* Style for form groups */
-        .form-group {
-            display: inline-block;
-            margin-right: 10px;
-            margin-bottom: 20px;
+    .update-btn {
+        background-color: #13aa52;
+  border: 1px solid #13aa52;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-family: "Akzidenz Grotesk BQ Medium", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  outline: none;
+  outline: 0;
+  padding: 10px 25px;
+  text-align: center;
+  transform: translateY(0);
+  transition: transform 150ms, box-shadow 150ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+    }
+    .update-btn:hover {
+        box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
+  transform: translateY(-2px);
+    }
+    @media (min-width: 768px) {
+        .update-btn{
+            padding: 10px 30px;
         }
+    }
 
-        /* Style for update button */
-        .update-btn {
-            margin-top: 10px;
-        }
+    /* Style for form groups */
+    .form-group {
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 20px;
+    }
 
-        /* Profile picture section */
-        .profile-pic-section {
-            width: 300px;
-            margin-left: 20px;
-            text-align: center;
-        }
+    /* Style for update button */
+    /* .update-btn {
+        margin-top: 10px;
+    } */
 
-        .profile-pic {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px;
-        }
+    /* Profile picture section */
+    .profile-pic-section {
+        width: 300px;
+        margin-left: 20px;
+        text-align: center;
+    }
 
-        /* Alert message styles */
-        .alert {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
+    .profile-pic {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 20px;
+    }
 
-        /* Success alert */
-        .alert-success {
-            color: #155724;
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-        }
+    .button-33 {
+        background-color: #c2fbd7;
+        border-radius: 100px;
+        box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset, rgba(44, 187, 99, .15) 0 1px 2px, rgba(44, 187, 99, .15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
+        color: green;
+        cursor: pointer;
+        display: inline-block;
+        font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+        padding: 7px 20px;
+        text-align: center;
+        text-decoration: none;
+        transition: all 250ms;
+        border: 0;
+        font-size: 16px;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+    }
 
-        /* Error alert */
-        .alert-error {
-            color: #721c24;
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-        }
+    .button-33:hover {
+        box-shadow: rgba(44, 187, 99, .35) 0 -25px 18px -14px inset, rgba(44, 187, 99, .25) 0 1px 2px, rgba(44, 187, 99, .25) 0 2px 4px, rgba(44, 187, 99, .25) 0 4px 8px, rgba(44, 187, 99, .25) 0 8px 16px, rgba(44, 187, 99, .25) 0 16px 32px;
+        transform: scale(1.05);
+    }
 
-        #profile_pic {
-            display: none;
-        }
+    #profile_pic {
+        display: none;
+    }
 
-        #upload-label {
+    /* #upload-label {
             display: block;
             margin: 10px 0;
             padding: 10px 15px;
@@ -180,26 +201,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             text-align: center;
             width: 200px;
             margin: 0 auto;
+        } */
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+        .profile-pic-section {
+            width: 100%;
+            margin: 20px auto;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .form-group {
+            display: block;
+            margin-right: 0;
         }
 
-        /* Responsive styles */
-        @media (max-width: 768px) {
-            .profile-pic-section {
-                width: 100%;
-                margin: 20px auto;
-            }
+        .update-btn {
+            margin-top: 20px;
         }
-
-        @media (max-width: 576px) {
-            .form-group {
-                display: block;
-                margin-right: 0;
-            }
-
-            .update-btn {
-                margin-top: 20px;
-            }
-        }
+    }
     </style>
 </head>
 
@@ -241,16 +262,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <img src="<?php echo $user['profile_pic']; ?>" alt="Profile Picture"
                                     class="profile-pic">
                                 <?php else: ?>
-                                <img src="default_profile_pic.jpg" alt="Default Profile Picture"
+                                <img src="assets/img/dashboard-profile.jpg" alt="Default Profile Picture"
                                     class="profile-pic">
                                 <?php endif; ?>
-                                <label for="profile_pic" id="upload-label">Upload Picture</label>
-                                <input type="file" id="profile_pic" name="profile_pic" onchange="displaySelectedImage()">
+
+                                <label for="profile_pic" id="upload-label" class="button-33">Choose From gallery <i
+                                        class='fas fa-edit'></i></label><br>
+                                <span><?php echo "Maximum size 500 KB" ?><br></span>
+                                <input type="file" id="profile_pic" name="profile_pic" accept="image/jpeg, image/png"
+                                    onchange="validateFile()">
                                 <button class="update-btn" onclick="uploadProfilePic()">Upload</button>
-                                <!-- Display update message -->
-                                <?php if(!empty($updateMessage)): ?>
-                                <div class="alert alert-success"><?php echo $updateMessage; ?></div>
-                                <?php endif; ?>
+                                <br>
+                                <span id="file-error-msg" style="color: red;"></span> <!-- Add this line -->
+
                             </div>
                         </div>
                         <div class="col-xl-4 col-sm-12 col-12 d-flex">
@@ -285,8 +309,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <label for="phone_number">Phone Number:</label>
                                         <input type="text" id="phone_number" name="phone_number"
                                             value="<?php echo $user['phone_number']; ?>">
-                                        <button class="update-btn"
-                                            onclick="updateField('phone_number')">Update</button>
+                                        <button class="update-btn" onclick="updateField('phone_number')">Update</button>
                                     </div>
                                     <!-- Add similar code for other profile fields -->
                                     <div class="form-group">
@@ -303,60 +326,87 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </div>
-
-    <!-- JavaScript code to update field -->
+    <!-- <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script> -->
     <script>
-        function updateField(fieldName) {
-            var newValue = document.getElementById(fieldName).value;
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    // Update successful, display success message
-                    alert('Field updated successfully');
-                    // Reload the profile picture section
-                    reloadProfilePicSection();
-                }
-            };
-            xhr.open("POST", "<?php echo $_SERVER['PHP_SELF']; ?>", true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.send("new_" + fieldName + "=" + newValue);
-        }
-
-        function uploadProfilePic() {
-            var fileInput = document.getElementById('profile_pic');
-            var file = fileInput.files[0];
-            var formData = new FormData();
-            formData.append('profile_pic', file);
-            formData.append('submit', 'Upload');
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    // Update successful, display success message
-                    alert('Profile picture uploaded successfully');
-                    // Reload the profile picture section
-                    reloadProfilePicSection();
-                }
-            };
-            xhr.open("POST", "<?php echo $_SERVER['PHP_SELF']; ?>", true);
-            xhr.send(formData);
-        }
-
-        function reloadProfilePicSection() {
-            // Reload the profile picture section by reloading the entire page
-            location.reload();
-        }
-
-        function displaySelectedImage() {
-            var fileInput = document.getElementById('profile_pic');
-            if (fileInput.files && fileInput.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    document.querySelector('.profile-pic').setAttribute('src', e.target.result);
-                }
-                reader.readAsDataURL(fileInput.files[0]);
+    function validateFile() {
+        var fileInput = document.getElementById('profile_pic');
+        var file = fileInput.files[0];
+        var errorMessageSpan = document.getElementById('file-error-msg'); // Get the span element
+        if (file) {
+            // Check file size (500 KB limit)
+            if (file.size > 500000) {
+                errorMessageSpan.textContent = 'Sorry, your file is too large.'; // Update error message
+                fileInput.value = ''; // Clear the file input
+                return;
             }
+            // Check file type
+            var validTypes = ['image/jpeg', 'image/png'];
+            if (!validTypes.includes(file.type)) {
+                errorMessageSpan.textContent = 'Sorry, only JPG and PNG files are allowed.'; // Update error message
+                fileInput.value = ''; // Clear the file input
+                return;
+            }
+            // Clear error message if file is valid
+            errorMessageSpan.textContent = ''; // Clear error message
+            // Display the selected image preview
+            displaySelectedImage(file);
         }
+    }
+
+
+    function displaySelectedImage(file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            document.querySelector('.profile-pic').setAttribute('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function uploadProfilePic() {
+        var fileInput = document.getElementById('profile_pic');
+        var file = fileInput.files[0];
+        var formData = new FormData();
+        formData.append('profile_pic', file);
+        formData.append('submit', 'Upload');
+
+        // Perform AJAX request to upload the profile picture
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState === 4) {
+                if (this.status === 200) {
+                    alert('Profile picture uploaded successfully');
+                    location.reload(); // Reload the page after successful upload
+                } else {
+                    alert('Error uploading profile picture');
+                }
+            }
+        };
+        xhr.open('POST', '<?php echo $_SERVER["PHP_SELF"]; ?>', true);
+        xhr.send(formData);
+    }
+
+    function updateField(fieldName) {
+        var newValue = document.getElementById(fieldName).value;
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                // Update successful, display success message
+                alert('Field updated successfully');
+                // Reload the profile picture section
+                reloadProfilePicSection();
+            }
+        };
+        xhr.open("POST", "<?php echo $_SERVER['PHP_SELF']; ?>", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send("new_" + fieldName + "=" + newValue);
+    }
+
+    function reloadProfilePicSection() {
+        // Reload the profile picture section by reloading the entire page
+        location.reload();
+    }
     </script>
+
 </body>
 
 </html>

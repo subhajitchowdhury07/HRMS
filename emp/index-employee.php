@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="../assets/css/style.css">
 
 <style>
+    p{
+        font-weight: bold;
+    }
 
 h2 {
     color: #51ad26;
@@ -181,6 +184,7 @@ h2 {
 }
 
 </style>
+
 </head>
 <body>
 
@@ -599,7 +603,7 @@ $conn = null;
     </div>
 </div>
 
-
+<!-- // new hire section -->
 <div class="col-xl-6">
         <div class="card flex-fill birthday-card">
             <!-- New Hires Section -->
@@ -627,7 +631,7 @@ $conn = null;
                     if ($endDate >= $currentDate) {
                         // Display welcome message for new hire
                         echo '<div class="birthday-item">';
-                        echo '<p>Welcome in Sedulous ' . $employee['first_name'] . ' 🎉🎉</p>';
+                        echo '<p style="color : #51ad26; font-weight: bold;">Welcome in Sedulous ' . $employee['first_name'] . ' 🎉🎉</p>';
                         echo '<img src="' . $employee['profile_pic'] . '" alt="' . $employee['first_name'] . '">';
                         echo '<div class="birthday-info">';
                         echo '<p>' . $employee['first_name'] . '</p>';
@@ -647,6 +651,102 @@ $conn = null;
         </div>
     </div>
 </div>
+
+
+    <div class="col-xl-6">
+        <div class="card flex-fill">
+            <div class="card-header">
+                <h5 class="card-title">Leave Balance Report</h5>
+            </div>
+            <div class="card-body">
+                <?php
+                include('../db_conn.php'); // Include database connection
+                
+                // Fetch leave details for the logged-in employee
+                $emp_id = $_SESSION['emp_id'];
+                $query = "SELECT a.leave_type_id, s.leave_type, a.starting_balance 
+                          FROM allotted_leave a
+                          INNER JOIN setleave s ON a.leave_type_id = s.id
+                          WHERE a.employeeID = :emp_id";
+                $stmt = $conn->prepare($query);
+                $stmt->bindParam(':emp_id', $emp_id);
+                $stmt->execute();
+
+                // Check if leave records exist
+                if ($stmt->rowCount() > 0) {
+                    echo '<table class="table table-bordered">';
+                    echo '<thead>';
+                    echo '<tr>';
+                    echo '<th>Leave Type</th>';
+                    echo '<th>Starting Balance</th>';
+                    echo '</tr>';
+                    echo '</thead>';
+                    echo '<tbody>';
+                    
+                    // Loop through each leave record
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<tr>';
+                        echo '<td>' . $row['leave_type'] . '</td>';
+                        echo '<td>' . $row['starting_balance'] . '</td>';
+                        echo '</tr>';
+                    }
+                    echo '</tbody>';
+                    echo '</table>';
+                } else {
+                    echo '<p>No leave allotted currently.</p>';
+                }
+
+                // Close the database connection
+                $conn = null;
+                ?>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xl-6">
+    <div class="card flex-fill">
+        <div class="card-header">
+            <h5 class="card-title">Work Anniversaries</h5>
+        </div>
+        <div class="card-body">
+            <?php
+            include('../db_conn.php');
+            // Fetch employees who are celebrating their work anniversary within the next two days
+            $currentDate = date('Y-m-d');
+            $twoDaysLater = date('Y-m-d', strtotime('+2 days', strtotime($currentDate)));
+
+            $query = "SELECT * FROM employees WHERE DATE_ADD(start_date, INTERVAL 1 YEAR) BETWEEN :currentDate AND :twoDaysLater";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':currentDate', $currentDate);
+            $stmt->bindParam(':twoDaysLater', $twoDaysLater);
+            $stmt->execute();
+
+            $foundAnniversary = false; // Flag to check if any anniversary is found
+
+            while ($employee = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                echo '<div class="work-anniversary-item">';
+                echo '<img src="' . $employee['profile_pic'] . '" alt="' . $employee['first_name'] . '">';
+                echo '<div class="work-anniversary-info">';
+                echo '<p>Happy 1 Year Work Anniversary, ' . $employee['first_name'] . ' 🎉😍</p>';
+                echo '</div>';
+                echo '</div>';
+                $foundAnniversary = true; // Set flag to true if anniversary is found
+            }
+
+            // Display message if no work anniversaries are found
+            if (!$foundAnniversary) {
+                echo '<div class="card flex-fill birthday-section">';
+                echo '<img src="../assets/img/search.gif" alt="No work anniversaries">';
+                echo '<p style="color: #849ed1; text-align: center; padding-bottom: 10px;">No work anniversaries in the upcoming 2 days.</p>';
+                echo '</div>';
+            }
+            ?>
+        </div>
+    </div>
+</div>
+
+
 
 
 </body>

@@ -34,6 +34,12 @@
             background-color: #5a6268; /* Darker gray color on hover */
             text-decoration: none;
         }
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color:#51ad26;
+        }
     </style>
 </head>
 
@@ -57,45 +63,51 @@
                 <div class="col-xl-12 col-sm-12 col-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h2 class="card-titles">Basic Details <span>Organized and secure.</span></h2>
+                            <h2 class="card-titles">Basic Details <span>Organized and secure.</span><span style="color:red;">(*)mandatory fields</span></h2>
                         </div>
                         <div class="card-body">
                             <form method="post" action="process_employee.php">
                                 <div class="row">
                                     <div class="col-xl-6 col-sm-12 col-12">
                                         <div class="form-group">
-                                            <input type="text" name="emp_id" placeholder="EmployeeID">
+                                            <label for="emp_id">Employee ID:<span style="color:red; font-size:20px">*</span></label>
+                                            <input type="text" id="emp_id" name="emp_id" placeholder="Employee ID">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                            <label for="first_name">First Name:<span style="color:red; font-size:20px">*</span></label>
+                                            <input type="text" id="first_name" name="first_name" placeholder="First Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                            <label for="last_name">Last Name:<span style="color:red; font-size:20px">*</span></label>
+                                            <input type="text" id="last_name" name="last_name" placeholder="Last Name">
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-sm-12 col-12">
                                         <div class="form-group">
-                                            <input type="text" name="last_name" placeholder="Last Name">
+                                            <label for="email">Email:<span style="color:red; font-size:20px">*</span></label>
+                                            <input type="text" id="email" name="email" placeholder="Email">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xl-6 col-sm-12 col-12">
                                         <div class="form-group">
-                                            <input type="text" name="first_name" placeholder="First Name">
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 col-sm-12 col-12">
-                                        <div class="form-group">
-                                            <input type="text" name="email" placeholder="Email">
+                                            <label for="phone_number">Phone Number:<span style="color:red; font-size:20px">*</span></label>
+                                            <input type="text" id="phone_number" name="phone_number" placeholder="Phone Number">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xl-6 col-sm-12 col-12">
                                         <div class="form-group">
-                                            <input type="text" name="phone_number" placeholder="Phone Number">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xl-6 col-sm-12 col-12">
-                                        <div class="form-group">
-                                            <select class="select" name="department">
+                                            <label for="department">Department:<span style="color:red; font-size:20px">*</span></label>
+                                            <select class="select" name="department" id="department">
                                                 <option value="#">Department</option>
                                                 <option value="HR">HR</option>
                                                 <option value="IT">IT</option>
@@ -107,45 +119,51 @@
                                     </div>
                                     <div class="col-xl-6 col-sm-12 col-12">
                                         <div class="form-group">
-                                            <input type="text" name="reporting_to" placeholder="Reporting To">
+                                            <label for="reporting_to">Reporting To:<span style="color:red; font-size:20px">*</span></label>
+                                            <input type="text" id="reporting_to" name="reporting_to" placeholder="Reporting To">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xl-6 col-sm-12 col-12">
                                         <div class="form-group">
-                                            <input type="text" name="source_of_hire" placeholder="Source of hire">
+                                            <label for="source_of_hire">Source of Hire:</label>
+                                            <input type="text" id="source_of_hire" name="source_of_hire" placeholder="Source of hire">
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-sm-12 col-12">
                                         <div class="form-group">
-                                            <input type="text" name="seating_location" placeholder="Seating Location">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xl-6 col-sm-12 col-12">
-                                        <div class="form-group">
-                                            <input type="text" name="title" placeholder="Title">
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 col-sm-12 col-12">
-                                        <div class="form-group">
-                                            <input type="text" name="employee_status" placeholder="Employee Status">
+                                            <label for="seating_location">Seating Location:</label>
+                                            <input type="text" id="seating_location" name="seating_location" placeholder="Seating Location">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xl-6 col-sm-12 col-12">
                                         <div class="form-group">
-                                            <input type="text" name="other_email" placeholder="Other Email">
+                                            <label for="title">Title:<span style="color:red; font-size:20px">*</span></label>
+                                            <input type="text" id="title" name="title" placeholder="Title">
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-sm-12 col-12">
                                         <div class="form-group">
+                                            <label for="employee_status">Employee Status</label>
+                                            <input type="text" id="employee_status" name="employee_status" placeholder="Employee Status">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label for="other_email">Other Email:</label>
+                                            <input type="text" id="other_email" name="other_email" placeholder="Other Email">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label for="birth_date">Birth Date:<span style="color:red; font-size:20px">*</span></label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control datepicker"
-                                                    placeholder="Birth Date" name="birth_date">
+                                                <input type="text" id="birth_date" class="form-control datepicker" placeholder="Birth Date" name="birth_date">
                                                 <div class="input-group-append">
                                                     
                                                 </div>
@@ -156,43 +174,46 @@
                                 <div class="row">
                                     <div class="col-xl-6 col-sm-12 col-12">
                                         <div class="form-group">
-                                            <input type="text" name="marital_status" placeholder="Marital Status">
+                                            <label for="marital_status">Marital Status:</label>
+                                            <input type="text" id="marital_status" name="marital_status" placeholder="Marital Status">
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-sm-12 col-12">
                                         <div class="form-group">
-                                            <input type="text" name="address" placeholder="Address">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xl-6 col-sm-12 col-12">
-                                        <div class="form-group">
-                                            <input type="text" name="tags" placeholder="Tags">
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 col-sm-12 col-12">
-                                        <div class="form-group">
-                                            <input type="text" name="job_description" placeholder="Job Description">
+                                            <label for="address">Address:<span style="color:red; font-size:20px">*</span></label>
+                                            <input type="text" id="address" name="address" placeholder="Address">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xl-6 col-sm-12 col-12">
                                         <div class="form-group">
+                                            <label for="tags">Tags:</label>
+                                            <input type="text" id="tags" name="tags" placeholder="Tags">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label for="job_description">Job Description:<span style="color:red; font-size:20px">*</span></label>
+                                            <input type="text" id="job_description" name="job_description" placeholder="Job Description">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label for="date_of_exit">Date of Exit:</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control datepicker"
-                                                    placeholder="Date of exit" name="date_of_exit">
+                                                <input type="text" id="date_of_exit" class="form-control datepicker" placeholder="Date of exit" name="date_of_exit">
                                                 <div class="input-group-append">
                                                     
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
                                     <div class="col-xl-6 col-sm-12 col-12">
                                         <div class="form-group">
-                                            <label for="gender">Gender</label>
+                                            <label for="gender">Gender:<span style="color:red; font-size:20px">*</span></label>
                                             <select class="select" name="gender" id="gender">
                                                 <option value="male">Male</option>
                                                 <option value="female">Female</option>
@@ -200,8 +221,8 @@
                                             </select>
                                         </div>
                                     </div>
+                                </div>
                                 <!-- Add other fields as needed -->
-
                                 <div class="col-xl-12 col-sm-12 col-12 ">
                                     <div class="card ">
                                         <div class="card-header">
@@ -212,7 +233,8 @@
                                             <div class="row">
                                                 <div class="col-xl-6 col-sm-12 col-12">
                                                     <div class="form-group">
-                                                        <select class="select" name="country_of_employment">
+                                                        <label for="country_of_employment">Country of Employment:</label>
+                                                        <select class="select" name="country_of_employment" id="country_of_employment">
                                                             <option value="#">Country of Employment</option>
                                                             <option value="Kolkata">Kolkata</option>
                                                             <option value="Bengalore">Bengalore</option>
@@ -221,9 +243,9 @@
                                                 </div>
                                                 <div class="col-xl-6 col-sm-12 col-12">
                                                     <div class="form-group">
+                                                        <label for="start_date">Joining Date:<span style="color:red; font-size:20px">*</span></label>
                                                         <div class="input-group">
-                                                            <input type="text" class="form-control datepicker"
-                                                                placeholder="Start Date" name="start_date">
+                                                            <input type="text" id="start_date" class="form-control datepicker" placeholder="Start Date" name="start_date">
                                                             <div class="input-group-append">
                                                                 
                                                             </div>
@@ -234,12 +256,14 @@
                                             <div class="row">
                                                 <div class="col-xl-6 col-sm-12 col-12 ">
                                                     <div class="form-group">
-                                                        <input type="text" name="job_title" placeholder="Job Title">
+                                                        <label for="job_title">Job Title:</label>
+                                                        <input type="text" id="job_title" name="job_title" placeholder="Job Title">
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6 col-sm-12 col-12 ">
                                                     <div class="form-group">
-                                                        <select class="select" name="employment_type">
+                                                        <label for="employment_type">Employment Type:<span style="color:red; font-size:20px">*</span></label>
+                                                        <select class="select" name="employment_type" id="employment_type">
                                                             <option value="Permanent">Permanent</option>
                                                             <option value="Freelancer">Freelancer</option>
                                                         </select>
@@ -259,7 +283,8 @@
                                             <div class="row">
                                                 <div class="col-xl-6 col-sm-12 col-12 ">
                                                     <div class="form-group">
-                                                        <select class="select" name="currency">
+                                                        <label for="currency">Currency:<span style="color:red; font-size:20px">*</span></label>
+                                                        <select class="select" name="currency" id="currency">
                                                             <option>Currency </option>
                                                             <option value="$">$(Dollar)</option>
                                                             <option value="₹">₹(Rupees)</option>
@@ -268,9 +293,10 @@
                                                 </div>
                                                 <div class="col-xl-6 col-sm-12 col-12 ">
                                                     <div class="form-group">
-                                                        <select class="select" name="salary_frequency">
+                                                        <label for="salary_frequency">Salary Frequency:<span style="color:red; font-size:20px">*</span></label>
+                                                        <select class="select" name="salary_frequency" id="salary_frequency">
                                                             <option value="Frequency">Frequency </option>
-                                                            <option value="Annualy">Annualy</option>
+                                                            <option value="Annualy">Annually</option>
                                                             <option value="Monthly">Monthly</option>
                                                             <option value="Weekly">Weekly</option>
                                                             <option value="Daily">Daily</option>
@@ -281,42 +307,42 @@
                                             <div class="row">
                                                 <div class="col-xl-6 col-sm-12 col-12 ">
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control datepicker"
-                                                            placeholder="Start Date" name="salary_start_date">
+                                                        <label for="salary_start_date">Salary Start Date:</label>
+                                                        <input type="text" id="salary_start_date" class="form-control datepicker" placeholder="Salary Start Date" name="salary_start_date">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-6 col-sm-12 col-12 ">
                                                     <div class="form-group">
-                                                        <input type="text" name="gross_salary" placeholder="Gross salary">
+                                                        <label for="gross_salary">Gross salary:<span style="color:red; font-size:20px">*</span></label>
+                                                        <input type="text" id="gross_salary" name="gross_salary" placeholder="Gross salary">
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <!-- Add other fields as needed -->
-
                                             <div class="row">
                                                 <div class="col-xl-12 col-sm-12 col-12">
                                                     <div class="form-btn">
-                                                        <button type="submit" name="add_team_member"
-                                                            class="btn-apply">Add Team Member</button>
-                                                        <a href="add-employee.php" class="btn-secondary">Cancel</a>
+                                                        <button type="submit" name="add_team_member" class="btn-apply">Add Team Member</button>
+                                                        <a href="add-employee.php" class="btn-secondary" style="background-color: red">Cancel</a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </form>
                         </div>
                     </div>
                 </div>
-
             </div>
-
-            <script>
+        </div>
+    </div>
+    <!-- Add the Bootstrap Datepicker script -->
+    <script src="assets/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="assets/bootstrap-datepicker.min.css">
+<script>
                 function calculateSalary() {
                     // Get the gross salary input value
                     var grossSalary = parseFloat(document.getElementById("grossSalary").value);
@@ -335,36 +361,15 @@
                     document.getElementById("results").style.display = "block";;
                 }
             </script>
-
-
-            <!-- <script src="assets/js/jquery-3.6.0.min.js"></script> -->
-<!-- 
-            <script src="assets/js/popper.min.js"></script>
-            <script src="assets/js/bootstrap.min.js"></script>
-
-            <script src="assets/js/feather.min.js"></script>
-
-            <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-            <script src="assets/plugins/select2/js/select2.min.js"></script>
-
-            <script src="assets/js/script.js"></script> -->
-            <!-- Add the Bootstrap Datepicker script -->
-            <script src="assets/bootstrap-datepicker.js"></script>
-            <link rel="stylesheet" href="assets/bootstrap-datepicker.min.css">
-
-
-            <script>
-                // Initialize the datepicker
-                $(document).ready(function () {
-                    $('.datepicker').datepicker({
-                        format: 'yyyy-mm-dd', // Adjust the format as needed
-                        autoclose: true
-                    });
-                });
-            </script>
-        </div>
-
+    <script>
+        // Initialize the datepicker
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd', // Adjust the format as needed
+                autoclose: true
+            });
+        });
+    </script>
 </body>
 
 </html>
