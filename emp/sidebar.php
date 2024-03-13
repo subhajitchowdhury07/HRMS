@@ -60,7 +60,7 @@ function fetchProfilePic($conn, $emp_id) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <title>Sedulous technology .pvt .ltd</title>
 
-    <link rel="shortcut icon" href="../assets/img/favicon.png">
+    <link rel="shortcut icon" href="../assets/img/sedulous-small-icon.png">
 
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/plugins/select2/css/select2.min.css">
@@ -471,9 +471,6 @@ function fetchProfilePic($conn, $emp_id) {
 
         </div>
 
-
-
-
         <div class="sidebar" id="sidebar">
             <div class="sidebar-inner slimscroll">
                 <div class="sidebar-contents">
@@ -501,7 +498,7 @@ function fetchProfilePic($conn, $emp_id) {
                                     <span>Dashboard</span></a>
                             </li>
                             <li>
-                                <a href="view_tasks.php"><img src="../assets/img/home.svg" alt="sidebar_img">
+                                <a href="view_tasks.php"><img src="../assets/img/addtask.svg" alt="sidebar_img">
                                     <span>Tasks</span></a>
                             </li>
                             <!-- <li>
@@ -547,7 +544,7 @@ function fetchProfilePic($conn, $emp_id) {
 </li> -->
                             <li>
                                 <a href="#">
-                                    <img src="../assets/img/leave.svg" alt="sidebar_img"> <span>Attendance</span>
+                                    <img src="../assets/img/attendance.svg" alt="sidebar_img"> <span>Attendance</span>
                                 </a>
                                 <ul>
                                     <li><a href="../attendance.php">My Attendance</a></li>

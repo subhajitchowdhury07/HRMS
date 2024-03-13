@@ -52,17 +52,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Profile picture upload handling
     if (isset($_POST['submit'])) {
         if (isset($_FILES["profile_pic"]) && $_FILES["profile_pic"]["error"] == 0) {
-            // Define target directory based on user type
-            $target_dir = "uploads/";
+            // Define target directories
+            $target_dir_1 = "uploads/";
+            $target_dir_2 = "emp/uploads/";
 
-            // Construct the target file path
-            $target_file = $target_dir . basename($_FILES["profile_pic"]["name"]);
-            $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+            // Construct the target file paths
+            $file_name = basename($_FILES["profile_pic"]["name"]);
+            $target_file_1 = $target_dir_1 . $file_name;
+            $target_file_2 = $target_dir_2 . $file_name;
 
             // Upload file without checking size and type
-            if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file)) {
-                // Store the file path in the database (without '../')
-                $stored_file_path = 'uploads/' . basename($_FILES["profile_pic"]["name"]);
+            if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file_1)) {
+                // Duplicate the uploaded file to the second directory
+                copy($target_file_1, $target_file_2);
+
+                // Store the file path in the database (without 'emp/')
+                $stored_file_path = 'uploads/' . $file_name;
+
                 // Update profile pic in database
                 $update_query = "UPDATE employees SET profile_pic = :profile_pic WHERE emp_id = :emp_id";
                 $stmt = $conn->prepare($update_query);
@@ -84,6 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 
 

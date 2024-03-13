@@ -50,38 +50,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Profile picture upload handling
-    if (isset($_POST['submit'])) {
-        if (isset($_FILES["profile_pic"]) && $_FILES["profile_pic"]["error"] == 0) {
-            // Define target directory based on user type
-            $target_dir = "uploads/";
+if (isset($_POST['submit'])) {
+    if (isset($_FILES["profile_pic"]) && $_FILES["profile_pic"]["error"] == 0) {
+        // Define target directories
+        $target_dir_1 = "../uploads/";
+        $target_dir_2 = "uploads/";
 
-            // Construct the target file path
-            $target_file = $target_dir . basename($_FILES["profile_pic"]["name"]);
-            $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        // Construct the target file paths
+        $file_name = basename($_FILES["profile_pic"]["name"]);
+        $target_file_1 = $target_dir_1 . $file_name;
+        $target_file_2 = $target_dir_2 . $file_name;
 
-            // Upload file without checking size and type
-            if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file)) {
-                // Store the file path in the database (without '../')
-                $stored_file_path = 'uploads/' . basename($_FILES["profile_pic"]["name"]);
-                // Update profile pic in database
-                $update_query = "UPDATE employees SET profile_pic = :profile_pic WHERE emp_id = :emp_id";
-                $stmt = $conn->prepare($update_query);
-                $stmt->bindParam(':profile_pic', $stored_file_path);
-                $stmt->bindParam(':emp_id', $emp_id);
-                if ($stmt->execute()) {
-                    // Reload the page
-                    header("Location: {$_SERVER['PHP_SELF']}");
-                    exit;
-                } else {
-                    echo "Error uploading profile picture.";
-                }
+        // Upload file without checking size and type
+        if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file_1)) {
+            // Duplicate the uploaded file to the second directory
+            copy($target_file_1, $target_file_2);
+
+            // Store the file paths in the database (without '../')
+            $stored_file_path = 'uploads/' . $file_name;
+
+            // Update profile pic in database
+            $update_query = "UPDATE employees SET profile_pic = :profile_pic WHERE emp_id = :emp_id";
+            $stmt = $conn->prepare($update_query);
+            $stmt->bindParam(':profile_pic', $stored_file_path);
+            $stmt->bindParam(':emp_id', $emp_id);
+            if ($stmt->execute()) {
+                // Reload the page
+                header("Location: {$_SERVER['PHP_SELF']}");
+                exit;
             } else {
-                echo "Sorry, there was an error uploading your file.";
+                echo "Error uploading profile picture.";
             }
         } else {
-            echo "No file uploaded.";
+            echo "Sorry, there was an error uploading your file.";
         }
+    } else {
+        echo "No file uploaded.";
     }
+}
 }
 ?>
 

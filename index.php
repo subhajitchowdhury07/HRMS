@@ -560,14 +560,14 @@ $totalWorkedHours = null;
                         <h3>Admin Dashboard</h3>
                     </div>
                 </div>
-                <div class="col-xl-6 col-sm-12 col-12">
+                <!-- <div class="col-xl-6 col-sm-12 col-12">
                     <div class="row">
                         <div class="col-xl-6 col-sm-6 col-12">
                             <a class="btn-dash" href="#"> Admin Dashboard</a>
                         </div>
 
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <?php
@@ -935,7 +935,12 @@ if ($resultPendingLeaves !== false) {
 
             while ($employee = $query->fetch(PDO::FETCH_ASSOC)) {
                 echo '<div class="birthday-item">';
-                echo '<img src="' . $employee['profile_pic'] . '" alt="' . $employee['first_name'] . '">';
+                if (!empty($employee['profile_pic'])) {
+                    echo '<img src="' . $employee['profile_pic'] . '" alt="' . $employee['first_name'] . '">';
+                } else {
+                    // Use default profile picture URL
+                    echo '<img src="assets/img/dashboard-profile.jpg" alt="Default Profile Picture">';
+                }
                 echo '<div class="birthday-info">';
                 echo '<p>' . $employee['first_name'] . '</p>';
                 echo '<p class="birthday-date">Birthday: ' . date('F d', strtotime($employee['birth_date'])) . '</p>';
@@ -984,7 +989,12 @@ if ($resultPendingLeaves !== false) {
                         // Display welcome message for new hire
                         echo '<div class="birthday-item">';
                         echo '<p style="color : #51ad26">Welcome in Sedulous ' . $employee['first_name'] . ' 🎉🎉</p>';
-                        echo '<img src="' . $employee['profile_pic'] . '" alt="' . $employee['first_name'] . '">';
+                        if (!empty($employee['profile_pic'])) {
+                            echo '<img src="' . $employee['profile_pic'] . '" alt="' . $employee['first_name'] . '">';
+                        } else {
+                            // Use default profile picture URL
+                            echo '<img src="assets/img/dashboard-profile.jpg" alt="Default Profile Picture">';
+                        }
                         echo '<div class="birthday-info">';
                         echo '<p>' . $employee['first_name'] . '</p>';
                         echo '<p class="birthday-date">Start Date: ' . date('F d', strtotime($employee['start_date'])) . '</p>';
@@ -1078,7 +1088,12 @@ if ($resultPendingLeaves !== false) {
 
             while ($employee = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 echo '<div class="work-anniversary-item">';
-                echo '<img src="' . $employee['profile_pic'] . '" alt="' . $employee['first_name'] . '">';
+                if (!empty($employee['profile_pic'])) {
+                    echo '<img src="' . $employee['profile_pic'] . '" alt="' . $employee['first_name'] . '">';
+                } else {
+                    // Use default profile picture URL
+                    echo '<img src="assets/img/dashboard-profile.jpg" alt="Default Profile Picture">';
+                }
                 echo '<div class="work-anniversary-info">';
                 echo '<p>Happy 1 Year Work Anniversary, ' . $employee['first_name'] . ' 🎉😍</p>';
                 echo '</div>';

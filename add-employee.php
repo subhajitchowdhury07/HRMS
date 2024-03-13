@@ -20,6 +20,9 @@
         <script src="assets/js/respond.min.js"></script>
     <![endif]-->
     <style>
+        body{
+            margin-top:-20px;
+        }
         /* Add this style section to your existing head or style section */
         .btn-secondary {
             background-color: #6c757d; /* Gray color for the "Cancel" button */
@@ -39,6 +42,16 @@
             margin-bottom: 5px;
             display: block;
             color:#51ad26;
+        }
+        @media (max-width: 768px){
+            body{
+                margin-top:-50px;
+            }
+        }
+        @media (max-width: 576px) {
+            body{
+                margin-top:-50px;
+            }
         }
     </style>
 </head>
@@ -63,7 +76,7 @@
                 <div class="col-xl-12 col-sm-12 col-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h2 class="card-titles">Basic Details <span>Organized and secure.</span><span style="color:red;">(*)mandatory fields</span></h2>
+                            <h2 class="card-titles" style="font-weight:bold">Basic Details <span>Organized and secure.</span><span style="color:red;">(*)mandatory fields</span></h2>
                         </div>
                         <div class="card-body">
                             <form method="post" action="process_employee.php">
@@ -194,7 +207,7 @@
                                     </div>
                                     <div class="col-xl-6 col-sm-12 col-12">
                                         <div class="form-group">
-                                            <label for="job_description">Job Description:<span style="color:red; font-size:20px">*</span></label>
+                                            <label for="job_description">Job Description:</label>
                                             <input type="text" id="job_description" name="job_description" placeholder="Job Description">
                                         </div>
                                     </div>
@@ -221,12 +234,12 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
+                                
                                 <!-- Add other fields as needed -->
-                                <div class="col-xl-12 col-sm-12 col-12 ">
-                                    <div class="card ">
+                                <!-- <div class="col-xl-12 col-sm-12 col-12 "> -->
+                                    <!-- <div class="card "> -->
                                         <div class="card-header">
-                                            <h2 class="card-titles">Employment Details<span>Let everyone know the essentials
+                                            <h2 class="card-titles" style="font-weight:bold">Employment Details<span>Let everyone know the essentials
                                                     so they're fully prepared.</span></h2>
                                         </div>
                                         <div class="card-body">
@@ -253,13 +266,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-xl-6 col-sm-12 col-12 ">
                                                     <div class="form-group">
                                                         <label for="job_title">Job Title:</label>
                                                         <input type="text" id="job_title" name="job_title" placeholder="Job Title">
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="col-xl-6 col-sm-12 col-12 ">
                                                     <div class="form-group">
                                                         <label for="employment_type">Employment Type:<span style="color:red; font-size:20px">*</span></label>
@@ -273,10 +286,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-12 col-sm-12 col-12 ">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h2 class="card-titles">Salary Details<span>Stored securely, only visible to
+                                <!-- <div class="col-xl-12 col-sm-12 col-12 "> -->
+                                    <!-- <div class="card"> -->
+                                        <!-- <div class="card-header">
+                                            <h2 class="card-titles" style="font-weight:bold">Salary Details<span>Stored securely, only visible to
                                                     Super Admins, Payroll Admins, and themselves.</span></h2>
                                         </div>
                                         <div class="card-body">
@@ -319,13 +332,13 @@
                                                         <input type="text" id="gross_salary" name="gross_salary" placeholder="Gross salary">
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <!-- Add other fields as needed -->
                                             <div class="row">
                                                 <div class="col-xl-12 col-sm-12 col-12">
                                                     <div class="form-btn">
                                                         <button type="submit" name="add_team_member" class="btn-apply">Add Team Member</button>
-                                                        <a href="add-employee.php" class="btn-secondary" style="background-color: red">Cancel</a>
+                                                        <a href="add-employee.php" class="btn-secondary">Cancel</a>
                                                     </div>
                                                 </div>
                                             </div>

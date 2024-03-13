@@ -239,16 +239,16 @@ $totalWorkedHours = null;
 <h3>Employee Dashboard</h3>
 </div>
 </div>
-<div class="col-xl-6 col-sm-12 col-12">
+<!-- <div class="col-xl-6 col-sm-12 col-12">
 <div class="row">
-<!-- <div class="col-xl-6 col-sm-6 col-12">
+<div class="col-xl-6 col-sm-6 col-12">
 <a class="btn-emp" href="../index.php"> Admin Dashboard</a>
-</div> -->
+</div>
 <div class="col-xl-6 col-sm-6 col-12">
 <a class="btn-dash" href="#">Employee Dashboard</a>
 </div>
 </div>
-</div>
+</div> -->
 </div>
 
 <?php
@@ -284,7 +284,7 @@ function validateIP($ip) {
 }
 
 // Define array of office IP addresses
-$officeIPs = array('117.214.38.7', '117.223.219.151', '192.168.1.55');
+$officeIPs = array('117.214.38.7', '117.214.39.19', '192.168.1.55');
 
 // Get the user's IP address
 $userIP = getUserIP();
@@ -582,7 +582,12 @@ $conn = null;
 
             while ($employee = $query->fetch(PDO::FETCH_ASSOC)) {
                 echo '<div class="birthday-item">';
-                echo '<img src="' . $employee['profile_pic'] . '" alt="' . $employee['first_name'] . '">';
+                if (!empty($employee['profile_pic'])) {
+                    echo '<img src="' . $employee['profile_pic'] . '" alt="' . $employee['first_name'] . '">';
+                } else {
+                    // Use default profile picture URL
+                    echo '<img src="../assets/img/dashboard-profile.jpg" alt="Default Profile Picture">';
+                }
                 echo '<div class="birthday-info">';
                 echo '<p>' . $employee['first_name'] . '</p>';
                 echo '<p class="birthday-date">Birthday: ' . date('F d', strtotime($employee['birth_date'])) . '</p>';
@@ -632,7 +637,12 @@ $conn = null;
                         // Display welcome message for new hire
                         echo '<div class="birthday-item">';
                         echo '<p style="color : #51ad26; font-weight: bold;">Welcome in Sedulous ' . $employee['first_name'] . ' 🎉🎉</p>';
-                        echo '<img src="' . $employee['profile_pic'] . '" alt="' . $employee['first_name'] . '">';
+                        if (!empty($employee['profile_pic'])) {
+                            echo '<img src="' . $employee['profile_pic'] . '" alt="' . $employee['first_name'] . '">';
+                        } else {
+                            // Use default profile picture URL
+                            echo '<img src="../assets/img/dashboard-profile.jpg" alt="Default Profile Picture">';
+                        }
                         echo '<div class="birthday-info">';
                         echo '<p>' . $employee['first_name'] . '</p>';
                         echo '<p class="birthday-date">Start Date: ' . date('F d', strtotime($employee['start_date'])) . '</p>';

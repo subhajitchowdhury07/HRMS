@@ -479,7 +479,7 @@ width: 50px; /* Adjust image size as needed */
 <a href="calendar.php"><img src="assets/img/calendar.svg" alt="sidebar_img"> <span>Calendar</span></a>
 </li>
 <li>
-<a href="add_task.php"><img src="assets/img/calendar.svg" alt="sidebar_img"> <span>Add task</span></a>
+<a href="add_task.php"><img src="assets/img/addtask.svg" alt="sidebar_img"> <span>Add task</span></a>
 </li>
 
 <li>
@@ -522,7 +522,7 @@ width: 50px; /* Adjust image size as needed */
 </li> -->
 <li>
     <a href="#">
-        <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Attendance</span>
+        <img src="assets/img/attendance.svg" alt="sidebar_img"> <span>Attendance</span>
     </a>
     <ul>
         <li><a href="attendance.php">My Attendance</a></li>
@@ -542,7 +542,7 @@ width: 50px; /* Adjust image size as needed */
 </li> -->
 <li>
     <a href="#">
-        <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Documents</span>
+        <img src="assets/img/doc.svg" alt="sidebar_img"> <span>Documents</span>
     </a>
     <ul>
         <li><a href="uploadDocuments.php">Upload Documents</a></li>
