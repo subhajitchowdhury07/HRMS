@@ -1,12 +1,12 @@
 <?php
-include('db_conn.php');
+include('../db_conn.php');
 session_start();
 error_reporting(0);
 
 // Check if user is logged in
 if (!isset($_SESSION['emp_id']) || !isset($_SESSION['user_type'])) {
     // Redirect to login page if not logged in
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit();
 }
 
@@ -123,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && isset($_P
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
-            margin-top: 30px;
+            margin-top: 40px;
             padding: 0;
         }
         h2 {

@@ -56,10 +56,11 @@
         
     }
 	.form-control{
-			margin-left:140px;
+			margin-left:90px;
 			border:1px solid black;
 			/* margin-top:230px; */
 		}
+	
 
     .form-group select:focus {
         outline: none; /* Remove focus outline */
@@ -99,7 +100,7 @@
 
     @media only screen and (max-width: 768px) {
         .head-link-set > * {
-            margin-right: 0; /* Remove right margin on smaller screens */
+            margin-right: 10px; /* Remove right margin on smaller screens */
             margin-bottom: 5px; /* Adjust margin bottom for smaller spacing */
         }
         .form-control {
@@ -135,7 +136,7 @@
                                 $sql = "SELECT id,emp_id, first_name, last_name FROM employees";
                                 $stmt = $conn->query($sql);
                                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                    echo '<option value="' . $row['id'] . '">' . $row['first_name'] . ' ' . $row['last_name'] . " ( " . $row['emp_id'] . " )" . '</option>';
+                                    echo '<option value="' . $row['id'] . '">' . $row['first_name'] . ' ' . $row['last_name'] . " ( " . $row['emp_id'] . ")" . '</option>';
                                 }
                                 ?>
                             </select>

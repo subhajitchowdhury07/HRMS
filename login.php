@@ -19,11 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
         // Check if the password matches
         if (password_verify($password, $user['password']) || $password == $user['password']) {
             $_SESSION['emp_id'] = $user['emp_id'];
+            $_SESSION['id'] = $user['id'];
             $_SESSION['user_type'] = $user['user_type']; // Store user type in session
             $_SESSION['manager_id'] = $user['id']; // Store manager's ID in session
             if (($user['user_type'] == 'admin' || $user['user_type'] == 'director')) {
                 header('Location: index.php');
-            } elseif ($user['user_type'] == 'user')  {
+            } elseif ($user['user_type'] == 'user' || $user['user_type'] == 'manager')  {
                 header('Location: emp/index-employee.php');
             }
             exit();            

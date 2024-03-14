@@ -75,7 +75,7 @@ function fetchProfilePic($conn, $emp_id) {
 			<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
 
-<style>
+    <style>
     body {
         background-color: #fff;
         /* White background */
@@ -84,12 +84,15 @@ function fetchProfilePic($conn, $emp_id) {
         font-family: 'Poppins', sans-serif;
         /* Poppins font */
     }
-    .user-img img{
-        width: 50px; /* Adjust image size as needed */
-    height: 50px;
-    border-radius: 50%; /* Make the image round */
-    margin-right: 10px;
-    object-fit: cover;
+
+    .user-img img {
+        width: 50px;
+        /* Adjust image size as needed */
+        height: 50px;
+        border-radius: 50%;
+        /* Make the image round */
+        margin-right: 10px;
+        object-fit: cover;
     }
 
     .custom-menu-bar {
@@ -206,8 +209,8 @@ function fetchProfilePic($conn, $emp_id) {
         }
 
     }
-</style>
-<style>
+    </style>
+    <style>
     /* body {
         background: #cff5b5;
     } */
@@ -360,8 +363,8 @@ function fetchProfilePic($conn, $emp_id) {
         padding: 10px;
         border-radius: 5px;
     }
-</style>
-<style>
+    </style>
+    <style>
     /* Add this to your existing style or in a separate style section */
     li ul {
         display: none;
@@ -392,7 +395,7 @@ function fetchProfilePic($conn, $emp_id) {
         background-color: #f4f4f4;
         /* Set your desired hover background color */
     }
-</style>
+    </style>
 
 
 
@@ -481,7 +484,9 @@ function fetchProfilePic($conn, $emp_id) {
                                     <span class="lnr lnr-cross  text-white" id="mobile_btn_close">X</span>
                                     <a href="javascript:void(0)" class="d-block menu-style text-white">
                                         <div class="user-avatar d-inline-block mr-3">
-                                        <img style="width: 100px; height: 100px; border:4px solid white ;border-radius: 50%; object-fit: cover;" src="<?php echo fetchProfilePic($conn, $_SESSION['emp_id']); ?>" alt="user avatar" class="rounded-circle" width="50" >
+                                            <img style="width: 100px; height: 100px; border:4px solid white ;border-radius: 50%; object-fit: cover;"
+                                                src="<?php echo fetchProfilePic($conn, $_SESSION['emp_id']); ?>"
+                                                alt="user avatar" class="rounded-circle" width="50">
                                             <br>
                                             <br>
                                             <span><b><?php echo $employee_first_name; ?>
@@ -497,6 +502,10 @@ function fetchProfilePic($conn, $emp_id) {
                                 <a href="index-employee.php"><img src="../assets/img/home.svg" alt="sidebar_img">
                                     <span>Dashboard</span></a>
                             </li>
+                            
+                            <?php if(isset($_SESSION['user_type']) && $_SESSION['user_type']=='manager'): ?>
+    <li><a href="add_task.php"><img src="../assets/img/addtask.svg" alt="sidebar_img"> <span>Add task</span></a></li>
+    <?php endif; ?>
                             <li>
                                 <a href="view_tasks.php"><img src="../assets/img/addtask.svg" alt="sidebar_img">
                                     <span>Tasks</span></a>
@@ -518,6 +527,10 @@ function fetchProfilePic($conn, $emp_id) {
                                 <ul>
                                     <li><a href="leave_application_form.php">Apply Leave</a></li>
                                     <li><a href="leave_history.php">Leave History</a></li>
+                                    <?php if(isset($_SESSION['user_type']) && $_SESSION['user_type']=='manager'): ?>
+    <li><a href="leave_management_system.php">Leave management</a></li>
+<?php endif; ?>
+
                                     <!-- Add more leave types as needed -->
                                 </ul>
                             </li>
@@ -598,41 +611,36 @@ function fetchProfilePic($conn, $emp_id) {
                 </div>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
-        <script>
-        // Wait for the document to be ready
-        $(document).ready(function() {
-            // Get the current URL
-            var currentUrl = window.location.pathname;
+        </body>
+<!-- Move this script to the end of the body tag -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../assets/js/popper.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/feather.min.js"></script>
+<script src="../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../assets/plugins/apexchart/apexcharts.min.js"></script>
+<script src="../assets/plugins/apexchart/chart-data.js"></script>
+<script src="../assets/js/script.js"></script>
+<script>
+    // Wait for the document to be ready
+    $(document).ready(function() {
+        // Get the current URL
+        var currentUrl = window.location.pathname;
 
-            // Loop through each anchor tag in the navigation menu
-            $('.sidebar-menu a').each(function() {
-                // Get the href attribute of the anchor tag
-                var linkUrl = $(this).attr('href');
+        // Loop through each anchor tag in the navigation menu
+        $('.sidebar-menu a').each(function() {
+            // Get the href attribute of the anchor tag
+            var linkUrl = $(this).attr('href');
 
-                // Check if the current URL contains the href attribute
-                if (currentUrl.includes(linkUrl)) {
-                    // Add the 'active' class to the parent <li> element
-                    $(this).closest('li').addClass('active');
-                }
-            });
+            // Check if the current URL contains the href attribute
+            if (currentUrl.includes(linkUrl)) {
+                // Add the 'active' class to the parent <li> element
+                $(this).closest('li').addClass('active');
+            }
         });
-        </script>
-
-        <script src="../assets/js/jquery-3.6.0.min.js"></script>
-
-        <script src="../assets/js/popper.min.js"></script>
-        <script src="../assets/js/bootstrap.min.js"></script>
-
-        <script src="../assets/js/feather.min.js"></script>
-
-        <script src="../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-        <script src="../assets/plugins/apexchart/apexcharts.min.js"></script>
-        <script src="../assets/plugins/apexchart/chart-data.js"></script>
-
-        <script src="../assets/js/script.js"></script>
-</body>
+    });
+</script>
 
 </html>

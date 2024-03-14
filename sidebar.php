@@ -490,6 +490,7 @@ width: 50px; /* Adjust image size as needed */
         <li><a href="leave_application_form.php">Apply Leave</a></li>
         <li><a href="set_leave_type.php">Set Leave Type</a></li>
         <li><a href="allotted_leave.php">Allocatte Leave</a></li>
+        <li><a href="leave_history.php">Leave history</a></li>
         <?php if(isset($_SESSION['user_type']) && $_SESSION['user_type']=='director'): ?>
         <li><a href="leave_management_for_director.php">Leave management</a></li>
         <?php else: ?>

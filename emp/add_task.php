@@ -3,7 +3,7 @@ ob_start();
 include('sidebar.php');
 // session_start();
 
-include('db_conn.php');
+include('../db_conn.php');
 
 // Check if user is logged in
 if (!isset($_SESSION['emp_id']) || !isset($_SESSION['user_type'])) {
@@ -19,9 +19,14 @@ if ($_SESSION['user_type'] !== 'director' && $_SESSION['user_type'] !== 'admin' 
     exit();
 }
 
-// Fetch all employees for dropdown
-$sqlEmployees = "SELECT id, first_name FROM employees";
-$stmtEmployees = $conn->query($sqlEmployees);
+// Fetch manager's ID
+$manager_id = $_SESSION['id'];
+
+// Fetch employees under the manager
+$sqlEmployees = "SELECT id, first_name FROM employees WHERE manager_id = :manager_id";
+$stmtEmployees = $conn->prepare($sqlEmployees);
+$stmtEmployees->bindParam(':manager_id', $manager_id);
+$stmtEmployees->execute();
 $employees = $stmtEmployees->fetchAll(PDO::FETCH_ASSOC);
 
 // Check if form is submitted
@@ -86,14 +91,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Fetch all tasks assigned by the current user
-$assigned_by = $_SESSION['emp_id'];
+// Fetch tasks assigned to the manager's employees
 $sqlTasks = "SELECT tasks.*, employees.first_name 
              FROM tasks 
              INNER JOIN employees ON tasks.employee_id = employees.id 
-             WHERE tasks.assigned_by = :assigned_by";
+             WHERE employees.manager_id = :manager_id";
 $stmtTasks = $conn->prepare($sqlTasks);
-$stmtTasks->bindParam(':assigned_by', $assigned_by);
+$stmtTasks->bindParam(':manager_id', $manager_id);
 $stmtTasks->execute();
 $tasks = $stmtTasks->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -104,16 +108,16 @@ $tasks = $stmtTasks->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Task</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <!-- Select2 CSS -->
-    <link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="../assets/plugins/select2/css/select2.min.css">
     <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
-    <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../assets/plugins/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="../assets/plugins/fontawesome/css/all.min.css">
     <!-- Custom Style CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <!-- Favicon -->
-    <link rel="shortcut icon" href="assets/img/favicon.png">
+    <link rel="shortcut icon" href="../assets/img/favicon.png">
     <style>
     body {
         font-family: Arial, sans-serif;
@@ -366,7 +370,7 @@ $tasks = $stmtTasks->fetchAll(PDO::FETCH_ASSOC);
     <div class="page-wrapper">
         <div class="container">
             <div class="left-side">
-                <img src="assets/img/add_task.gif" alt="GIF">
+                <img src="../assets/img/add_task.gif" alt="GIF">
             </div>
             <div class="right-side">
                 <h1>Add Task</h1>
@@ -406,24 +410,24 @@ $tasks = $stmtTasks->fetchAll(PDO::FETCH_ASSOC);
                             <?php if ($task['status'] === 'Completed'): ?>
                             <span style="color: green; font-weight: bold;">
                                 <?= $task['status'] ?>
-                                <img src="assets/img/check.gif" alt="Completed GIF" width="20">
+                                <img src="../assets/img/check.gif" alt="Completed GIF" width="20">
                             </span>
                             <?php elseif ($task['status'] === 'Pending'): ?>
                             <span style="color: blue; font-weight: bold;">
                                 <?= $task['status'] ?>
-                                <img src="assets/img/pending-4.gif" alt="Pending GIF" width="25">
+                                <img src="../assets/img/pending-4.gif" alt="Pending GIF" width="25">
                             </span>
                             <?php endif; ?>
 
                             <!-- Edit and Delete Buttons -->
                             <div class="edit-delete-buttons">
                             <button type="button" onclick="openEditModal(<?= $task['task_id'] ?>, '<?= $task['task_description'] ?>')">
-    <img src="assets/img/edit-1.png" alt="Edit" width="15">
+    <img src="../assets/img/edit-1.png" alt="Edit" width="15">
 </button>
 
                                 <!-- Delete button -->
 <button type="button" class="delete-button" onclick="openDeleteModal(<?= $task['task_id'] ?>)">
-    <img src="assets/img/delete.png" alt="Delete" width="20">
+    <img src="../assets/img/delete.png" alt="Delete" width="20">
 </button>
 
                             </div>
