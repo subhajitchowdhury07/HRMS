@@ -1,9 +1,10 @@
+<?php include("sidebar.php"); ?>
 <?php
 // Include necessary files (e.g., database connection)
 include("db_conn.php");
 
 // Start or resume session
-session_start();
+// session_start();
 
 // Check if the user is logged in
 if (!isset($_SESSION['emp_id'])) {
@@ -34,13 +35,12 @@ if ($result === false) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leave History</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="assets/css/bootstrap.min.css"> -->
     <!-- Add other necessary stylesheets -->
 </head>
 
 <body>
 
-    <?php include("sidebar.php"); ?>
 
     <div class="page-wrapper">
         <div class="content container-fluid">
@@ -79,9 +79,9 @@ if ($result === false) {
             </div>
         </div>
     </div>
-
+<!-- 
     <script src="assets/js/jquery-3.6.0.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script> -->
     <!-- Add other necessary scripts -->
 
 </body>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>All Employees</title>
     <link rel="shortcut icon" href="assets/img/sedulous-small-icon.png">
@@ -9,8 +10,9 @@
     li ul {
         display: none;
         position: absolute;
-        background-color: #fff; /* Set your desired background color */
-        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        background-color: #fff;
+        /* Set your desired background color */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         z-index: 1;
     }
 
@@ -25,12 +27,14 @@
 
     li ul li a {
         text-decoration: none;
-        color: #333; /* Set your desired text color */
+        color: #333;
+        /* Set your desired text color */
         display: block;
     }
 
     li ul li a:hover {
-        background-color: #f4f4f4; /* Set your desired hover background color */
+        background-color: #f4f4f4;
+        /* Set your desired hover background color */
     }
 
     /* Add rounded profile picture */
@@ -46,31 +50,39 @@
     .form-group select {
         width: 100%;
         padding: 8px;
-        border: 2px solid #4CAF50; /* Green border */
+        border: 2px solid #4CAF50;
+        /* Green border */
         border-radius: 4px;
         box-sizing: border-box;
         margin-top: 5px;
         margin-bottom: 10px;
-        background-color: #fff; /* Set your desired background color */
-        color: #333; /* Set your desired text color */
-        
+        background-color: #fff;
+        /* Set your desired background color */
+        color: #333;
+        /* Set your desired text color */
+
     }
-	.form-control{
-			margin-left:90px;
-			border:1px solid black;
-			/* margin-top:230px; */
-		}
-	
+
+    .form-control {
+        margin-left: 90px;
+        border: 1px solid black;
+        /* margin-top:230px; */
+    }
+
 
     .form-group select:focus {
-        outline: none; /* Remove focus outline */
-        border-color: #51ad26; /* Change border color on focus */
-        box-shadow: 0 0 5px #51ad26; /* Add shadow on focus */
+        outline: none;
+        /* Remove focus outline */
+        border-color: #51ad26;
+        /* Change border color on focus */
+        box-shadow: 0 0 5px #51ad26;
+        /* Add shadow on focus */
     }
 
     /* Style for download button */
     .btn-download {
-        background-color: #4CAF50; /* Green */
+        background-color: #4CAF50;
+        /* Green */
         border: none;
         color: white;
         padding: 10px 20px;
@@ -84,32 +96,77 @@
     }
 
     .btn-download:hover {
-        background-color: #45a049; /* Darker green */
+        background-color: #45a049;
+        /* Darker green */
     }
 
     .head-link-set {
         display: flex;
         align-items: center;
-        flex-wrap: wrap; /* Allow items to wrap */
+        flex-wrap: wrap;
+        /* Allow items to wrap */
     }
 
-    .head-link-set > * {
+    .head-link-set>* {
         margin-right: 10px;
-        margin-bottom: 10px; /* Add margin-bottom for spacing between elements */
+        margin-bottom: 10px;
+        /* Add margin-bottom for spacing between elements */
     }
 
     @media only screen and (max-width: 768px) {
-        .head-link-set > * {
-            margin-right: 10px; /* Remove right margin on smaller screens */
-            margin-bottom: 5px; /* Adjust margin bottom for smaller spacing */
+        .head-link-set>* {
+            margin-right: 10px;
+            /* Remove right margin on smaller screens */
+            margin-bottom: 5px;
+            /* Adjust margin bottom for smaller spacing */
         }
+
         .form-control {
-            margin-left: 0; /* Reset margin left for smaller screens */
+            margin-left: 0;
+            /* Reset margin left for smaller screens */
         }
     }
-</style>
+
+    /* Style for edit and delete buttons */
+    .edit-btn{
+        background-color: #4CAF50;
+        /* Green */
+        color: white;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin-right: 5px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .edit-btn:hover {
+        background-color: #45a049;
+        /* Darker green */
+    }
+	.delete-btn {
+    background-color: #f44336; /* Red */
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin-right: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #d32f2f; /* Darker red */
+}
+
+    </style>
 
 </head>
+
 <body>
     <?php include("sidebar.php") ?>
     <div class="page-wrapper">
@@ -118,7 +175,8 @@
                 <div class="col-xl-12 col-sm-12 col-12">
                     <div class="breadcrumb-path mb-4">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.php"><img src="assets/img/dash.png" class="mr-2" alt="breadcrumb" />Home</a></li>
+                            <li class="breadcrumb-item"><a href="index.php"><img src="assets/img/dash.png" class="mr-2"
+                                        alt="breadcrumb" />Home</a></li>
                             <li class="breadcrumb-item active"> Employees</li>
                         </ul>
                         <h3>Employees</h3>
@@ -141,7 +199,8 @@
                                 ?>
                             </select>
                         </div>
-                        <button class="btn btn-outline-success p-3" onclick="downloadEmployeeDetails()">Download Details</button>
+                        <button class="btn btn-outline-success p-3" onclick="downloadEmployeeDetails()">Download
+                            Details</button>
                     </div>
                 </div>
                 <div class="col-xl-12 col-sm-12 col-12 mb-4">
@@ -154,7 +213,9 @@
                     ?>
                     <div class="row">
                         <div class="col-xl-10 col-sm-8 col-12">
-                            <label class="employee_count"><span style="color: #51ad26; font-size: 28px; font-weight: bold; margin-bottom: 20px;"><?php echo $empcount; ?></span> People</label>
+                            <label class="employee_count"><span
+                                    style="color: #51ad26; font-size: 28px; font-weight: bold; margin-bottom: 20px;"><?php echo $empcount; ?></span>
+                                People</label>
                         </div>
                         <!-- Add any additional buttons or filters here -->
                     </div>
@@ -162,7 +223,8 @@
                 <div class="col-xl-12 col-sm-12 col-12 mb-4">
                     <div class="card">
                         <div class="table-heading">
-                            <h2 style="color: #51ad26; font-size: 28px; font-weight: bold; margin-bottom: 20px;">Employee Summary</h2>
+                            <h2 style="color: #51ad26; font-size: 28px; font-weight: bold; margin-bottom: 20px;">
+                                Employee Summary</h2>
                         </div>
                         <div class="table-responsive">
                             <table class="table custom-table no-footer">
@@ -175,12 +237,13 @@
                                         <th>Department</th>
                                         <th>Email</th>
                                         <th>Phone number</th>
+                                        <th>Actions</th> <!-- New column for edit and delete buttons -->
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     // Fetch employee details for table
-                                    $sql = "SELECT profile_pic, emp_id, first_name, last_name, title, reporting_to, department, email, phone_number FROM employees";
+                                    $sql = "SELECT id, profile_pic, emp_id, first_name, last_name, title, reporting_to, department, email, phone_number FROM employees";
                                     $stmt = $conn->query($sql);
                                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                         echo "<tr>";
@@ -202,6 +265,13 @@
                                         echo "<td>".$row['department']."</td>";
                                         echo "<td>".$row['email']."</td>";
                                         echo "<td>".$row['phone_number']."</td>";
+                                        // Edit and delete buttons
+                                        echo "<td>";
+                                        echo "<!-- Edit button -->";
+                                        echo "<button class='edit-btn' onclick='editEmployee(" . $row['id'] . ")'>Edit</button>";
+                                        echo "<!-- Delete button -->";
+                                        echo "<button class='delete-btn' onclick='deleteEmployee(" . $row['id'] . ")'>Delete</button>";
+                                        echo "</td>";
                                         echo "</tr>";
                                     }
                                     ?>
@@ -217,19 +287,32 @@
 
 <!-- JavaScript function to handle the download -->
 <script>
-    function downloadEmployeeDetails() {
-        // Get the selected employee's ID
-        var employeeId = document.getElementById("employee_select").value;
+function downloadEmployeeDetails() {
+    // Get the selected employee's ID
+    var employeeId = document.getElementById("employee_select").value;
 
-        // If no employee is selected, redirect to download all employee details
-        if (!employeeId) {
-            window.location.href = 'download_employee_details.php';
-        } else {
-            // Redirect to the PHP file that will generate the CSV with emp_id parameter
-            window.location.href = 'download_employee_details.php?id=' + employeeId;
-        }
+    // If no employee is selected, redirect to download all employee details
+    if (!employeeId) {
+        window.location.href = 'download_employee_details.php';
+    } else {
+        // Redirect to the PHP file that will generate the CSV with emp_id parameter
+        window.location.href = 'download_employee_details.php?id=' + employeeId;
     }
+}
 </script>
+<script>
+function editEmployee(employeeId) {
+    // Redirect to the edit employee page with the employee ID
+    window.location.href = 'edit_employee.php?id=' + employeeId;
+}
 
+
+function deleteEmployee(employeeId) {
+    // Redirect to the delete employee PHP script with the employee ID
+    if (confirm('Are you sure you want to delete this employee?')) {
+        window.location.href = 'delete_employee.php?id=' + employeeId;
+    }
+}
+</script>
 
 </html>

@@ -458,6 +458,17 @@
     .closebtn:hover {
         color: black;
     }
+    .leave-type {
+        max-width: 200px; /* Set maximum width for the leave type cell */
+        overflow: hidden; /* Hide overflow content */
+        text-overflow: ellipsis; /* Add ellipsis for overflow content */
+        white-space: nowrap; /* Prevent line breaks */
+        word-wrap: break-word; /* Allow long words to wrap to the next line */
+        word-break: break-all;
+    }
+    .starting-balance {
+            text-align: center;
+        }
 
 
     /* Responsive adjustments */
@@ -1015,7 +1026,7 @@ if ($resultPendingLeaves !== false) {
             </div>
 
     <!-- Leave balance -->
-   <div class="col-xl-6">
+    <div class="col-xl-6">
         <div class="card flex-fill">
             <div class="card-header">
                 <h5 class="card-title">Leave Balance Report</h5>
@@ -1048,8 +1059,8 @@ if ($resultPendingLeaves !== false) {
                     // Loop through each leave record
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         echo '<tr>';
-                        echo '<td>' . $row['leave_type'] . '</td>';
-                        echo '<td>' . $row['starting_balance'] . '</td>';
+                        echo '<td class="leave-type">' . $row['leave_type'] . '</td>';
+                        echo '<td class="starting-balance">' . $row['starting_balance'] . '</td>';
                         echo '</tr>';
                     }
                     echo '</tbody>';
@@ -1064,6 +1075,7 @@ if ($resultPendingLeaves !== false) {
             </div>
         </div>
     </div>
+
 
 
     <div class="col-xl-6">
