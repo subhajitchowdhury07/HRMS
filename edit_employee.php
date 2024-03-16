@@ -167,7 +167,7 @@ if(isset($_GET['id'])) {
         <div class="content container-fluid">
             <div class="row">
                 <div class="col-xl-12 col-sm-12 col-12">
-                    <h1 style="color: #51ad26; font-size: 28px; font-weight: bold; margin-bottom: 20px;">Edit Employee</h1>
+                    <h1 style="margin-top:-50px;color: #51ad26; font-size: 28px; font-weight: bold; margin-bottom: 20px;">Edit Employee</h1>
                     <!-- Display parameters of the current login user within a box -->
                     <div class="current-user-box">
                         <!-- Display parameters here, e.g., user ID, name, etc. -->

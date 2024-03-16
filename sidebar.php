@@ -552,6 +552,7 @@ width: 50px; /* Adjust image size as needed */
     </ul>
 </li>
 
+
 <li>
     <a href="calculate_salary.php"><img src="assets/img/calculator.svg" alt="sidebar_img"> <span>Salary Calculator</span></a>
 </li>
@@ -573,6 +574,15 @@ width: 50px; /* Adjust image size as needed */
 <li>
 <a href="profile.php"><img src="assets/img/profile.svg" alt="sidebar_img"> <span>Profile</span></a>
 </li>
+<?php if(isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'director'): 
+?>
+    <li>
+        <a href="important_fields.php">
+            <img src="assets/img/addtask.svg" alt="sidebar_img">
+            <span>Important Field</span>
+        </a>
+    </li>
+<?php endif; ?>
 </ul>
 <ul class="logout">
 <li>
