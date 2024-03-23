@@ -440,11 +440,7 @@ li ul li a:hover {
 
 
 
-width: 50px; /* Adjust image size as needed */
-    height: 50px;
-    border-radius: 50%; /* Make the image round */
-    margin-right: 10px;
-    object-fit: cover;
+
 <div class="sidebar" id="sidebar">
 <div class="sidebar-inner slimscroll">
 <div class="sidebar-contents">
@@ -472,6 +468,10 @@ width: 50px; /* Adjust image size as needed */
 <li>
 <a href="employee.php"><img src="assets/img/employee.svg" alt="sidebar_img"><span> Employees</span></a>
 </li>
+<li>
+    <a href="timesheet_report.php"><img src="assets/img/calculator.svg" alt="sidebar_img"> <span>Timesheet report</span></a>
+</li>
+
 <!-- <li>
 <a href="company.html"><img src="assets/img/company.svg" alt="sidebar_img"> <span> Company</span></a>
 </li> -->
@@ -553,6 +553,9 @@ width: 50px; /* Adjust image size as needed */
 </li>
 
 
+<li>
+    <a href="add_projects.php"><img src="assets/img/calculator.svg" alt="sidebar_img"> <span>Add projects</span></a>
+</li>
 <li>
     <a href="calculate_salary.php"><img src="assets/img/calculator.svg" alt="sidebar_img"> <span>Salary Calculator</span></a>
 </li>

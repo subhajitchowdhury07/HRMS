@@ -31,7 +31,7 @@
         font-weight: bold;
         font-family: 'Poppins', sans-serif;
         /* Poppins font */
-        margin-top: -60px;
+        /* margin-top: -60px; */
     }
 
     h2 {

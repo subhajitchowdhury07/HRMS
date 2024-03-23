@@ -502,6 +502,10 @@ function fetchProfilePic($conn, $emp_id) {
                                 <a href="index-employee.php"><img src="../assets/img/home.svg" alt="sidebar_img">
                                     <span>Dashboard</span></a>
                             </li>
+                            <li>
+                                <a href="timesheet.php"><img src="../assets/img/home.svg" alt="sidebar_img">
+                                    <span>Timesheet</span></a>
+                            </li>
                             
                             <?php if(isset($_SESSION['user_type']) && $_SESSION['user_type']=='manager'): ?>
     <li><a href="add_task.php"><img src="../assets/img/addtask.svg" alt="sidebar_img"> <span>Add task</span></a></li>
