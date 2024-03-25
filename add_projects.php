@@ -113,7 +113,64 @@ $projects = $projectsStmt->fetchAll(PDO::FETCH_ASSOC);
     <style>
         body{
             margin-top:-30px;
-        }    
+        }   
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* Adjust button styles for better mobile experience */
+        button[type="submit"] {
+            /* width: 100%; */
+            margin-top: 10px;
+        }
+
+        /* Responsive table styles */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        /* Adjust table styles for smaller screens */
+        @media (max-width: 767px) {
+    .table {
+        width: 100%;
+        margin-bottom: 0;
+        background-color: transparent;
+    }
+
+    .table-bordered {
+        border: 0;
+    }
+
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        border: none;
+    }
+
+    .table-responsive > .table {
+        margin-bottom: 0;
+    }
+
+    /* Adjust button styles for mobile */
+    .btn {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    /* Center the buttons */
+    .action-buttons {
+        text-align: center;
+    }
+
+    /* Ensure buttons are displayed inline */
+    .action-buttons button {
+        display: inline-block;
+        margin-right: 5px;
+    }
+}
+
     </style>
     <!-- <style>
         /* Page Wrapper */
@@ -271,40 +328,39 @@ $projects = $projectsStmt->fetchAll(PDO::FETCH_ASSOC);
 
                     <hr>
 
-                    <h2 style="color: #51ad26;
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 20px;">My Projects</h2>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Project Name</th>
-                                <th>Department</th>
-                                <th>Client Name</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($projects as $project) : ?>
-                                <tr>
-                                    <td><?= escape($project['project_name']) ?></td>
-                                    <td><?= escape($project['department']) ?></td>
-                                    <td><?= escape($project['client_name']) ?></td>
-                                    <td>
-                                        <form method="post">
-                                            <input type="hidden" name="project_id" value="<?= escape($project['project_id']) ?>">
-                                            <button type="submit" name="edit_project" style="padding: 6px 22px;" class="btn btn-success">Edit</button>
-                                        </form>
-                                        <form method="post" onsubmit="return confirm('Are you sure you want to delete this project?');">
-                                            <input type="hidden" name="project_id" value="<?= escape($project['project_id']) ?>">
-                                            <button type="submit" name="delete_project" style="" class="btn btn-danger">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                    <h2 style="color: #51ad26; font-size: 28px; font-weight: bold; margin-bottom: 20px;">My Projects</h2>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Project Name</th>
+                <th>Department</th>
+                <th>Client Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($projects as $project) : ?>
+                <tr>
+                    <td><?= escape($project['project_name']) ?></td>
+                    <td><?= escape($project['department']) ?></td>
+                    <td><?= escape($project['client_name']) ?></td>
+                    <td class="action-buttons">
+                        <form method="post">
+                            <input type="hidden" name="project_id" value="<?= escape($project['project_id']) ?>">
+                            <button type="submit" name="edit_project" style="padding: 6px 22px;" class="btn btn-success">Edit</button>
+                        </form>
+                        <form method="post" onsubmit="return confirm('Are you sure you want to delete this project?');">
+                            <input type="hidden" name="project_id" value="<?= escape($project['project_id']) ?>">
+                            <button type="submit" name="delete_project" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
             </div>
         </div>
 

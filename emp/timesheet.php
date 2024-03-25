@@ -2,6 +2,7 @@
 // Include database connection
 include('../db_conn.php');
 session_start();
+error_reporting(0);
 
 // Check if user is logged in
 if (!isset($_SESSION['id'])) {
@@ -228,6 +229,7 @@ $tasks = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
     .timer {
         font-size: 24px;
         font-weight: bold;
+        color:#807c7c;
         margin-bottom: 20px;
     }
 
@@ -268,6 +270,10 @@ $tasks = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
         border-color: #007bff;
         outline: none;
     }
+    select {
+            width: 100%; /* Adjust as needed */
+            max-width: 300px; /* Set maximum width for desktop */
+        }
 
     .form-group {
         margin-bottom: 20px;
@@ -312,6 +318,14 @@ $tasks = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
     .inputGroup :is(input:focus, input:valid) {
         border-color: rgb(150, 150, 200);
     }
+    /* CSS Media Query for Mobile Devices */
+@media only screen and (max-width: 600px) {
+    /* Adjust the width of the select element for mobile */
+    #project {
+        width: 80%; /* Adjust as needed */
+    }
+}
+    
     </style>
 </head>
 
@@ -329,16 +343,17 @@ $tasks = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
                 <label for="task">Task:</label>
             </div>
             <!-- </div> -->
-            <div class="form-group" style="margin-right:460px">
-                <label for="project">Project:</label>
-                <select name="project_id" id="project">
-                    <option value="">Select Project</option>
-                    <?php foreach ($projects as $project): ?>
-                    <option value="<?= $project['project_id']; ?>"><?= htmlspecialchars($project['project_name']); ?>
-                    </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
+            <div class="form-group">
+        <label for="project">Project:</label>
+        <select name="project_id" id="project">
+            <!-- Options for Select Project -->
+            <option value="">Select Project</option>
+            <!-- Iterate through projects -->
+            <?php foreach ($projects as $project): ?>
+                <option value="<?= $project['project_id']; ?>"><?= htmlspecialchars($project['project_name']); ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
             <div class="startbtn" style="margin-bottom:20px">
                 <button type="submit" name="start_timer">Start Timer</button>
                 <button type="submit" name="stop_timer" class="stop_btn">Stop Timer</button>
