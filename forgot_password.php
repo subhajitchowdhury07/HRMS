@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="page-wrapper">
-        <img src="assets/img/logo2.png" alt="Logo" class="logo">
+        <img src="assets/img/logo.png" alt="Logo" class="logo">
         <h2>Forgot Password</h2>
         <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
         <?php if (isset($success)) echo "<p class='success'>$success</p>"; ?>

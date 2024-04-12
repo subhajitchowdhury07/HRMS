@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     <div class="main-wrapper login-body">
         <div class="login-wrapper">
             <div class="container">
-                <img class="img-fluid logo-dark mb-2" src="assets/img/logo2.png" alt="Logo">
+                <img class="img-fluid logo-dark mb-2" src="assets/img/logo.png" alt="Logo">
                 <div class="loginbox">
                     <div class="login-right">
                         <div class="login-right-wrap">

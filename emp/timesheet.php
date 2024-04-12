@@ -28,16 +28,22 @@ $projects = $projectsStmt->fetchAll(PDO::FETCH_ASSOC);
 // Initialize task and start time from session if available
 $task = isset($_SESSION['task']) ? $_SESSION['task'] : '';
 $start_time = isset($_SESSION['start_time']) ? $_SESSION['start_time'] : '';
+$errorMessage = '';
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['start_timer'])) {
-        // Start timer
-        $_SESSION['task'] = $_POST['task'];
-        $_SESSION['project_id'] = $_POST['project_id'];
-        $task = $_SESSION['task'];
-        $_SESSION['start_time'] = time(); // Update start time
-        $start_time = $_SESSION['start_time'];
+        if (!empty($_POST['project_id'])) {
+            // Start timer only if a project is selected
+            $_SESSION['task'] = $_POST['task'];
+            $_SESSION['project_id'] = $_POST['project_id'];
+            $task = $_SESSION['task'];
+            $_SESSION['start_time'] = time(); // Update start time
+            $start_time = $_SESSION['start_time'];
+        } else {
+            // Show error message if no project is selected
+            $errorMessage = 'Please select the project.';
+        }
     } elseif (isset($_POST['stop_timer'])) {
         // Stop timer and calculate hours worked
         $endTime = time();
@@ -79,6 +85,7 @@ $tasksStmt->bindParam(':userId', $userId);
 $tasksStmt->execute();
 $tasks = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -325,7 +332,6 @@ $tasks = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
         width: 80%; /* Adjust as needed */
     }
 }
-    
     </style>
 </head>
 
@@ -336,6 +342,10 @@ $tasks = $tasksStmt->fetchAll(PDO::FETCH_ASSOC);
     font-size: 28px;
     font-weight: bold;
     margin-bottom: 20px;">Timesheet</h2>
+    <!-- Add the error message display section here -->
+    <?php if (!empty($errorMessage)): ?>
+        <div style="color: red; margin-bottom: 10px;"><?= $errorMessage ?></div>
+    <?php endif; ?>
         <form method="post">
             <!-- <div class="form-group"> -->
             <div class="inputGroup">

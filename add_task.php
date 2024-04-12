@@ -1,19 +1,24 @@
 <?php
 ob_start();
 include('sidebar.php');
-// session_start();
-
 include('db_conn.php');
+
+// session_start(); // Initialize session management
 
 // Check if user is logged in
 if (!isset($_SESSION['emp_id']) || !isset($_SESSION['user_type'])) {
+    // Set default values or handle the absence of session variables
+    $_SESSION['emp_id'] = null; // or any default value
+    $_SESSION['user_type'] = null; // or any default value
+    
     // Redirect to login page if not logged in
     header("Location: login.php");
     exit();
 }
 
-// Check if user is director or admin
-if ($_SESSION['user_type'] !== 'director' && $_SESSION['user_type'] !== 'admin' && $_SESSION['user_type'] !== 'manager') {
+// Check if user is director, admin, or manager
+$allowedUserTypes = ['director', 'admin', 'manager'];
+if (!in_array($_SESSION['user_type'], $allowedUserTypes)) {
     // Redirect to unauthorized page
     header("Location: unauthorized.php");
     exit();
@@ -26,21 +31,23 @@ $employees = $stmtEmployees->fetchAll(PDO::FETCH_ASSOC);
 
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Add Task
     if (isset($_POST['add_task'])) {
-        // Add Task
         $emp_id = $_POST['emp_id'];
         $task = $_POST['task'];
-        $deadline = $_POST['deadline'];
+        $date_assigned = $_POST['date_assigned']; // Date assigned
+        $deadline_time = date('h:i:s A', strtotime($_POST['deadline_time'])); // Convert to 24-hour format
         $assigned_by = $_SESSION['emp_id']; // Assigned by the current user
 
         // Insert task into tasks table
-        $sql = "INSERT INTO tasks (employee_id, task_description, status, date_assigned, assigned_by) VALUES (:employee_id, :task_description, :status, :date_assigned, :assigned_by)";
+        $sql = "INSERT INTO tasks (employee_id, task_description, status, date_assigned, assigned_by, deadline_time) VALUES (:employee_id, :task_description, :status, :date_assigned, :assigned_by, :deadline_time)";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':employee_id', $emp_id);
         $stmt->bindParam(':task_description', $task);
         $stmt->bindValue(':status', 'Pending'); // Default status
-        $stmt->bindValue(':date_assigned', date('Y-m-d')); // Current date
+        $stmt->bindParam(':date_assigned', $date_assigned);
         $stmt->bindParam(':assigned_by', $assigned_by);
+        $stmt->bindParam(':deadline_time', $deadline_time);
 
         if ($stmt->execute()) {
             // Redirect to this page to avoid form resubmission
@@ -49,8 +56,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "Error inserting task: " . $stmt->errorInfo()[2];
         }
-    } elseif (isset($_POST['edit_task'])) {
-        // Edit Task
+    } 
+    // Edit Task
+    elseif (isset($_POST['edit_task'])) {
         $task_id = $_POST['task_id'];
         $editedTaskDescription = $_POST['editedTaskDescription'];
 
@@ -67,8 +75,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "Error updating task: " . $stmt->errorInfo()[2];
         }
-    } elseif (isset($_POST['delete_task'])) {
-        // Delete Task
+    } 
+    // Delete Task
+    elseif (isset($_POST['delete_task'])) {
         $task_id = $_POST['task_id'];
 
         // Delete task from tasks table
@@ -83,9 +92,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "Error deleting task: " . $stmt->errorInfo()[2];
         }
+    } 
+    /// Submit Admin Remark
+elseif (isset($_POST['admin_remark'])) {
+    $taskId = $_POST['task_id'];
+    $adminRemark = $_POST['admin_remark'];
+    
+    // Update admin remark in the tasks table
+    $sqlUpdateRemark = "UPDATE tasks SET admin_remark = :admin_remark WHERE task_id = :task_id";
+    $stmtUpdateRemark = $conn->prepare($sqlUpdateRemark);
+    $stmtUpdateRemark->bindParam(':admin_remark', $adminRemark);
+    $stmtUpdateRemark->bindParam(':task_id', $taskId);
+    
+    if ($stmtUpdateRemark->execute()) {
+        // Redirect to this page to avoid form resubmission
+        header("Location: {$_SERVER['PHP_SELF']}");
+        exit();
+    } else {
+        echo "Error updating admin remark: " . $stmtUpdateRemark->errorInfo()[2];
     }
 }
-
+}
 // Fetch all tasks assigned by the current user
 $assigned_by = $_SESSION['emp_id'];
 $sqlTasks = "SELECT tasks.*, employees.first_name 
@@ -97,6 +124,9 @@ $stmtTasks->bindParam(':assigned_by', $assigned_by);
 $stmtTasks->execute();
 $tasks = $stmtTasks->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -114,28 +144,27 @@ $tasks = $stmtTasks->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- Favicon -->
     <link rel="shortcut icon" href="assets/img/favicon.png">
+
     <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
+    /* Styles for the page layout */
+    .page-wrapper {
         display: flex;
         flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
     }
 
     .container {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 100%;
-        padding: 20px;
+        margin-bottom: 50px;
     }
 
     .left-side,
     .right-side {
         width: 100%;
         max-width: 600px;
-        margin-bottom: 20px;
     }
 
     img {
@@ -143,58 +172,43 @@ $tasks = $stmtTasks->fetchAll(PDO::FETCH_ASSOC);
         height: auto;
     }
 
-    h1 {
-        text-align: center;
-        color: #706c62;
-        border-radius: 15px;
-        /* margin: 0 10px 30px 10px; */
-        /* box-shadow: 10px 7px 10px #629e46; */
-    }
-
     form {
-        width: 100%;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     label,
     input,
     select {
-        display: block;
         margin-bottom: 10px;
         width: 100%;
-        padding: 8px;
-        box-sizing: border-box;
+        max-width: 400px;
     }
 
-    button[type="submit"] {
-        margin-top:25px;
-        display: flex;
-  align-items: center;
-  font-family: inherit;
-  font-weight: 500;
-  font-size: 16px;
-  padding: 0.7em 1.4em 0.7em 1.1em;
-  color: white;
-  background: #ad5389;
-  background: linear-gradient(0deg, rgba(20,167,62,1) 0%, rgba(102,247,113,1) 100%);
-  border: none;
-  box-shadow: 0 0.7em 1.5em -0.5em #14a73e98;
-  letter-spacing: 0.05em;
-  border-radius: 20em;
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-    }
+    /* CSS for submit button */
+input[type="submit"],
+button[type="submit"] {
+    font-size: 16px;
+    padding: 10px 20px; /* Adjust padding as needed */
+    color: white;
+    background-color: green; /* Button background color */
+    border: none;
+    border-radius: 5px; /* Adjust border radius as needed */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
 
-    button[type="submit"]:hover {
-        box-shadow: 0 0.5em 1.5em -0.5em #14a73e98;
-    }
-    button[type="submit"]:active{
-        box-shadow: 0 0.3em 1em -0.5em #14a73e98;
-    }
+/* Hover effect */
+button[type="submit"]:hover {
+    background-color: #14a73e; /* Change background color on hover */
+}
+
+/* Active effect */
+button[type="submit"]:active {
+    transform: translateY(2px); /* Push button down slightly when active */
+}
+
     h2 {
         text-align: center;
     }
@@ -212,9 +226,7 @@ $tasks = $stmtTasks->fetchAll(PDO::FETCH_ASSOC);
 
     .assign-task h1 {
         color: #706c62;
-        /* border: 1px solid black; */
         margin: 0 10px 50px 10px;
-        /* box-shadow: 10px 10px 5px #6d92a1; */
     }
 
     .assign-task table {
@@ -328,8 +340,8 @@ $tasks = $stmtTasks->fetchAll(PDO::FETCH_ASSOC);
         width: 100%;
         height: 100%;
         overflow: auto;
-        background-color: rgb(0,0,0);
-        background-color: rgba(0,0,0,0.4);
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
         transition: opacity 0.3s ease;
     }
 
@@ -340,7 +352,7 @@ $tasks = $stmtTasks->fetchAll(PDO::FETCH_ASSOC);
         padding: 20px;
         border: 1px solid #888;
         width: 80%;
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         animation-name: animatetop;
         animation-duration: 0.4s;
         transition: opacity 0.3s ease;
@@ -348,18 +360,78 @@ $tasks = $stmtTasks->fetchAll(PDO::FETCH_ASSOC);
 
     /* Modal animation */
     @keyframes animatetop {
-        from {top: -300px; opacity: 0}
-        to {top: 0; opacity: 1}
-    }
-</style>
-<style>
+        from {
+            top: -300px;
+            opacity: 0
+        }
 
+        to {
+            top: 0;
+            opacity: 1
+        }
+    }
+    </style>
+    <style>
     /* Delete button style */
     .delete-button {
-        background-color: #f44336; /* Red background color */
+        background-color: #f44336;
+        /* Red background color */
     }
-</style>
+    /* CSS for Admin Remark Dropdown */
+select[name="admin_remark"] {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%; /* Ensure dropdown takes full width */
+    max-width: 400px; /* Limit maximum width */
+    background-color: #14a73e98; /* Set background color */
+}
 
+select[name="admin_remark"] option {
+    padding: 5px;
+    font-size: 14px;
+}
+
+/* Style the options when the dropdown is open */
+select[name="admin_remark"]:focus option {
+    background-color: #f2f2f2; /* Change background color of options when dropdown is open */
+}
+
+/* Add scrollbar for Assigned Tasks table on mobile
+@media (max-width: 767px) {
+    .assign-task table {
+        overflow-x: auto;
+        display: block;
+        max-width: 100%;
+    }
+} */
+
+
+.assigned-tasks-container {
+    max-width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.assigned-tasks table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.assigned-tasks th,
+.assigned-tasks td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.assigned-tasks th {
+    background-color: #f2f2f2;
+}
+
+
+</style>
 </head>
 
 <body>
@@ -379,14 +451,20 @@ $tasks = $stmtTasks->fetchAll(PDO::FETCH_ASSOC);
                     </select>
                     <label for="task">Task:</label>
                     <input type="text" name="task" id="task" required>
-                    <label for="deadline">Deadline:</label>
-                    <input type="date" name="deadline" id="deadline" required>
+                    <label for="date_assigned">Assign Date:</label>
+                    <input type="date" name="date_assigned" id="date_assigned" required>
+                    <label for="deadline_time">Deadline Time:</label>
+                    <input type="time" name="deadline_time" id="deadline_time" required>
+                    <? echo $_POST['deadline_time']; ?>
+
                     <button type="submit" name="add_task">Add Task</button>
                 </form>
             </div>
         </div>
-        <div class="assign-task">
-            <h1>Assigned Tasks</h1>
+        <!-- <div class="assigned-task"> -->
+        <div class="assigned-tasks-container">
+            <h1 style="margin-left: 20px;">Assigned Tasks</h1>
+            <div class="assigned-tasks">
             <table>
                 <thead>
                     <tr>
@@ -394,7 +472,10 @@ $tasks = $stmtTasks->fetchAll(PDO::FETCH_ASSOC);
                         <th>Task Description</th>
                         <th>Status</th>
                         <th>Date Assigned</th>
-                        <!-- <th>Actions</th> -->
+                        <th>Deadline Time</th>
+                        <th>Submit Date</th>
+                        <th>Admin Remark</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -414,80 +495,112 @@ $tasks = $stmtTasks->fetchAll(PDO::FETCH_ASSOC);
                                 <img src="assets/img/pending-4.gif" alt="Pending GIF" width="25">
                             </span>
                             <?php endif; ?>
+                        </td>
+                        <td><?= $task['date_assigned'] ?></td>
+                        <td><?= $task['deadline_time'] ?></td>
+                        <td><?= $task['submit_date_time'] ?></td>
+                        <!-- Inside the Assigned Tasks table -->
+<!-- Inside the Assigned Tasks table -->
+<td>
+    <?php if ($task['status'] === 'Completed' || $task['status'] === 'Submitted'): ?>
+        <?php if ($task['admin_remark'] === null): ?>
+            <!-- Dropdown for admin remarks -->
+            <form action="" method="post">
+                <input type="hidden" name="task_id" value="<?= $task['task_id'] ?>">
+                <select name="admin_remark" onchange="this.form.submit()">
+                    <option value="" selected disabled>Select Remark</option>
+                    <option value="Below expectations">Below expectations</option>
+                    <option value="Meeting expectations">Meeting expectations</option>
+                    <option value="Exceeding expectations">Exceeding expectations</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </form>
+        <?php else: ?>
+            <!-- Display admin remark -->
+            <?= $task['admin_remark'] ?>
+        <?php endif; ?>
+    <?php endif; ?>
+</td>
+        
 
-                            <!-- Edit and Delete Buttons -->
+
+
+                        <td>
                             <div class="edit-delete-buttons">
-                            <button type="button" onclick="openEditModal(<?= $task['task_id'] ?>, '<?= $task['task_description'] ?>')">
-    <img src="assets/img/edit-1.png" alt="Edit" width="15">
-</button>
+                                <button type="button"
+                                    onclick="openEditModal(<?= $task['task_id'] ?>, '<?= $task['task_description'] ?>')">
+                                    <img src="assets/img/edit-1.png" alt="Edit" width="15">
+                                </button>
 
-                                <!-- Delete button -->
-<button type="button" class="delete-button" onclick="openDeleteModal(<?= $task['task_id'] ?>)">
-    <img src="assets/img/delete.png" alt="Delete" width="20">
-</button>
 
+                                <button type="button" class="delete-button"
+                                    onclick="openDeleteModal(<?= $task['task_id'] ?>)">
+                                    <img src="assets/img/delete.png" alt="Delete" width="20">
+                                </button>
                             </div>
                         </td>
-
-                        <!-- Edit Task Modal -->
-<div id="editTaskModal<?= $task['task_id'] ?>" class="modal-container">
-    <div class="modal-content">
-        <span class="close" onclick="closeEditModal(<?= $task['task_id'] ?>)">&times;</span>
-        <form id="editTaskForm" action="" method="post">
-            <input type="hidden" id="editTaskId<?= $task['task_id'] ?>" name="task_id">
-            <textarea id="editedTaskDescription<?= $task['task_id'] ?>" name="editedTaskDescription" placeholder="New Task Description" required></textarea>
-            <button type="submit" name="edit_task">Save Changes</button>
-        </form>
-    </div>
-</div>
-                        <!-- Delete Task Modal -->
-                        <div id="deleteTaskModal<?= $task['task_id'] ?>" class="modal">
-                            <div class="modal-content">
-                                <span class="close" onclick="closeDeleteModal(<?= $task['task_id'] ?>)">&times;</span>
-                                <form id="deleteTaskForm" action="" method="post">
-                                    <p>Are you sure you want to delete this task?</p>
-                                    <input type="hidden" id="deleteTaskId<?= $task['task_id'] ?>" name="task_id">
-                                    <button type="submit" name="delete_task">Delete</button>
-                                </form>
-                            </div>
-                        </div>
-                        <td><?= $task['date_assigned'] ?></td>
-
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            </div>
         </div>
-
     </div>
+    <div id="editTaskModal" class="modal-container">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">×</span>
+            <h2>Edit Task</h2>
+            <form action="" method="post">
+                <input type="hidden" name="task_id" id="editTaskId">
+                <label for="editedTaskDescription">Task Description:</label>
+                <input type="text" name="editedTaskDescription" id="editedTaskDescription" required>
+                <button type="submit" name="edit_task">Save Changes</button>
+            </form>
+        </div>
+    </div>
+    <div id="deleteTaskModal" class="modal-container">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeleteModal()">×</span>
+            <h2>Delete Task</h2>
+            <p>Are you sure you want to delete this task?</p>
+            <form action="" method="post">
+                <input type="hidden" name="task_id" id="deleteTaskId">
+                <button type="submit" name="delete_task">Yes, Delete</button>
+            </form>
+        </div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- Select2 JS -->
+    <script src="assets/plugins/select2/js/select2.min.js"></script>
     <script>
-    // Get the edit task modal
-    var editTaskModal<?= $task['task_id'] ?> = document.getElementById("editTaskModal<?= $task['task_id'] ?>");
+    $(document).ready(function() {
+        // Initialize select2
+        $("#emp_id").select2();
+    });
 
-    // Get the delete task modal
-    var deleteTaskModal<?= $task['task_id'] ?> = document.getElementById("deleteTaskModal<?= $task['task_id'] ?>");
-
-        // Function to open edit task modal
-        function openEditModal(taskId, taskDescription) {
-        document.getElementById("editTaskId" + taskId).value = taskId;
-        document.getElementById("editedTaskDescription" + taskId).value = taskDescription;
-        document.getElementById("editTaskModal" + taskId).style.display = "block";
+    // Function to open edit task modal
+    function openEditModal(taskId, taskDescription) {
+        document.getElementById("editTaskId").value = taskId;
+        document.getElementById("editedTaskDescription").value = taskDescription;
+        document.getElementById("editTaskModal").style.display = "block";
     }
 
     // Function to close edit task modal
-    function closeEditModal(taskId) {
-        document.getElementById("editTaskModal" + taskId).style.display = "none";
+    function closeEditModal() {
+        document.getElementById("editTaskModal").style.display = "none";
     }
 
     // Function to open delete task modal
     function openDeleteModal(taskId) {
-        document.getElementById("deleteTaskId" + taskId).value = taskId;
-        deleteTaskModal<?= $task['task_id'] ?>.style.display = "block";
+        document.getElementById("deleteTaskId").value = taskId;
+        document.getElementById("deleteTaskModal").style.display = "block";
     }
 
     // Function to close delete task modal
-    function closeDeleteModal(taskId) {
-        deleteTaskModal<?= $task['task_id'] ?>.style.display = "none";
+    function closeDeleteModal() {
+        document.getElementById("deleteTaskModal").style.display = "none";
     }
 
     </script>
