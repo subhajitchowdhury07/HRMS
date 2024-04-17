@@ -8,8 +8,9 @@
     <title>Sedulous technology .pvt .ltd</title>
 
     <link rel="shortcut icon" href="assets/img/sedulous-small-icon.png">
-
-    <!-- <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+<!-- 
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
 <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
 <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
