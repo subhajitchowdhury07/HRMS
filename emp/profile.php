@@ -251,8 +251,8 @@ if (isset($_POST['submit'])) {
                         <ul>
                             <!-- <li><a href="profile.php">Employment</a></li> -->
                             <li><a class="active" href="#">Detail</a></li>
-                            <li><a href="profile-document.php">Document</a></li>
-                            <li><a href="profile-payroll.php">Payroll</a></li>
+                            <!-- <li><a href="profile-document.php">Document</a></li>
+                            <li><a href="profile-payroll.php">Payroll</a></li> -->
                             <!-- <li><a href="profile-timeoff.html">Timeoff</a></li> -->
                             <!-- <li><a href="profile-review.html">Reviews</a></li> -->
                             <li><a href="profile-setting.php">Settings</a></li>

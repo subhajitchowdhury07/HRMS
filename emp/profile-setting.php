@@ -222,7 +222,7 @@ if (isset($_POST['verify_otp'])) {
         <div class="content container-fluid">
             <div class="row">
                 <div class="col-xl-12 col-sm-12 col-12 ">
-                    <div class="breadcrumb-path mb-4">
+                    <div class="breadcrumb-path mb-4" style="margin-top: 30px;">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.php"><img src="../assets/img/dash.png" class="mr-2" alt="breadcrumb">Home</a></li>
                             <li class="breadcrumb-item active">Profile</li>
@@ -234,8 +234,8 @@ if (isset($_POST['verify_otp'])) {
                     <div class="head-link-set">
                         <ul>
                             <li><a href="profile.php">Detail</a></li>
-                            <li><a href="profile-document.php">Document</a></li>
-                            <li><a href="profile-payroll.php">Payroll</a></li>
+                            <!-- <li><a href="profile-document.php">Document</a></li>
+                            <li><a href="profile-payroll.php">Payroll</a></li> -->
                             <li><a class="active" href="#">Settings</a></li>
                         </ul>
                     </div>

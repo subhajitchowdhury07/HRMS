@@ -1529,7 +1529,7 @@ $subsetData = getSubsetOfEmployeeData($attendanceData, $currentIndex, $pageSize)
                     echo '<img src="assets/img/dashboard-profile.jpg" alt="Default Profile Picture">';
                 }
                 echo '<div class="birthday-info">';
-                echo '<p>' . $employee['first_name'] . '</p>';
+                echo '<p>Happy Birthday, ' . $employee['first_name'] . ' 🎉😍</p>';
                 echo '<p class="birthday-date">Birthday: ' . date('F d', strtotime($employee['birth_date'])) . '</p>';
                 echo '</div>';
                 echo '</div>';

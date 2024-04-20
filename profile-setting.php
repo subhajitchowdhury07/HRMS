@@ -136,8 +136,9 @@ if (isset($_POST['verify_otp'])) {
             margin: 0;
             padding: 0;
         }
-
+        
         .page-wrapper {
+            margin-top: 105px;
             background-color: #fff;
             padding: 20px;
             margin-top: 20px;
@@ -217,26 +218,26 @@ if (isset($_POST['verify_otp'])) {
         }
     </style>
 </head>
-<body>
+<body >
     
-    <div class="page-wrapper">
-        <div class="content container-fluid">
-            <div class="row">
-                <div class="col-xl-12 col-sm-12 col-12 ">
-                    <div class="breadcrumb-path mb-4">
-                        <ul class="breadcrumb">
+    <div class="page-wrapper" >
+        <div class="content container-fluid" >
+            <div class="row" >
+                <div class="col-xl-12 col-sm-12 col-12 " >
+                    <div class="breadcrumb-path mb-4" style="margin-top: 30px;">
+                        <ul class="breadcrumb" >
                             <li class="breadcrumb-item"><a href="index.php"><img src="assets/img/dash.png" class="mr-2" alt="breadcrumb">Home</a></li>
-                            <li class="breadcrumb-item active">Profile</li>
+                            <li class="breadcrumb-item active" >Profile</li>
                         </ul>
-                        <h3>Profile</h3>
+                        <h3 >Profile</h3>
                     </div>
                 </div>
                 <div class="col-xl-12 col-sm-12 col-12 mb-4">
                     <div class="head-link-set">
                         <ul>
                             <li><a href="profile.php">Detail</a></li>
-                            <li><a href="profile-document.php">Document</a></li>
-                            <li><a href="profile-payroll.php">Payroll</a></li>
+                            <!-- <li><a href="profile-document.php">Document</a></li>
+                            <li><a href="profile-payroll.php">Payroll</a></li> -->
                             <li><a class="active" href="#">Settings</a></li>
                         </ul>
                     </div>

@@ -1,6 +1,5 @@
 <?php
 // Include your database connection code here
-// Include your database connection code here
 $host = "localhost";  // Replace with your database host
 $user = "u431054670_root";  // Replace with your database username
 $password = "Sedulous@123";  // Replace with your database password
@@ -16,14 +15,8 @@ if ($conn->connect_error) {
 
 session_start();
 
-// Assuming the user is logged in as an admin
-
-$query = "SELECT * FROM attendance";
-$result = mysqli_query($conn, $query);
-// $conn->close();
 ?>
 
-<!-- Html form -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -174,10 +167,11 @@ $result = mysqli_query($conn, $query);
             <option value=""></option>
             <?php
             // Fetch and display all employee IDs
-            $query = "SELECT DISTINCT employee_id FROM attendance";
+            $query = "SELECT DISTINCT employees.emp_id, CONCAT(employees.first_name, ' ', employees.last_name) AS full_name FROM attendance LEFT JOIN employees ON attendance.employee_id = employees.emp_id";
             $result = mysqli_query($conn, $query);
             while ($row = mysqli_fetch_assoc($result)) {
-                echo "<option value='" . $row['employee_id'] . "'>" . $row['employee_id'] . "</option>";
+                $selected = ($_POST['employeeID'] ?? '') == $row['emp_id'] ? 'selected' : '';
+                echo "<option value='" . $row['emp_id'] . "' $selected>" . $row['full_name'] .' '.'('.$row['emp_id'].')'. "</option>";
             }
             ?>
         </select>
@@ -185,10 +179,8 @@ $result = mysqli_query($conn, $query);
         <button type="submit">Filter</button>
         
         <button type="button" id="printButton">Print</button>
-        <!-- <button type="submit" name="exportCSV" formaction="export_csv.php">Export to CSV</button>
-            <button type="submit" name="exportPDF" formaction="export_pdf.php">Export to PDF</button> -->
-            <button type="submit" name="exportCSV" formaction="export.php" >Export to CSV</button>
-            <button type="submit" name="exportPDF" formaction="export.php">Export to PDF</button>
+        <button type="submit" name="exportCSV" formaction="export.php" >Export to CSV</button>
+        <button type="submit" name="exportPDF" formaction="export.php">Export to PDF</button>
     </form>
     
 
@@ -197,48 +189,63 @@ $result = mysqli_query($conn, $query);
             <thead>
                 <tr>
                     <th>Employee ID</th>
+                    <th>Employee Name</th>
                     <th>Clock In</th>
                     <th>Clock Out</th>
                     <th>Total Worked Hour</th>
                 </tr>
             </thead>
             <tbody>
-                <?php
-                // Initialize the filter query
-                $filter_query = "SELECT * FROM attendance WHERE 1";
+            <?php
+    // Initialize the filter query
+    $filter_query = "SELECT attendance.*, CONCAT(employees.first_name, ' ', employees.last_name) AS full_name FROM attendance LEFT JOIN employees ON attendance.employee_id = employees.emp_id WHERE 1";
 
-                // Check if start and end dates are set
-                if (isset($_POST['startDate'], $_POST['endDate']) && !empty($_POST['startDate']) && !empty($_POST['endDate'])) {
-                    $startDate = $_POST['startDate'];
-                    $endDate = $_POST['endDate'];
-                    $filter_query .= " AND DATE(clock_in) BETWEEN '$startDate' AND '$endDate'";
-                }
+    // Check if start and end dates are set
+    $filter_query = "SELECT attendance.*, CONCAT(employees.first_name, ' ', employees.last_name) AS full_name 
+                FROM attendance 
+                LEFT JOIN employees ON attendance.employee_id = employees.emp_id 
+                WHERE 1";
 
-                // Check if employee ID is set (from dropdown)
-                if (isset($_POST['employeeID']) && !empty($_POST['employeeID'])) {
-                    $employeeID = $_POST['employeeID'];
-                    $filter_query .= " AND employee_id = '$employeeID'";
-                }
+// Check if start and end dates are set
+if (isset($_POST['startDate'], $_POST['endDate']) && !empty($_POST['startDate']) && !empty($_POST['endDate'])) {
+    $startDate = $_POST['startDate'];
+    $endDate = $_POST['endDate'];
+    $filter_query .= " AND DATE(attendance.clock_in) BETWEEN '$startDate' AND '$endDate'";
+}
 
-                // Execute the filter query
-                $result = mysqli_query($conn, $filter_query);
+// Check if employee ID is set (from dropdown)
+if (isset($_POST['employeeID']) && !empty($_POST['employeeID'])) {
+    $employeeID = $_POST['employeeID'];
+    $filter_query .= " AND attendance.employee_id = '$employeeID'";
+}
 
-                // Fetch and display filtered records
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $row['employee_id'] . "</td>";
-                    echo "<td>" . $row['clock_in'] . "</td>";
-                    echo "<td>" . $row['clock_out'] . "</td>";
-                    echo "<td>" . $row['total_worked_hr'] . "</td>";
-                    echo "</tr>";
-                }
-                ?>
+// Add ORDER BY clause to sort by clock_in date in ascending order
+$filter_query .= " ORDER BY attendance.clock_in ASC";
+
+// Execute the filter query
+$result = mysqli_query($conn, $filter_query);
+
+// Check for errors
+if (!$result) {
+    die("Error executing query: " . mysqli_error($conn));
+}
+
+    // Fetch and display filtered records
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo "<tr>";
+        echo "<td>" . $row['employee_id'] . "</td>";
+        echo "<td>" . $row['full_name'] . "</td>";
+        echo "<td>" . $row['clock_in'] . "</td>";
+        echo "<td>" . $row['clock_out'] . "</td>";
+        echo "<td>" . $row['total_worked_hr'] . "</td>";
+        echo "</tr>";
+    }
+    ?>
             </tbody>
         </table>
     </div>
 
 
-    <!-- <script src="assets/js/script.js"></script> -->
     <script>
         // JavaScript for filtering employee ID dropdown
         const employeeIDSelect = document.POSTElementById('employeeID');
@@ -318,4 +325,4 @@ $result = mysqli_query($conn, $query);
         });
     </script> -->
 </body>
-</html
+</html>

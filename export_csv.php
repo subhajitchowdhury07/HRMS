@@ -8,7 +8,7 @@ $endDate = $_POST['endDate'] ?? null;
 $employeeID = $_POST['employeeID'] ?? null;
 
 // Build the SQL query
-$query = "SELECT * FROM attendance WHERE 1";
+$query = "SELEC* FROM attendance WHERE 1";
 
 if ($startDate && $endDate) {
     $query .= " AND DATE(clock_in) BETWEEN '$startDate' AND '$endDate'";
@@ -29,7 +29,7 @@ if (isset($_POST['exportCSV'])) {
     header('Content-Disposition: attachment; filename="' . $filename . '";');
 
     $output = fopen('php://output', 'w');
-    fputcsv($output, array('ID','Employee ID', 'Clock In', 'Clock Out', 'Total Worked Hour'));
+    fputcsv($output, array('Employee Name', 'Clock In', 'Clock Out', 'Total Worked Hour'));
 
     while ($row = $result->fetch_assoc()) {
         fputcsv($output, $row);

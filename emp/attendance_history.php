@@ -86,7 +86,7 @@ if (!$stmt) {
 
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         echo "<tr>";
-                        echo "<td>" . date("d-m-y") . "</td>";
+                        echo "<td>" . date("d-m-y", strtotime($row['clock_in'])) . "</td>";
                         echo "<td>" . date("H:i:s", strtotime($row['clock_in'])) . "</td>";
                         echo "<td>" . ($row['clock_out'] ? date("H:i:s", strtotime($row['clock_out'])) : "N/A") . "</td>";
                         echo "<td>" . $row['total_worked_hr'] . "</td>";
