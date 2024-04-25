@@ -525,15 +525,16 @@ function fetchProfilePic($conn, $emp_id) {
                                     <span>Calendar</span></a>
                             </li>
                             <li>
-                                <a href="leave.php">
+                                <a href="#">
                                     <img src="../assets/img/leave.svg" alt="sidebar_img"> <span>Leave</span>
                                 </a>
                                 <ul>
+                                    <li><a href="leave.php">Holiday List</a></li>
                                     <li><a href="leave_application_form.php">Apply Leave</a></li>
                                     <li><a href="leave_history.php">Leave History</a></li>
                                     <?php if(isset($_SESSION['user_type']) && $_SESSION['user_type']=='manager'): ?>
-    <li><a href="leave_management_system.php">Leave management</a></li>
-<?php endif; ?>
+                                    <li><a href="leave_management_system.php">Leave management</a></li>
+                                    <?php endif; ?>
 
                                     <!-- Add more leave types as needed -->
                                 </ul>

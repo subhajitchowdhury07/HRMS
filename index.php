@@ -540,11 +540,7 @@
 // } catch (PDOException $e) {
 //     echo "Connection failed: " . $e->getMessage();
 // }
-include ('db_conn.php');
-// Initialize clockInTime, clockOutTime, and totalWorkedHours
-$clockInTime = null;
-$clockOutTime = null;
-$totalWorkedHours = null;
+
 
 ?>
 
@@ -584,7 +580,17 @@ $totalWorkedHours = null;
             </div>
 
             <?php
+include('db_conn.php');
+
+// Initialize clockInTime, clockOutTime, totalWorkedHours, successMessage, and alertMessage
+$clockInTime = null;
+$clockOutTime = null;
+$totalWorkedHours = null;
+$successMessage = null;
+$alertMessage = null;
+
 date_default_timezone_set('Asia/Kolkata');
+
 // Function to get the user's IP address
 function getUserIP() {
     // Check for shared internet/ISP IP
@@ -616,7 +622,7 @@ function validateIP($ip) {
 }
 
 // Define array of office IP addresses
-$officeIPs = array('117.214.38.7', '117.223.219.151', '192.168.1.55');
+$officeIPs = array('::1', '203.192.209.70', '192.168.1.55');
 
 // Get the user's IP address
 $userIP = getUserIP();
@@ -633,13 +639,6 @@ if (!isset($_SESSION['emp_id'])) {
     header('Location: login.php');
     exit();
 }
-
-// Initialize variables
-$clockInTime = null;
-$clockOutTime = null;
-$totalWorkedHours = null;
-$successMessage = '';
-$alertMessage = '';
 
 // Fetch user ID from session
 $user_id = $_SESSION['emp_id'];
@@ -668,7 +667,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
         if (!isInOfficeNetwork($userIP, $officeIPs)) {
             $alertMessage = 'You are not in the office premises.';
         } else {
-            $clockInTime = date('Y-m-d H:i:s');
+            $clockInTime = date('Y-m-d H:i:s A');
+            // Start stopwatch when clocking in
+
+            // Insert clock in time into the database
             $insert_query = "INSERT INTO attendance (employee_id, clock_in) VALUES (:user_id, :clockInTime)";
             $stmt = $conn->prepare($insert_query);
             $stmt->bindParam(':user_id', $user_id);
@@ -680,10 +682,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
 
     // If clock-out time is set and the user clicked Clock Out
     if ($type == 'clock_out' && $clockInTime) {
-        $clockOutTime = date('Y-m-d H:i:s');
+        $clockOutTime = date('Y-m-d h:i:s A');
+
+        // Stop stopwatch when clocking out
+        $endTime = time();
 
         // Calculate total worked hours
-        $totalWorkedHours = calculateTotalWorkedHours($clockInTime, $clockOutTime);
+        $totalWorkedSeconds = $endTime - strtotime($clockInTime);
+        $totalWorkedHours = sprintf('%02d:%02d:%02d', ($totalWorkedSeconds / 3600), ($totalWorkedSeconds / 60 % 60), ($totalWorkedSeconds % 60));
 
         // Update the database with clock-out time and total worked hours
         $update_query = "UPDATE attendance SET clock_out = :clockOutTime, total_worked_hr = :totalWorkedHours WHERE employee_id = :user_id AND clock_out IS NULL";
@@ -695,8 +701,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
 
         // Set success message
         $successMessage = 'You have successfully clocked out at ' . $clockOutTime;
+
+        // Reset clock in and out times
+        $clockInTime = null;
+        $clockOutTime = null;
     }
 }
+
 
 // Function to calculate total worked hours
 function calculateTotalWorkedHours($startTime, $endTime) {
@@ -708,8 +719,12 @@ function calculateTotalWorkedHours($startTime, $endTime) {
     $minutes = floor(($seconds % 3600) / 60);
     $seconds = $seconds % 60;
 
-    return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    // Format hours to 12-hour format
+    $formattedHours = date('h', mktime(0, 0, $hours));
+
+    return sprintf('%02d:%02d:%02d', $formattedHours, $minutes, $seconds);
 }
+
 
 // Fetch the first name from the database based on the emp_id
 $query = "SELECT first_name FROM employees WHERE emp_id = :emp_id";
@@ -732,31 +747,97 @@ $conn = null;
 // Function to fetch profile picture URL based on emp_id
 
 ?>
-            <h2>Attendance System</h2>
-            <p>Welcome, <?php echo $first_name; ?>!</p>
+<style>
+    #timer {
+        font-size: 24px;
+        font-weight: bold;
+        color:#51ad26;
+        margin-bottom: 20px;
+}
 
-            <?php
-    // Display success message if set
-    if ($successMessage) {
-        echo "<p>$successMessage</p>";
-    } else {
-        // Check if the user is already clocked in
-        if ($clockInTime) {
-            echo "<p>You are already clocked in since $clockInTime</p>";
-        } else if ($clockOutTime) {
-            echo "<p>Now you are successfully clocked out at $clockOutTime</p>";
-        }
+</style>
+<h2>Attendance System</h2>
+<p>Welcome, <?php echo $first_name; ?>!</p>
+<?php
+// Display success message if set
+if ($successMessage) {
+    echo "<p>$successMessage</p>";
+} else {
+    // Check if the user is already clocked in
+    if ($clockInTime) {
+        echo "<p>You are already clocked in since $clockInTime</p>";
+    } else if ($clockOutTime) {
+        echo "<p>Now you are successfully clocked out at $clockOutTime</p>";
     }
-    ?>
+}
+?>
+<form id="clockForm" method="POST" class="attendance-container">
+    <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+    <button type="submit" name="type" value="clock_in" class="clock-btn clock-in-btn">Clock In</button>
+    <button type="submit" name="type" value="clock_out" class="clock-btn clock-out-btn">Clock Out</button>
+</form>
+<div id="workedHours">Worked Hours: <span id="hoursWorked"><?php echo $totalWorkedHours ?? '--:--:--'; ?></span></div>
+<div id="stopwatch" class="stopwatch"></div>
+<div id="timer" class="timer" style="display: none;"> 00:00:00</div> <!-- New HTML element for displaying the timer -->
+<script>
+    // JavaScript code for stopwatch and timer
+var stopwatchElement = document.getElementById('stopwatch');
+var timerElement = document.getElementById('timer');
+var intervalId = null;
+var startTime = <?php echo $clockInTime ? strtotime($clockInTime) * 1000 : 'null'; ?>; // Convert clock in time to milliseconds
 
-            <form id="clockForm" method="POST" class="attendance-container">
-                <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
-                <button type="submit" name="type" value="clock_in" class="clock-btn clock-in-btn">Clock In</button>
-                <button type="submit" name="type" value="clock_out" class="clock-btn clock-out-btn">Clock Out</button>
-            </form>
+function updateClock() {
+    if (!startTime) return; // If start time is not set, do nothing
 
-            <div id="workedHours">Worked Hours: <span
-                    id="hoursWorked"><?php echo $totalWorkedHours ?? '--:--:--'; ?></span></div>
+    var currentTime = new Date().getTime();
+    var elapsedTime = currentTime - startTime;
+    var totalSeconds = Math.floor(elapsedTime / 1000);
+
+    // Calculate hours, minutes, and seconds
+    var hours = Math.floor(totalSeconds / 3600);
+    var minutes = Math.floor((totalSeconds % 3600) / 60);
+    var seconds = totalSeconds % 60;
+
+    // Format time display
+    var hoursStr = (hours < 10) ? '0' + hours : hours;
+    var minutesStr = (minutes < 10) ? '0' + minutes : minutes;
+    var secondsStr = (seconds < 10) ? '0' + seconds : seconds;
+
+    // Update timer display
+    timerElement.textContent = hoursStr + ':' + minutesStr + ':' + secondsStr + 's';
+}
+
+function startClock() {
+    if (!startTime) return; // If start time is not set, do nothing
+    intervalId = setInterval(updateClock, 1000);
+}
+
+function stopClock() {
+    clearInterval(intervalId);
+}
+
+// Start clock if clocked in
+if (<?php echo $clockInTime ? 'true' : 'false'; ?>) {
+    timerElement.style.display = 'block'; // Show the timer
+    startClock(); // Start the clock
+}
+
+// Check if clock out button was clicked, and stop the clock if needed
+var clockOutBtn = document.querySelector('.clock-out-btn');
+clockOutBtn.addEventListener('click', function () {
+    stopClock(); // Stop the clock when clocking out
+});
+
+// Check if clock in button was clicked, and reset the timer
+var clockInBtn = document.querySelector('.clock-in-btn');
+clockInBtn.addEventListener('click', function () {
+    timerElement.textContent = 'Timer: 00:00:00'; // Reset timer display when clocking in
+});
+
+</script>
+
+
+
 
             <!-- Alert Box -->
             <?php if ($alertMessage): ?>
@@ -1160,7 +1241,7 @@ $leavePercentagesJSON = json_encode($leavePercentages);
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            /* padding: 20px; */
             background-color: #f4f4f4;
         }
 
@@ -1330,7 +1411,7 @@ $subsetData = getSubsetOfEmployeeData($attendanceData, $currentIndex, $pageSize)
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            /* padding: 20px; */
             background-color: #f4f4f4;
         }
 

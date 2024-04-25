@@ -10,7 +10,7 @@
 
 <style>
     .page-wrapper {
-        padding: 20px;
+        /* padding: 20px; */
     }
     .content {
         background-color: #f3f3f3;

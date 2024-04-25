@@ -483,10 +483,11 @@ li ul li a:hover {
 </li>
 
 <li>
-    <a href="leave.php">
+    <a href="#">
         <img src="assets/img/leave.svg" alt="sidebar_img"> <span>Leave</span>
     </a>
     <ul>
+        <li><a href="leave.php">Holiday List</a></li>
         <li><a href="leave_application_form.php">Apply Leave</a></li>
         <li><a href="set_leave_type.php">Set Leave Type</a></li>
         <li><a href="allotted_leave.php">Allocatte Leave</a></li>

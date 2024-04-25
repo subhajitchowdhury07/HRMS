@@ -222,28 +222,24 @@ try {
     exit();
 }
 
-// Initialize clockInTime, clockOutTime, and totalWorkedHours
-$clockInTime = null;
-$clockOutTime = null;
-$totalWorkedHours = null;
 
 ?>
 
 
 <div class="page-wrapper">
     <div class="content container-fluid">
-    <div class="page-name mb-4">
-    <h4 class="m-0"><span class="user-img">
-                        <img src="<?php echo fetchProfilePic($conn, $_SESSION['emp_id']); ?>" alt="">
+        <div class="page-name mb-4">
+            <h4 class="m-0"><span class="user-img">
+                <img src="<?php echo fetchProfilePic($conn, $_SESSION['emp_id']); ?>" alt="">
                         <span class="status online"></span>
                     </span> Welcome <?php echo $employee_first_name; ?> (<?php echo $user_type = $_SESSION['user_type']; ?>)</h4>
-    <label><?php echo date('D, d M Y'); ?></label> <!-- Change here to display the current date -->
-</div>
+                    <label><?php echo date('D, d M Y'); ?></label> <!-- Change here to display the current date -->
+                </div>
 <div class="row mb-4">
 <div class="col-xl-6 col-sm-12 col-12">
-<div class="breadcrumb-path ">
+    <div class="breadcrumb-path ">
 <ul class="breadcrumb">
-<li class="breadcrumb-item"><a href="index-employee.php"><img src="../assets/img/dash.png" class="mr-3" alt="breadcrumb" />Home</a>
+    <li class="breadcrumb-item"><a href="index-employee.php"><img src="../assets/img/dash.png" class="mr-3" alt="breadcrumb" />Home</a>
 </li>
 <li class="breadcrumb-item active">Dashboard</li>
 </ul>
@@ -251,19 +247,29 @@ $totalWorkedHours = null;
 </div>
 </div>
 <!-- <div class="col-xl-6 col-sm-12 col-12">
-<div class="row">
-<div class="col-xl-6 col-sm-6 col-12">
-<a class="btn-emp" href="../index.php"> Admin Dashboard</a>
-</div>
-<div class="col-xl-6 col-sm-6 col-12">
-<a class="btn-dash" href="#">Employee Dashboard</a>
-</div>
-</div>
+    <div class="row">
+        <div class="col-xl-6 col-sm-6 col-12">
+            <a class="btn-emp" href="../index.php"> Admin Dashboard</a>
+        </div>
+        <div class="col-xl-6 col-sm-6 col-12">
+            <a class="btn-dash" href="#">Employee Dashboard</a>
+        </div>
+    </div>
 </div> -->
 </div>
 
 <?php
+include('../db_conn.php');
+
+// Initialize clockInTime, clockOutTime, totalWorkedHours, successMessage, and alertMessage
+$clockInTime = null;
+$clockOutTime = null;
+$totalWorkedHours = null;
+$successMessage = null;
+$alertMessage = null;
+
 date_default_timezone_set('Asia/Kolkata');
+
 // Function to get the user's IP address
 function getUserIP() {
     // Check for shared internet/ISP IP
@@ -295,7 +301,7 @@ function validateIP($ip) {
 }
 
 // Define array of office IP addresses
-$officeIPs = array('117.214.38.7', '117.214.39.19', '192.168.1.55');
+$officeIPs = array('::1', '203.192.209.70', '192.168.1.55');
 
 // Get the user's IP address
 $userIP = getUserIP();
@@ -312,13 +318,6 @@ if (!isset($_SESSION['emp_id'])) {
     header('Location: login.php');
     exit();
 }
-
-// Initialize variables
-$clockInTime = null;
-$clockOutTime = null;
-$totalWorkedHours = null;
-$successMessage = '';
-$alertMessage = '';
 
 // Fetch user ID from session
 $user_id = $_SESSION['emp_id'];
@@ -347,7 +346,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
         if (!isInOfficeNetwork($userIP, $officeIPs)) {
             $alertMessage = 'You are not in the office premises.';
         } else {
-            $clockInTime = date('Y-m-d H:i:s');
+            $clockInTime = date('Y-m-d H:i:s A');
+            // Start stopwatch when clocking in
+
+            // Insert clock in time into the database
             $insert_query = "INSERT INTO attendance (employee_id, clock_in) VALUES (:user_id, :clockInTime)";
             $stmt = $conn->prepare($insert_query);
             $stmt->bindParam(':user_id', $user_id);
@@ -359,10 +361,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
 
     // If clock-out time is set and the user clicked Clock Out
     if ($type == 'clock_out' && $clockInTime) {
-        $clockOutTime = date('Y-m-d H:i:s');
+        $clockOutTime = date('Y-m-d h:i:s A');
+
+        // Stop stopwatch when clocking out
+        $endTime = time();
 
         // Calculate total worked hours
-        $totalWorkedHours = calculateTotalWorkedHours($clockInTime, $clockOutTime);
+        $totalWorkedSeconds = $endTime - strtotime($clockInTime);
+        $totalWorkedHours = sprintf('%02d:%02d:%02d', ($totalWorkedSeconds / 3600), ($totalWorkedSeconds / 60 % 60), ($totalWorkedSeconds % 60));
 
         // Update the database with clock-out time and total worked hours
         $update_query = "UPDATE attendance SET clock_out = :clockOutTime, total_worked_hr = :totalWorkedHours WHERE employee_id = :user_id AND clock_out IS NULL";
@@ -374,8 +380,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
 
         // Set success message
         $successMessage = 'You have successfully clocked out at ' . $clockOutTime;
+
+        // Reset clock in and out times
+        $clockInTime = null;
+        $clockOutTime = null;
     }
 }
+
 
 // Function to calculate total worked hours
 function calculateTotalWorkedHours($startTime, $endTime) {
@@ -387,8 +398,12 @@ function calculateTotalWorkedHours($startTime, $endTime) {
     $minutes = floor(($seconds % 3600) / 60);
     $seconds = $seconds % 60;
 
-    return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    // Format hours to 12-hour format
+    $formattedHours = date('h', mktime(0, 0, $hours));
+
+    return sprintf('%02d:%02d:%02d', $formattedHours, $minutes, $seconds);
 }
+
 
 // Fetch the first name from the database based on the emp_id
 $query = "SELECT first_name FROM employees WHERE emp_id = :emp_id";
@@ -407,33 +422,101 @@ if ($stmt->rowCount() > 0) {
 
 // Close the database connection
 $conn = null;
+
+// Function to fetch profile picture URL based on emp_id
+
 ?>
+<style>
+    #timer {
+        font-size: 24px;
+        font-weight: bold;
+        color:#51ad26;
+        margin-bottom: 20px;
+}
+
+</style>
 <h2>Attendance System</h2>
-    <p>Welcome, <?php echo $first_name; ?>!</p>
-
-    <?php
-    // Display success message if set
-    if ($successMessage) {
-        echo "<p>$successMessage</p>";
-    } else {
-        // Check if the user is already clocked in
-        if ($clockInTime) {
-            echo "<p>You are already clocked in since $clockInTime</p>";
-        } else if ($clockOutTime) {
-            echo "<p>Now you are successfully clocked out at $clockOutTime</p>";
-        }
+<p>Welcome, <?php echo $first_name; ?>!</p>
+<?php
+// Display success message if set
+if ($successMessage) {
+    echo "<p>$successMessage</p>";
+} else {
+    // Check if the user is already clocked in
+    if ($clockInTime) {
+        echo "<p>You are already clocked in since $clockInTime</p>";
+    } else if ($clockOutTime) {
+        echo "<p>Now you are successfully clocked out at $clockOutTime</p>";
     }
-    ?>
-
-   <form id="clockForm" method="POST" class="attendance-container">
+}
+?>
+<form id="clockForm" method="POST" class="attendance-container">
     <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
     <button type="submit" name="type" value="clock_in" class="clock-btn clock-in-btn">Clock In</button>
     <button type="submit" name="type" value="clock_out" class="clock-btn clock-out-btn">Clock Out</button>
 </form>
+<div id="workedHours" style="font-weight: 600;">Worked Hours: <span id="hoursWorked"><?php echo $totalWorkedHours ?? '--:--:--'; ?></span></div>
+<div id="stopwatch" class="stopwatch"></div>
+<div id="timer" class="timer" style="display: none;"> 00:00:00</div> <!-- New HTML element for displaying the timer -->
+<script>
+    // JavaScript code for stopwatch and timer
+var stopwatchElement = document.getElementById('stopwatch');
+var timerElement = document.getElementById('timer');
+var intervalId = null;
+var startTime = <?php echo $clockInTime ? strtotime($clockInTime) * 1000 : 'null'; ?>; // Convert clock in time to milliseconds
 
-    <div id="workedHours">Worked Hours: <span id="hoursWorked"><?php echo $totalWorkedHours ?? '--:--:--'; ?></span></div>
+function updateClock() {
+    if (!startTime) return; // If start time is not set, do nothing
 
-    <!-- Alert Box -->
+    var currentTime = new Date().getTime();
+    var elapsedTime = currentTime - startTime;
+    var totalSeconds = Math.floor(elapsedTime / 1000);
+
+    // Calculate hours, minutes, and seconds
+    var hours = Math.floor(totalSeconds / 3600);
+    var minutes = Math.floor((totalSeconds % 3600) / 60);
+    var seconds = totalSeconds % 60;
+
+    // Format time display
+    var hoursStr = (hours < 10) ? '0' + hours : hours;
+    var minutesStr = (minutes < 10) ? '0' + minutes : minutes;
+    var secondsStr = (seconds < 10) ? '0' + seconds : seconds;
+
+    // Update timer display
+    timerElement.textContent = hoursStr + ':' + minutesStr + ':' + secondsStr + 's';
+}
+
+function startClock() {
+    if (!startTime) return; // If start time is not set, do nothing
+    intervalId = setInterval(updateClock, 1000);
+}
+
+function stopClock() {
+    clearInterval(intervalId);
+}
+
+// Start clock if clocked in
+if (<?php echo $clockInTime ? 'true' : 'false'; ?>) {
+    timerElement.style.display = 'block'; // Show the timer
+    startClock(); // Start the clock
+}
+
+// Check if clock out button was clicked, and stop the clock if needed
+var clockOutBtn = document.querySelector('.clock-out-btn');
+clockOutBtn.addEventListener('click', function () {
+    stopClock(); // Stop the clock when clocking out
+});
+
+// Check if clock in button was clicked, and reset the timer
+var clockInBtn = document.querySelector('.clock-in-btn');
+clockInBtn.addEventListener('click', function () {
+    timerElement.textContent = 'Timer: 00:00:00'; // Reset timer display when clocking in
+});
+
+
+</script>
+
+<!-- Alert Box -->
     <?php if ($alertMessage): ?>
         <div class="alert">
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
@@ -472,6 +555,10 @@ $conn = null;
 </div>
 </div>
 </div>
+
+<!-- //graph's -->
+
+
 
 <div class="col-xl-6 d-flex">
     <div class="card flex-fill">
