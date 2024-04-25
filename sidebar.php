@@ -413,7 +413,7 @@ li ul li a:hover {
 <div class="dropdown-menu">
 <a class="dropdown-item" href="profile.php"><i data-feather="user" class="mr-1"></i> Profile</a>
 <a class="dropdown-item" href="profile-setting.php"><i data-feather="settings" class="mr-1"></i> Settings</a>
-<a class="dropdown-item" href="login.php"><i data-feather="log-out" class="mr-1"></i> Logout</a>
+<a class="dropdown-item" href="logout.php"><i data-feather="log-out" class="mr-1"></i> Logout</a>
 </div>
 </li>
 
@@ -590,7 +590,7 @@ li ul li a:hover {
 </ul>
 <ul class="logout">
 <li>
-<a href="login.php"><img src="assets/img/logout.svg" alt="sidebar_img"><span>Log out</span></a>
+<a href="logout.php"><img src="assets/img/logout.svg" alt="sidebar_img"><span>Log out</span></a>
 </li>
 </ul>
 </div>

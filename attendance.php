@@ -40,10 +40,7 @@ function validateIP($ip) {
 $officeIPs = array('117.214.38.7', '117.223.219.151', '192.168.1.55');
 
 // Get the user's IP address
-    $userIP = getUserIP();
-
- echo "$userIP";
-
+$userIP = getUserIP();
 
 // Function to check if the user's IP is within the office network
 function isInOfficeNetwork($userIP, $officeIPs) {
@@ -79,6 +76,28 @@ if ($stmt->rowCount() > 0) {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $clockInTime = $row['clock_in'];
     $totalWorkedHours = $row['total_worked_hr'];
+}
+
+// Define the automatic clock-out time (e.g., 12:00 AM)
+$automatic_clock_out_time = '23:59';
+$current_time = date('H:i');
+
+if ($current_time > $automatic_clock_out_time && $clockInTime) {
+    $clockOutTime = date('Y-m-d H:i:s');
+
+    // Calculate total worked hours
+    $totalWorkedHours = calculateTotalWorkedHours($clockInTime, $clockOutTime);
+
+    // Update the database with clock-out time and total worked hours
+    $update_query = "UPDATE attendance SET clock_out = :clockOutTime, total_worked_hr = :totalWorkedHours WHERE employee_id = :user_id AND clock_out IS NULL";
+    $stmt = $conn->prepare($update_query);
+    $stmt->bindParam(':clockOutTime', $clockOutTime);
+    $stmt->bindParam(':totalWorkedHours', $totalWorkedHours);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+
+    // Set success message
+    $successMessage = 'You have been automatically clocked out. due to exceed the time';
 }
 
 // Handle POST request

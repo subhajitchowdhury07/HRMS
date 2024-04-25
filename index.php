@@ -975,7 +975,7 @@ function calculateDailyLateComings($date) {
     global $conn;
     $lateCount = 0;
 
-    $sql = "SELECT COUNT(*) AS late_count FROM attendance WHERE DATE(clock_in) = :date AND TIME(clock_in) > '10:00:00'";
+    $sql = "SELECT COUNT(*) AS late_count FROM attendance WHERE DATE(clock_in) = :date AND TIME(clock_in) > '10:10:00'";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':date', $date);
     $stmt->execute();

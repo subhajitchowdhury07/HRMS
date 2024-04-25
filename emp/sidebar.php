@@ -447,7 +447,7 @@ function fetchProfilePic($conn, $emp_id) {
                         <a class="dropdown-item" href="profile.php"><i data-feather="user" class="mr-1"></i> Profile</a>
                         <a class="dropdown-item" href="profile-setting.php"><i data-feather="settings" class="mr-1"></i>
                             Settings</a>
-                        <a class="dropdown-item" href="../login.php"><i data-feather="log-out" class="mr-1"></i>
+                        <a class="dropdown-item" href="../logout.php"><i data-feather="log-out" class="mr-1"></i>
                             Logout</a>
                     </div>
                 </li>
@@ -608,7 +608,7 @@ function fetchProfilePic($conn, $emp_id) {
                         </ul>
                         <ul class="logout">
                             <li>
-                                <a href="../login.php"><img src="../assets/img/logout.svg" alt="sidebar_img"><span>Log
+                                <a href="../logout.php"><img src="../assets/img/logout.svg" alt="sidebar_img"><span>Log
                                         out</span></a>
                             </li>
                         </ul>
