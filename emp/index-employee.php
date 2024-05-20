@@ -44,6 +44,13 @@ h2 {
     margin-right: 10px;
     object-fit: cover;
 }
+.work-anniversary-item img{
+    width: 50px; /* Adjust image size as needed */
+    height: 50px;
+    border-radius: 50%; /* Make the image round */
+    margin-right: 10px;
+    object-fit: cover;
+}
 
 .birthday-info {
     display: inline-block;
@@ -687,7 +694,7 @@ clockInBtn.addEventListener('click', function () {
                     echo '<img src="../assets/img/dashboard-profile.jpg" alt="Default Profile Picture">';
                 }
                 echo '<div class="birthday-info">';
-                echo '<p>' . $employee['first_name'] . '</p>';
+                echo '<p>Happy Birthday, ' . $employee['first_name'] . ' 🎉😍</p>';
                 echo '<p class="birthday-date">Birthday: ' . date('F d', strtotime($employee['birth_date'])) . '</p>';
                 echo '</div>';
                 echo '</div>';
@@ -832,7 +839,12 @@ clockInBtn.addEventListener('click', function () {
 
             while ($employee = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 echo '<div class="work-anniversary-item">';
-                echo '<img src="' . $employee['profile_pic'] . '" alt="' . $employee['first_name'] . '">';
+                if (!empty($employee['profile_pic'])) {
+                    echo '<img src="' . $employee['profile_pic'] . '" alt="' . $employee['first_name'] . '">';
+                } else {
+                    // Use default profile picture URL
+                    echo '<img src="../assets/img/dashboard-profile.jpg" alt="Default Profile Picture">';
+                }
                 echo '<div class="work-anniversary-info">';
                 echo '<p>Happy 1 Year Work Anniversary, ' . $employee['first_name'] . ' 🎉😍</p>';
                 echo '</div>';

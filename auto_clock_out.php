@@ -2,12 +2,12 @@
 // Include the database connection file
 include('db_conn.php');
 
-// Get the current time
+// Get the current time with AM/PM format
 date_default_timezone_set('Asia/Kolkata');
-$current_time = date('H:i');
+$current_time = date('h:i A');
 
-// Define the automatic clock-out time ()
-$automatic_clock_out_time = '13:29';
+// Define the automatic clock-out time as 12:00 AM
+$automatic_clock_out_time = '12:00'; // 12:00 AM
 
 // Check if the current time is past the automatic clock-out time
 if ($current_time > $automatic_clock_out_time) {

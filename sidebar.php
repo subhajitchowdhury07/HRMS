@@ -76,10 +76,12 @@ function fetchProfilePic($conn, $emp_id) {
 		<![endif]-->
 
     <style>
+        
     body {
         background-color: #fff; /* White background */
         color: #6b6659; /* Blue text color */
         font-family: 'Poppins', sans-serif; /* Poppins font */
+        
     }
     .user-img img{
         width: 50px; /* Adjust image size as needed */

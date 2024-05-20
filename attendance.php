@@ -7,53 +7,53 @@ session_start();
 date_default_timezone_set('Asia/Kolkata');
 
 // Function to get the user's IP address
-function getUserIP() {
-    // Check for shared internet/ISP IP
-    if (!empty($_SERVER['HTTP_CLIENT_IP']) && validateIP($_SERVER['HTTP_CLIENT_IP'])) {
-        return $_SERVER['HTTP_CLIENT_IP'];
-    }
+// function getUserIP() {
+//     // Check for shared internet/ISP IP
+//     if (!empty($_SERVER['HTTP_CLIENT_IP']) && validateIP($_SERVER['HTTP_CLIENT_IP'])) {
+//         return $_SERVER['HTTP_CLIENT_IP'];
+//     }
 
-    // Check for IP addresses from proxies
-    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        // Extract the IPs
-        $ipList = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-        // Reverse the array to get the real IP
-        $ipList = array_reverse($ipList);
-        // Check each IP if it's a valid one
-        foreach ($ipList as $ip) {
-            if (validateIP($ip)) {
-                return $ip;
-            }
-        }
-    }
+//     // Check for IP addresses from proxies
+//     if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+//         // Extract the IPs
+//         $ipList = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+//         // Reverse the array to get the real IP
+//         $ipList = array_reverse($ipList);
+//         // Check each IP if it's a valid one
+//         foreach ($ipList as $ip) {
+//             if (validateIP($ip)) {
+//                 return $ip;
+//             }
+//         }
+//     }
 
-    // Use REMOTE_ADDR as fallback
-    return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
-}
+//     // Use REMOTE_ADDR as fallback
+//     return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
+// }
 
-// Function to validate an IP address
-function validateIP($ip) {
-    return filter_var($ip, FILTER_VALIDATE_IP) !== false;
-}
+// // Function to validate an IP address
+// function validateIP($ip) {
+//     return filter_var($ip, FILTER_VALIDATE_IP) !== false;
+// }
 
-// Define array of office IP addresses
-$officeIPs = array('117.214.38.7', '117.223.219.151', '192.168.1.55');
+// // Define array of office IP addresses
+// $officeIPs = array('117.214.38.7', '117.223.219.151', '192.168.1.55');
 
-// Get the user's IP address
-$userIP = getUserIP();
+// // Get the user's IP address
+// $userIP = getUserIP();
 
-// Function to check if the user's IP is within the office network
-function isInOfficeNetwork($userIP, $officeIPs) {
-    // Check if the user's IP matches any of the office IP addresses
-    return in_array($userIP, $officeIPs);
-}
+// // Function to check if the user's IP is within the office network
+// function isInOfficeNetwork($userIP, $officeIPs) {
+//     // Check if the user's IP matches any of the office IP addresses
+//     return in_array($userIP, $officeIPs);
+// }
 
-// Check if the user is logged in
-if (!isset($_SESSION['emp_id'])) {
-    // Redirect to the login page if not logged in
-    header('Location: login.php');
-    exit();
-}
+// // Check if the user is logged in
+// if (!isset($_SESSION['emp_id'])) {
+//     // Redirect to the login page if not logged in
+//     header('Location: login.php');
+//     exit();
+// }
 
 // Initialize variables
 $clockInTime = null;
@@ -79,8 +79,8 @@ if ($stmt->rowCount() > 0) {
 }
 
 // Define the automatic clock-out time (e.g., 12:00 AM)
-$automatic_clock_out_time = '23:59';
-$current_time = date('H:i');
+// $automatic_clock_out_time = '00:01';
+// $current_time = date('H:i');
 
 if ($current_time > $automatic_clock_out_time && $clockInTime) {
     $clockOutTime = date('Y-m-d H:i:s');
@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
     if ($type == 'clock_in' && !$clockInTime) {
         // Check if the user is in the office network
         $userIP = getUserIP();
-        if (!isInOfficeNetwork($userIP, $officeIPs)) {
+        // if (!isInOfficeNetwork($userIP, $officeIPs)) {
             $alertMessage = 'You are not in the office premises.';
         } else {
             $clockInTime = date('Y-m-d H:i:s');
@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
             $stmt->bindParam(':clockInTime', $clockInTime);
             $stmt->execute();
         }
-    }
+    // }
 
     // If clock-out time is set and the user clicked Clock Out
     if ($type == 'clock_out' && $clockInTime) {

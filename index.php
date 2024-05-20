@@ -369,6 +369,15 @@
         margin-right: 10px;
         object-fit: cover;
     }
+    .work-anniversary-item img {
+        width: 50px;
+        /* Adjust image size as needed */
+        height: 50px;
+        border-radius: 50%;
+        /* Make the image round */
+        margin-right: 10px;
+        object-fit: cover;
+    }
 
     .birthday-info {
         display: inline-block;
