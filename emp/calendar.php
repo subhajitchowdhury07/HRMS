@@ -52,14 +52,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                <?php
-                                // Fetch employee details for dropdown
-                                $sql = "SELECT id,emp_id, first_name, last_name FROM employees";
-                                $stmt = $conn->query($sql);
-                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                    echo '<option value="' . $row['id'] . '">' . $row['first_name'] . ' ' . $row['last_name'] . " ( " . $row['emp_id'] . ")" . '</option>';
-                                }
-                                ?>
+                
                     <form id="add_event_form">
                         <div class="form-group">
                             <label for="event_name">Event Name</label>

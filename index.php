@@ -591,56 +591,17 @@
             <?php
 include('db_conn.php');
 
-// Initialize clockInTime, clockOutTime, totalWorkedHours, successMessage, and alertMessage
-$clockInTime = null;
-$clockOutTime = null;
-$totalWorkedHours = null;
-$successMessage = null;
-$alertMessage = null;
+// Enable error reporting
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
+// // Include the database connection file
+// include('db_conn.php');
+
+// // Start the session
+// session_start();
 date_default_timezone_set('Asia/Kolkata');
-
-// Function to get the user's IP address
-function getUserIP() {
-    // Check for shared internet/ISP IP
-    if (!empty($_SERVER['HTTP_CLIENT_IP']) && validateIP($_SERVER['HTTP_CLIENT_IP'])) {
-        return $_SERVER['HTTP_CLIENT_IP'];
-    }
-
-    // Check for IP addresses from proxies
-    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        // Extract the IPs
-        $ipList = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-        // Reverse the array to get the real IP
-        $ipList = array_reverse($ipList);
-        // Check each IP if it's a valid one
-        foreach ($ipList as $ip) {
-            if (validateIP($ip)) {
-                return $ip;
-            }
-        }
-    }
-
-    // Use REMOTE_ADDR as fallback
-    return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
-}
-
-// Function to validate an IP address
-function validateIP($ip) {
-    return filter_var($ip, FILTER_VALIDATE_IP) !== false;
-}
-
-// Define array of office IP addresses
-$officeIPs = array('::1', '203.192.209.70', '192.168.1.55');
-
-// Get the user's IP address
-$userIP = getUserIP();
-
-// Function to check if the user's IP is within the office network
-function isInOfficeNetwork($userIP, $officeIPs) {
-    // Check if the user's IP matches any of the office IP addresses
-    return in_array($userIP, $officeIPs);
-}
 
 // Check if the user is logged in
 if (!isset($_SESSION['emp_id'])) {
@@ -648,6 +609,13 @@ if (!isset($_SESSION['emp_id'])) {
     header('Location: login.php');
     exit();
 }
+
+// Initialize variables
+$clockInTime = null;
+$clockOutTime = null;
+$totalWorkedHours = null;
+$successMessage = null;
+$alertMessage = null;
 
 // Fetch user ID from session
 $user_id = $_SESSION['emp_id'];
@@ -671,34 +639,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
 
     // If clock-in time is not set and the user clicked Clock In
     if ($type == 'clock_in' && !$clockInTime) {
-        // Check if the user is in the office network
-        $userIP = getUserIP();
-        if (!isInOfficeNetwork($userIP, $officeIPs)) {
-            $alertMessage = 'You are not in the office premises.';
-        } else {
-            $clockInTime = date('Y-m-d H:i:s A');
-            // Start stopwatch when clocking in
-
-            // Insert clock in time into the database
-            $insert_query = "INSERT INTO attendance (employee_id, clock_in) VALUES (:user_id, :clockInTime)";
-            $stmt = $conn->prepare($insert_query);
-            $stmt->bindParam(':user_id', $user_id);
-            $stmt->bindParam(':clockInTime', $clockInTime);
-            $stmt->execute();
-            $successMessage = 'You have successfully clocked in at ' . $clockInTime;
-        }
+        $clockInTime = date('Y-m-d H:i:s');
+        $insert_query = "INSERT INTO attendance (employee_id, clock_in) VALUES (:user_id, :clockInTime)";
+        $stmt = $conn->prepare($insert_query);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':clockInTime', $clockInTime);
+        $stmt->execute();
+        $successMessage = 'You have successfully clocked in at ' . $clockInTime;
     }
 
     // If clock-out time is set and the user clicked Clock Out
     if ($type == 'clock_out' && $clockInTime) {
-        $clockOutTime = date('Y-m-d h:i:s A');
-
-        // Stop stopwatch when clocking out
-        $endTime = time();
+        $clockOutTime = date('Y-m-d H:i:s');
 
         // Calculate total worked hours
-        $totalWorkedSeconds = $endTime - strtotime($clockInTime);
-        $totalWorkedHours = sprintf('%02d:%02d:%02d', ($totalWorkedSeconds / 3600), ($totalWorkedSeconds / 60 % 60), ($totalWorkedSeconds % 60));
+        $totalWorkedHours = calculateTotalWorkedHours($clockInTime, $clockOutTime);
 
         // Update the database with clock-out time and total worked hours
         $update_query = "UPDATE attendance SET clock_out = :clockOutTime, total_worked_hr = :totalWorkedHours WHERE employee_id = :user_id AND clock_out IS NULL";
@@ -711,12 +666,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
         // Set success message
         $successMessage = 'You have successfully clocked out at ' . $clockOutTime;
 
-        // Reset clock in and out times
+        // Reset clock in time
         $clockInTime = null;
-        $clockOutTime = null;
     }
 }
-
 
 // Function to calculate total worked hours
 function calculateTotalWorkedHours($startTime, $endTime) {
@@ -728,10 +681,7 @@ function calculateTotalWorkedHours($startTime, $endTime) {
     $minutes = floor(($seconds % 3600) / 60);
     $seconds = $seconds % 60;
 
-    // Format hours to 12-hour format
-    $formattedHours = date('h', mktime(0, 0, $hours));
-
-    return sprintf('%02d:%02d:%02d', $formattedHours, $minutes, $seconds);
+    return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
 }
 
 

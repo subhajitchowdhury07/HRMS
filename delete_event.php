@@ -30,19 +30,30 @@ if (isset($_POST['event_id'])) {
 
         // Check if the event is created by the current user
         if ($event_creator_id == $_SESSION['id']) {
+            // Start a transaction
+            mysqli_begin_transaction($con);
+
             // Delete the event from both tables
             $delete_event_query = "DELETE FROM `calendar_event_master` WHERE `event_id` = '$event_id'";
             $delete_invitations_query = "DELETE FROM `event_invitations` WHERE `event_id` = '$event_id'";
 
-            if (mysqli_query($con, $delete_event_query) && mysqli_query($con, $delete_invitations_query)) {
+            $delete_event_result = mysqli_query($con, $delete_event_query);
+            $delete_invitations_result = mysqli_query($con, $delete_invitations_query);
+
+            if ($delete_event_result && $delete_invitations_result) {
+                // Commit the transaction
+                mysqli_commit($con);
                 $data = array(
                     'status' => true,
                     'msg' => 'Event deleted successfully!'
                 );
             } else {
+                // Rollback the transaction
+                mysqli_rollback($con);
                 $data = array(
                     'status' => false,
-                    'msg' => 'Sorry, unable to delete event.'
+                    'msg' => 'Sorry, unable to delete event.',
+                    'error' => mysqli_error($con) // Add error information
                 );
             }
         } else {
