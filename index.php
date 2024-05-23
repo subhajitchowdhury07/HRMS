@@ -1,5 +1,5 @@
 
-<!-- //add one comment for testing purpose -->
+
 <?php include("sidebar.php") ?>
 <!DOCTYPE html>
 <html lang="en">
