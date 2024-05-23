@@ -3,6 +3,17 @@
     .main-wrapper {
         z-index: -1;
     }
+
+    @media (min-width: 992px) {
+        #calendar {
+            position: fixed;
+            top: 80px;
+            left: 250px;
+            z-index: 1000;
+            overflow: auto;
+            max-height: calc(100vh - 70px);
+        }
+    }
 </style>
 
 <!DOCTYPE html>
@@ -16,20 +27,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
     <!-- Bootstrap CSS and JS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <style>
-        @media (min-width: 992px) {
-            #calendar {
-                position: fixed;
-                top: 80px;
-                left: 250px;
-                z-index: 1000;
-                overflow: auto;
-                max-height: calc(100vh - 70px);
-            }
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <!-- Bootstrap Select CSS and JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
 <div class="page-wrapper">
@@ -44,15 +46,12 @@
     <!-- Event Entry Popup Modal -->
     <div class="modal fade" id="event_entry_modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
+        <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalLabel">Add New Event</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                
                     <form id="add_event_form">
                         <div class="form-group">
                             <label for="event_name">Event Name</label>
@@ -85,19 +84,18 @@
                             <input type="color" name="event_color" id="event_color" class="form-control" placeholder="Enter event color">
                         </div>
                         <div class="form-group">
-    <label for="event_invitees">Invitees</label>
-    <select name="event_invitees[]" id="event_invitees" class="form-control" multiple>
-        <?php
-        // Fetch employee details for dropdown
-        $sql = "SELECT id, emp_id, first_name, last_name FROM employees";
-        $stmt = $conn->query($sql);
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            echo '<option value="' . $row['id'] . '">' . $row['first_name'] . ' ' . $row['last_name'] . " ( " . $row['emp_id'] . ")" . '</option>';
-        }
-        ?>
-    </select>
-</div>
-
+                            <label for="event_invitees">Invitees</label>
+                            <select name="event_invitees[]" id="event_invitees" class="selectpicker form-control" multiple aria-label="size 3 select example">
+                                <?php
+                                // Fetch employee details for dropdown
+                                $sql = "SELECT id, emp_id, first_name, last_name FROM employees";
+                                $stmt = $conn->query($sql);
+                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo '<option value="' . $row['id'] . '">' . $row['first_name'] . ' ' . $row['last_name'] . " ( " . $row['emp_id'] . ")" . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -110,21 +108,20 @@
     <!-- Event Description Popup Modal -->
     <div class="modal fade" id="eventDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="eventDescriptionModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+        <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="eventDescriptionModalLabel">Event Description</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p><strong>Time:</strong> <span id="eventTime"></span></p> <!-- Display event time -->
                     <p id="eventDescription"></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="delete_event()">Delete</button>
-                    <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+    <button type="button" class="btn btn-danger" onclick="delete_event()">Delete</button>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>
+
             </div>
         </div>
     </div>
@@ -133,6 +130,9 @@
 <!-- JavaScript -->
 <script>
 $(document).ready(function() {
+    // Initialize Bootstrap Select for invitees
+    $('#event_invitees').selectpicker();
+
     display_events();
 });
 

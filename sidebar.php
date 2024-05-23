@@ -531,6 +531,7 @@ li ul li a:hover {
     <ul>
         <li><a href="attendance.php">My Attendance</a></li>
         <li><a href="View_attendance.php">Team Attendance</a></li>
+        <li><a href="attendance_history.php">Attendance History</a></li>
         <!-- Add more leave types as needed -->
     </ul>
 </li>

@@ -33,26 +33,37 @@ if (isset($_POST['event_id'])) {
             // Start a transaction
             mysqli_begin_transaction($con);
 
-            // Delete the event from both tables
-            $delete_event_query = "DELETE FROM `calendar_event_master` WHERE `event_id` = '$event_id'";
+            // Delete from `event_invitations` first
             $delete_invitations_query = "DELETE FROM `event_invitations` WHERE `event_id` = '$event_id'";
-
-            $delete_event_result = mysqli_query($con, $delete_event_query);
             $delete_invitations_result = mysqli_query($con, $delete_invitations_query);
 
-            if ($delete_event_result && $delete_invitations_result) {
-                // Commit the transaction
-                mysqli_commit($con);
-                $data = array(
-                    'status' => true,
-                    'msg' => 'Event deleted successfully!'
-                );
+            // If deletion from `event_invitations` is successful, proceed to delete from `calendar_event_master`
+            if ($delete_invitations_result) {
+                $delete_event_query = "DELETE FROM `calendar_event_master` WHERE `event_id` = '$event_id'";
+                $delete_event_result = mysqli_query($con, $delete_event_query);
+
+                if ($delete_event_result) {
+                    // Commit the transaction
+                    mysqli_commit($con);
+                    $data = array(
+                        'status' => true,
+                        'msg' => 'Event deleted successfully!'
+                    );
+                } else {
+                    // Rollback the transaction
+                    mysqli_rollback($con);
+                    $data = array(
+                        'status' => false,
+                        'msg' => 'Sorry, unable to delete event from calendar_event_master.',
+                        'error' => mysqli_error($con) // Add error information
+                    );
+                }
             } else {
                 // Rollback the transaction
                 mysqli_rollback($con);
                 $data = array(
                     'status' => false,
-                    'msg' => 'Sorry, unable to delete event.',
+                    'msg' => 'Sorry, unable to delete event from event_invitations.',
                     'error' => mysqli_error($con) // Add error information
                 );
             }
