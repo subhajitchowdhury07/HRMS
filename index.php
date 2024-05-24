@@ -1,5 +1,3 @@
-
-
 <?php include("sidebar.php") ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -720,6 +718,7 @@ $conn = null;
 <h2>Attendance System</h2>
 <p>Welcome, <?php echo $first_name; ?>!</p>
 <?php
+// start the main form here
 // Display success message if set
 if ($successMessage) {
     echo "<p>$successMessage</p>";
